@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}{% load i18n %}
+{% block title %}{% trans 'Lessons' %}{% endblock %}
+
+
+{% block navbar %}
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'courses:units_list' object_list.0.unit.track.id %}">
+            {{ object_list.0.unit.track.name }}
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link active" href="{% url 'courses:lessons_list' object_list.0.unit.id %}">
+            {{ object_list.0.unit.name }}
+        </a>
+    </li>
+{% endblock navbar %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row">
+            <div>
+                {# Translators: the following would look like this -- Unit 1: Python syntax lessons #}
+                <h1>{{ object_list.0.unit.name }} {% trans 'lessons' %}</h1>
+
+                <div class="padding-bottom-5px">{% trans 'Overall Duration:' %} {{ lessons_duration }} {% trans 'min.' %}</div>
+            </div>
+            <div class="list-group">
+                {% for lesson in object_list %}
+                    <a href="{% url 'courses:exercises_list' lesson.id %}" class="list-group-item">
+                        <h4 class="list-group-item-heading">{{ lesson.name }}</h4>
+                        <h5 class="list-group-item-heading">{% trans 'Number of exercises:' %} {{ lesson.exercises_number }}</h5>
+                        <h5 class="list-group-item-heading">{% trans 'Duration of exercises:' %} {{ lesson.exercises_duration }} {% trans 'min.' %}</h5>
+                    </a>
+                {% endfor %}
+
+            </div>
+        </div>
+
+    </div>
+
+{% endblock content %}

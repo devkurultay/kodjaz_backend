@@ -1,0 +1,345 @@
+{% load staticfiles i18n %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Exercise</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+          content="learn python interactive online free интерактивный курс онлайн бесплатный курс по программированию">
+    <meta name="author" content="">
+    <script src="{% static 'js/skulpt/skulpt.min.js' %}"></script>
+    <script src="{% static 'js/skulpt/skulpt-stdlib.js' %}"></script>
+    <script src="{% static 'js/codemirror/codemirror-compressed.js' %}"></script>
+    <script src="{% static 'js/codemirror/python.js' %}"></script>
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="https://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css"
+          integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+    <link href="{% static 'css/project.css' %}" rel="stylesheet">
+    <link href="{% static 'css/codemirror/codemirror.css' %}" rel="stylesheet">
+    <link href="{% static 'css/codemirror/icecoder.css' %}" rel="stylesheet">
+
+</head>
+
+<body>
+{# Success modal start #}
+<div id="successModal" class="modal bd-success-modal-sm" tabindex="-1" role="dialog" aria-labelledby="successModal"
+     aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="container-fluid bd-success-modal-row">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    {% if object.next_exercise.id %}
+                        <p>{% trans 'You did it! Now go to the next exercise: ' %}
+                        <a href="{% url 'courses:exercise' object.next_exercise.id %}">
+                            {{ object.next_exercise.name }}
+                        </a></p>
+                    {% else %}
+                        <p>{% trans 'Congratulations! You have passed all the available exercises in this course!' %}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{# Success modal end #}
+{# Fail modal start #}
+<div id="failModal" class="modal bd-fail-modal-sm" tabindex="-1" role="dialog" aria-labelledby="failModal"
+     aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="container-fluid bd-fail-modal-row">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <p>{% trans 'It seems something went wrong with your code. Look at the errors below:' %}</p>
+                    <p>{{ input_error_text }}</p>
+                    <p>{{ output_error_text }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{# Fail modal end #}
+{# Server error modal start #}
+<div id="serverErrorModal" class="modal bd-server-error-modal-sm" tabindex="-1" role="dialog"
+     aria-labelledby="serverErrorModal" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="container-fluid bd-server-error-modal-sm-row">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    {% trans "We did something wrong on our server. Please, try again later or contact admin" %}<br/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{# Server error modal end #}
+<div class="m-b">
+    <nav class="navbar navbar-dark navbar-static-top bg-inverse">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">Learn.kg</a>
+            <button type="button" class="navbar-toggler hidden-sm-up pull-xs-right" data-toggle="collapse"
+                    data-target="#bs-navbar-collapse-1">
+                &#9776;
+            </button>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-toggleable-xs" id="bs-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'courses:units_list' object.lesson.unit.track.id %}">
+                            {{ object.lesson.unit.track.name }}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'courses:lessons_list' object.lesson.unit.id %}">
+                            {{ object.lesson.unit.name }}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'courses:exercises_list' object.lesson.id %}">
+                            {{ object.lesson.name }}
+                        </a>
+                    </li>
+                </ul>
+
+                <ul class="nav navbar-nav pull-xs-right">
+                    {% if request.user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link"
+                               href="{% url 'users:detail' request.user.username %}">{% trans "My Profile" %}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'account_logout' %}">{% trans "Sign out" %}</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a id="sign-up-link" class="nav-link"
+                               href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a>
+                        </li>
+                        <li class="nav-item">
+                            <a id="log-in-link" class="nav-link"
+                               href="{% url 'account_login' %}">{% trans "Sign In" %}</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<div class="container-fluid">
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    <div class="row">
+        <div class="col-sm-3 fixed-height">
+            <h2>{{ object.name }}</h2>
+
+            <div class="instructions-divider padding-5px">{% trans 'Useful information' %}</div>
+            <div class="padding-top-bottom-5px">{{ lecture|linebreaks }}</div>
+            <div class="instructions-divider padding-5px">{% trans 'Instructions' %}</div>
+            <div class="padding-top-bottom-5px">{{ instruction|linebreaks }}</div>
+            <div class="instructions-divider padding-5px cursor" onclick="toggleHint()">{% trans 'Need help? Click here.' %}</div>
+            <div class="padding-top-bottom-5px hidden" id="hint">
+                {% if hint|length > 0 %}
+                    {{ hint|linebreaks }}
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-sm-5">
+            <div class="padding-top-5px">
+                <textarea id="code">{{ default_code }}</textarea>
+            </div>
+            <div class="row padding-top-5px">
+                <div class="col-sm-4 padding-bottom-5px">
+                    <button type="button" class="btn btn-primary" onclick="runit()">{% trans 'Run and Check' %}</button>
+                </div>
+                {% if not request.user.is_authenticated %}
+                <div class="col-sm-6 col-sm-offset-1 padding-0">
+                    <div class="alert alert-warning padding-9px margin-bottom-0 text-xs-center" role="alert">
+                        {# Add trans with a context to make it easy to translate #}
+                        <a href="{% url 'account_login' %}" class="alert-link">
+                            {% trans "Sign in" context "Sign in to save your progress" %}
+                        </a> {% trans 'to save your progress' %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="padding-top-1em">
+                <div class="card card-fixed-height">
+                    <div class="card-block">
+                        <div class="card-text">
+                            <pre class="output-pre" id="{{ outputElementId }}"></pre>
+                        </div>
+                    </div>
+                </div>
+                <div id="turtle-canvas"></div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <textarea readonly id="code_checker" style="display: none;">{{ unit_test }}</textarea>
+    </div>
+
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.2.0/js/tether.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js"
+        integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7"
+        crossorigin="anonymous"></script>
+<script src="{% static 'js/project.js' %}"></script>
+<script type="text/javascript">
+
+    var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+        mode: "python",
+        theme: "icecoder",
+        styleActiveLine: true,
+        lineNumbers: true,
+        lineWrapping: false,
+        indentUnit: 4,
+        matchBrackets: true,
+        autoMatchParens: true,
+        extraKeys: {
+            "Tab": "indentMore",
+            "Shift-Tab": "indentLess"
+        }
+    });
+    editor.setSize(null, "82vh");
+
+    function outf(text) {
+        var mypre = document.getElementById("{{ outputElementId }}");
+        text = text.replace(/</g, '&lt;');
+        mypre.innerHTML = mypre.innerHTML + text;
+    }
+    function builtinRead(x) {
+        if (Sk.builtinFiles === undefined || Sk.builtinFiles["files"][x] === undefined)
+            throw "File not found: '" + x + "'";
+        return Sk.builtinFiles["files"][x];
+    }
+
+    function runit() {
+        var prog = editor.getValue();
+        var unitTest = document.getElementById('code_checker').value;
+        var readyProg = prog + '\n' + unitTest;
+        var outputElement = document.getElementById("{{ outputElementId }}");
+        outputElement.innerHTML = '';
+        Sk.pre = "{{ outputElementId }}";
+        Sk.configure({output: outf, read: builtinRead});
+        (Sk.TurtleGraphics || (Sk.TurtleGraphics = {})).target = 'turtle-canvas';
+        var evalPromise = Sk.misceval.asyncToPromise(function () {
+            return Sk.importMainWithBody("<stdin>", false, readyProg, true);
+        });
+        evalPromise.then(function (mod) {
+                    if (checkInput(prog) && checkOutput()) {
+                        createSubmissionAndShowModal(prog, true);
+                    } else {
+                        createSubmissionAndShowModal(prog, false);
+                    }
+                },
+                function (err) {
+                    createSubmissionAndShowModal(prog, false, err.toString());
+                });
+    }
+
+    function toggleHint() {
+        $('#hint').toggleClass('hidden')
+    }
+
+    {% autoescape off %}
+    function checkInput(codeText) {
+        var positiveAssertionWords = '{{ input_should_contain }}'.split(",");
+        var negativeAssertionWords = '{{ input_should_not_contain }}'.split(",");
+        return _checkImpl(positiveAssertionWords, codeText, true) && _checkImpl(negativeAssertionWords, codeText, false)
+    }
+
+    function checkOutput() {
+        var output = document.getElementById('output').innerHTML.trim();
+        var positiveAssertionWords = '{{ output_should_contain }}'.split(",");
+        var negativeAssertionWords = '{{ output_should_not_contain }}'.split(",");
+        negativeAssertionWords.push('exception');
+        negativeAssertionWords.push('Fail:');
+        return _checkImpl(positiveAssertionWords, output, true) && _checkImpl(negativeAssertionWords, output, false)
+    }
+
+    function _checkImpl(assertionWords, textToCheck, positive) {
+        var resultsInd = [];
+        if (assertionWords.length >= 1 && assertionWords[0].length > 0) {
+            for (var i = 0; i < assertionWords.length; i++) {
+                resultsInd.push(textToCheck.indexOf(assertionWords[i]))
+            }
+        } else {
+            return true
+        }
+        return positive ? resultsInd.indexOf(-1) === -1 : resultsInd.indexOf(-1) > -1;
+    }
+    {% endautoescape %}
+
+    function createSubmissionAndShowModal(prog, passed, err) {
+        err === undefined ? err = '' : err;
+        $.ajax({
+                    url: '{% url 'courses:create_submission' %}',
+                    type: 'POST',
+                    data: {
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        exercise: {{ object.id }},
+                        submitted_code: prog,
+                        passed: passed
+                    }
+                })
+                .done(function (responseData) {
+                    if (responseData.saved) {
+                        passed ? _toggleSuccessModal(true) : _toggleFailModal(err, true)
+                    } else {
+                        responseData.not_logged_in
+                                ? passed ? _toggleSuccessModal(false) : _toggleFailModal(err, false)
+                                : $("#serverErrorModal").modal('toggle')
+                    }
+                })
+    }
+
+    var notLoggedInMessage = "{% trans 'Your progress not saved.' %}";
+    var notLoggedInMessageContainer = '<p id="notLoggedInMessage">' + notLoggedInMessage + '</p>';
+    var notLoggedInMessageElement = $("#notLoggedInMessage");
+
+    function _toggleSuccessModal(loggedIn) {
+        if(!loggedIn) {
+            notLoggedInMessageElement.remove();
+            $(".bd-success-modal-row").append(notLoggedInMessageContainer);
+        }
+        $("#successModal").modal('toggle')
+    }
+
+    function _toggleFailModal(err, loggedIn) {
+        var failModalRow = $(".bd-fail-modal-row");
+        if(err.length > 0) {
+            $("#parseError").remove();
+            failModalRow.append('<p id="parseError">' + err + '</p>');
+        }
+        if(!loggedIn) {
+            notLoggedInMessageElement.remove();
+            failModalRow.append(notLoggedInMessageContainer)
+        }
+        $("#failModal").modal('toggle');
+    }
+
+</script>
+
+</body>
+</html>
