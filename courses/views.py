@@ -98,7 +98,7 @@ class CreateSubmissionView(CreateView):
     def post(self, request, *args, **kwargs):
         data = request.POST
         user = request.user
-        if not user.is_authenticated():
+        if not user.is_authenticated:
             return JsonResponse({'not_logged_in': True, 'saved': False})
         exercise = self._get_exercise(data)
         submitted_code = data['submitted_code']
