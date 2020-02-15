@@ -241,7 +241,11 @@
         var outputElement = document.getElementById("{{ outputElementId }}");
         outputElement.innerHTML = '';
         Sk.pre = "{{ outputElementId }}";
-        Sk.configure({output: outf, read: builtinRead});
+        Sk.configure({
+          output: outf,
+          read: builtinRead,
+          __future__: Sk.python3
+        });
         (Sk.TurtleGraphics || (Sk.TurtleGraphics = {})).target = 'turtle-canvas';
         var evalPromise = Sk.misceval.asyncToPromise(function () {
             return Sk.importMainWithBody("<stdin>", false, readyProg, true);
