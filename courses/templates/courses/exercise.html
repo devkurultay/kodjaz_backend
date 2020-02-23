@@ -233,6 +233,10 @@
             throw "File not found: '" + x + "'";
         return Sk.builtinFiles["files"][x];
     }
+    function filewrite(pyFile, x) {
+        var d = document.getElementById(pyFile.name)
+        d.innerHTML = x.v
+    }
 
     function runit() {
         var prog = editor.getValue();
@@ -243,8 +247,13 @@
         Sk.pre = "{{ outputElementId }}";
         Sk.configure({
           output: outf,
+          inBrowser: true,
           read: builtinRead,
-          __future__: Sk.python3
+          nonreadopen: true,
+          filewrite: filewrite,
+          killableWhile: true,
+          killableFor: true,
+          __future__: Sk.python3,
         });
         (Sk.TurtleGraphics || (Sk.TurtleGraphics = {})).target = 'turtle-canvas';
         var evalPromise = Sk.misceval.asyncToPromise(function () {
