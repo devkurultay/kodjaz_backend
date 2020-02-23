@@ -162,24 +162,37 @@
             </div>
         </div>
         <div class="col-sm-5">
-            <div class="padding-top-5px">
-                <textarea id="code">{{ default_code }}</textarea>
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">code.py</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" id="file-tab" data-toggle="tab" href="#file" role="tab" aria-controls="file" aria-selected="true">file.txt</a>
+            </li>
+          </ul>
+          <div class="tab-content" id="myTabContent">
+            <div class="padding-top-5px tab-pane fade show active in" id="home" role="tabpanel" aria-labelledby="home-tab">
+              <textarea id="code">{{ default_code }}</textarea>
+              <div class="row padding-top-5px">
+                  <div class="col-sm-4 padding-bottom-5px">
+                      <button type="button" class="btn btn-primary" onclick="runit()">{% trans 'Run and Check' %}</button>
+                  </div>
+                  {% if not request.user.is_authenticated %}
+                  <div class="col-sm-6 col-sm-offset-1 padding-0">
+                      <div class="alert alert-warning padding-9px margin-bottom-0 text-xs-center" role="alert">
+                          {# Add trans with a context to make it easy to translate #}
+                          <a href="{% url 'account_login' %}" class="alert-link">
+                              {% trans "Sign in" context "Sign in to save your progress" %}
+                          </a> {% trans 'to save your progress' %}
+                      </div>
+                  </div>
+                  {% endif %}
+              </div>
             </div>
-            <div class="row padding-top-5px">
-                <div class="col-sm-4 padding-bottom-5px">
-                    <button type="button" class="btn btn-primary" onclick="runit()">{% trans 'Run and Check' %}</button>
-                </div>
-                {% if not request.user.is_authenticated %}
-                <div class="col-sm-6 col-sm-offset-1 padding-0">
-                    <div class="alert alert-warning padding-9px margin-bottom-0 text-xs-center" role="alert">
-                        {# Add trans with a context to make it easy to translate #}
-                        <a href="{% url 'account_login' %}" class="alert-link">
-                            {% trans "Sign in" context "Sign in to save your progress" %}
-                        </a> {% trans 'to save your progress' %}
-                    </div>
-                </div>
-                {% endif %}
+            <div class="padding-top-5px tab-pane fade" id="file" role="tabpanel" aria-labelledby="file-tab">
+                <textarea id="file.txt">Some text here</textarea>
             </div>
+          </div>
         </div>
         <div class="col-sm-4">
             <div class="padding-top-1em">
