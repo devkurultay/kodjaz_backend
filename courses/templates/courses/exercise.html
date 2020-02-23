@@ -190,7 +190,7 @@
               </div>
             </div>
             <div class="padding-top-5px tab-pane fade" id="file" role="tabpanel" aria-labelledby="file-tab">
-                <textarea id="file.txt">Some text here</textarea>
+                <textarea id="file.txt">!!Some text here</textarea>
             </div>
           </div>
         </div>
@@ -235,6 +235,26 @@
         }
     });
     editor.setSize(null, "82vh");
+    
+    var fileTextAreaId = "file.txt";
+    var fileTextArea = document.getElementById(fileTextAreaId);
+
+    var fileEditor = CodeMirror.fromTextArea(fileTextArea, {
+        mode: null,
+        theme: "icecoder",
+        styleActiveLine: true,
+        lineNumbers: false,
+    });
+    fileEditor.setSize(null, "82vh");
+    fileEditor.on('update', function() {
+      var val = fileEditor.getValue()
+      fileTextArea.innerHTML = val;
+    });
+
+    // Hack for showing text on tab load
+    $('#file-tab').on('shown.bs.tab', function(e) {
+      fileEditor.setValue(fileTextArea.value)
+    });
 
     function outf(text) {
         var mypre = document.getElementById("{{ outputElementId }}");
