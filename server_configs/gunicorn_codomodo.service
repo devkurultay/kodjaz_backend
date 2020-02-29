@@ -1,0 +1,26 @@
+[Unit]
+Description=gunicorn daemon for codomodo project
+Requires=gunicorn_codomodo.socket
+After=network.target
+
+[Service]
+PermissionsStartOnly=True
+User=almaz
+Group=www-data
+RuntimeDirectory=gunicorn
+RuntimeDirectoryMode=0775
+PIDFile=/run/gunicorn/pid
+WorkingDirectory=/home/almaz/lessons
+ExecStart=/home/almaz/lessons/env/bin/gunicorn \
+          --access-logfile /home/almaz/lessons/logs/access.log \
+          --error-logfile /home/almaz/lessons/logs/error.log \
+          --pid /run/gunicorn/pid   \
+          --env DJANGO_SETTINGS_MODULE=config.settings_prod \
+          --workers 3 \
+          --bind unix:/run/gunicorn/codomodo_socket config.wsgi:application
+ExecReload=/bin/kill -s HUP $MAINPID
+ExecStop=/bin/kill -s TERM $MAINPID
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
