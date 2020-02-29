@@ -24,7 +24,7 @@ class UnitsListView(ListView):
 
     def get_queryset(self):
         qs = super(UnitsListView, self).get_queryset()
-        return qs.filter(track__id=self.kwargs['track_id'], is_published=True)
+        return qs.filter(track__id=self.kwargs['track_id'], is_published=True).orderby('id')
 
 
 class LessonsListView(ListView):
