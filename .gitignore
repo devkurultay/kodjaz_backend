@@ -56,6 +56,9 @@ htmlcov
 *.swp
 *.swo
 
+# archive files
+*.tar
+
 # npm
 node_modules/
 
