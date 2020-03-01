@@ -131,7 +131,9 @@
         <textarea readonly id="code_checker" style="display: none;">{{ unit_test }}</textarea>
     </div>
 </div>
+{% endblock content %}
 
+{% block specific_javascript %}
 <link href="{% static 'css/codemirror/codemirror.css' %}" rel="stylesheet">
 <link href="{% static 'css/codemirror/icecoder.css' %}" rel="stylesheet">
 <script src="{% static 'js/skulpt/skulpt.min.js' %}"></script>
@@ -306,5 +308,4 @@
     }
 
 </script>
-
-{% endblock content %}
+{% endblock specific_javascript %}
