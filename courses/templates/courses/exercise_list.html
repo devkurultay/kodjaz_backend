@@ -23,23 +23,20 @@
 {% block content %}
 
     <div class="container">
-        <div class="row">
-            <div class="">
-                <h1>{% trans 'Exercises' %}.</h1>
-
-                <div>{% trans 'Duration:' %} {{ lesson_duration }} {% trans 'min.' %}</div>
-            </div>
-
-            <div class="list-group">
-                {% for exercise in object_list %}
-                    <a href="{% url 'courses:exercise' exercise.id %}" class="list-group-item">
-                        <h4 class="list-group-item-heading">{{ exercise.name }}</h4>
-                        <h6>{% trans 'Exercise duration:' %} {{ exercise.duration }} {% trans 'min.' %}</h6>
-                    </a>
-                {% endfor %}
-
-            </div>
-        </div>
+      <div class="row">
+        <h1>{% trans 'Exercises' %}</h1>
+        <ul class="list-group list-group-flush w-100">
+          <div>{% trans 'Duration:' %} {{ lesson_duration }} {% trans 'min.' %}</div>
+          {% for exercise in object_list %}
+            <li class="list-group-item list-group-item-action w-100">
+              <span><strong>{{ exercise.name }}</strong></span>
+              <a href="{% url 'courses:exercise' exercise.id %}">
+                <div>{% trans 'Exercise duration:' %} {{ exercise.duration }} {% trans 'min.' %}</div>
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
     </div>
 
 {% endblock content %}

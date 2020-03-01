@@ -19,25 +19,25 @@
 {% block content %}
 
     <div class="container">
-        <div class="row">
-            <div>
-                {# Translators: the following would look like this -- Unit 1: Python syntax lessons #}
-                <h1>{{ object_list.0.unit.name }} {% trans 'lessons' %}</h1>
+      <div class="row">
+        <div>
+          {# Translators: the following would look like this -- Unit 1: Python syntax lessons #}
+          <h1>{{ object_list.0.unit.name }} {% trans 'lessons' %}</h1>
 
-                <div class="padding-bottom-5px">{% trans 'Overall Duration:' %} {{ lessons_duration }} {% trans 'min.' %}</div>
-            </div>
-            <div class="list-group">
-                {% for lesson in object_list %}
-                    <a href="{% url 'courses:exercises_list' lesson.id %}" class="list-group-item">
-                        <h4 class="list-group-item-heading">{{ lesson.name }}</h4>
-                        <h5 class="list-group-item-heading">{% trans 'Number of exercises:' %} {{ lesson.exercises_number }}</h5>
-                        <h5 class="list-group-item-heading">{% trans 'Duration of exercises:' %} {{ lesson.exercises_duration }} {% trans 'min.' %}</h5>
-                    </a>
-                {% endfor %}
-
-            </div>
+          <div class="padding-bottom-5px">{% trans 'Overall Duration:' %} {{ lessons_duration }} {% trans 'min.' %}</div>
         </div>
-
+          <ul class="list-group list-group-flush w-100">
+            {% for lesson in object_list %}
+            <li class="list-group-item list-group-item-action w-100">
+              <span><strong>{{ lesson.name }}</strong></span>
+              <a href="{% url 'courses:exercises_list' lesson.id %}">
+                <div class="list-group-item-heading">{% trans 'Number of exercises:' %} {{ lesson.exercises_number }}</div>
+                <div class="list-group-item-heading">{% trans 'Duration of exercises:' %} {{ lesson.exercises_duration }} {% trans 'min.' %}</div>
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
     </div>
 
 {% endblock content %}

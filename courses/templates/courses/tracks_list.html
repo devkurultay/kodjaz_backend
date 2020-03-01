@@ -5,22 +5,22 @@
 {% block content %}
 
     <div class="container">
-        <div class="row">
-
-            <h1>{% trans 'Tracks' %}</h1>
-
-            <div class="list-group">
-                {% for track in object_list %}
-                    <a href="{% url 'courses:units_list' track.id %}" class="list-group-item">
-                        <h4 class="list-group-item-heading">{{ track.name }}</h4>
-                        <h5 class="list-group-item-heading">{{ track.description }}</h5>
-                        <h6 class="list-group-item-heading">{% trans 'Number of units:' %} {{ track.units_count }}</h6>
-                        <h6 class="list-group-item-heading">{% trans 'Number of lessons:' %} {{ track.lessons_count }}</h6>
-                        <h6 class="list-group-item-heading">{% trans 'Lessons overall duration:' %} {{ track.unit_lessons_duration }}</h6>
-                    </a>
-                {% endfor %}
-            </div>
-        </div>
+      <h1>{% trans 'Tracks' %}</h1>
+      <div class="row">
+        <ul class="list-group list-group-flush w-100">
+          {% for track in object_list %}
+            <li class="list-group-item list-group-item-action w-100">
+              <span><strong>{{ track.name }}</strong></span>
+              <a class="w-100" href="{% url 'courses:units_list' track.id %}">
+                <div class="list-group-item-heading">{{ track.description }}</div>
+                <div class="list-group-item-heading">{% trans 'Number of units:' %} {{ track.units_count }}</div>
+                <div class="list-group-item-heading">{% trans 'Number of lessons:' %} {{ track.lessons_count }}</div>
+                <div class="list-group-item-heading">{% trans 'Lessons overall duration:' %} {{ track.unit_lessons_duration }}</div>
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
     </div>
 
 {% endblock content %}

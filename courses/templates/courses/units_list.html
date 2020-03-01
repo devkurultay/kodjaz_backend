@@ -13,21 +13,20 @@
 {% block content %}
 
 <div class="container">
-
-    <h1>{% trans 'Units' %}</h1>
-
-    <div class="list-group">
-        {% for unit in object_list %}
-          <a href="{% url 'courses:lessons_list' unit.id %}" class="list-group-item">
-            <h4 class="list-group-item-heading">{{ unit.name }}</h4>
-            <h5 class="list-group-item-heading">{{ unit.description }}</h5>
-            <h6 class="list-group-item-heading">{% trans 'Number of lessons in unit:' %} {{ unit.lesson_exercises_count }}</h6>
-            <h6 class="list-group-item-heading">{% trans 'Overall duration of lessons in unit:' %} {{ unit.lessons_exercises_duration }} {% trans 'min.' %}</h6>
+  <h1>{% trans 'Units' %}</h1>
+  <div class="row">
+    <ul class="list-group list-group-flush w-100">
+      {% for unit in object_list %}
+        <li class="list-group-item list-group-item-action w-100">
+          <span><strong>{{ unit.name }}</strong></span>
+          <a class="w-100" href="{% url 'courses:lessons_list' unit.id %}">
+            <div class="list-group-item-heading">{{ unit.description }}</div>
+            <div class="list-group-item-heading">{% trans 'Number of lessons in unit:' %} {{ unit.lesson_exercises_count }}</div>
+            <div class="list-group-item-heading">{% trans 'Overall duration of lessons in unit:' %} {{ unit.lessons_exercises_duration }} {% trans 'min.' %}</div>
           </a>
-        {% endfor %}
-
+        </li>
+      {% endfor %}
     </div>
-
 </div>
 
 {% endblock content %}
