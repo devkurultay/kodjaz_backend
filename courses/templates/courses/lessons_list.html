@@ -22,8 +22,7 @@
       <div class="row">
         <div>
           {# Translators: the following would look like this -- Unit 1: Python syntax lessons #}
-          <h1>{{ object_list.0.unit.name }} {% trans 'lessons' %}</h1>
-
+          <h1>{% trans 'Unit:' %} {{ object_list.0.unit.name }}. {% trans 'Lessons' %}.</h1>
           <div class="padding-bottom-5px">{% trans 'Overall Duration:' %} {{ lessons_duration }} {% trans 'min.' %}</div>
         </div>
           <ul class="list-group list-group-flush w-100">
