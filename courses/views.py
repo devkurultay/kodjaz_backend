@@ -79,6 +79,8 @@ class ExerciseTemplateView(TemplateView):
         return context
 
     def _get_current_obj(self, obj):
+        if not self.request.user.is_authenticated:
+            return obj
         try:
             return Submission.objects.get(exercise__id=obj.id, user=self.request.user)
         except Submission.DoesNotExist:
