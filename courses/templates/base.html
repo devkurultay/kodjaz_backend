@@ -19,12 +19,8 @@
     <link rel="shortcut icon" href="{% static 'favicon.ico' %}" type="x-icon" />
 
     {% block css %}
-    <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-    <!-- Your stuff: Third-party css libraries go here -->
-
-    <!-- This file store project specific CSS -->
     <link href="{% static 'css/project.css' %}" rel="stylesheet">
 
     {% endblock %}
@@ -37,16 +33,16 @@
   <body>
 
     <div class="m-b">
-      <nav class="navbar navbar-dark navbar-static-top bg-dark">
+      <nav class="navbar navbar-expand-md navbar-dark navbar-static-top bg-dark">
         <div class="container">
           <a class="navbar-brand" href="/">Learn.kg</a>
-          <button type="button" class="navbar-toggler d-sm-none pull-xs-right" data-toggle="collapse" data-target="#bs-navbar-collapse-1">
-            &#9776;
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#bs-navbar-collapse-1" aria-controls="bs-navbar-collapse-1" aria-expanded="true" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
           </button>
 
           <!-- Collect the nav links, forms, and other content for toggling -->
-          <div class="collapse navbar-expand-xs" id="bs-navbar-collapse-1">
-            <ul class="nav navbar-nav">
+          <div class="navbar-collapse collapse" id="bs-navbar-collapse-1">
+            <ul class="navbar-nav mr-auto">
                 {% block navbar %}
                   <li class="nav-item">
                     <a class="nav-link" href="{% url 'courses:tracks_list' %}">{% trans 'Home' %}</a>
