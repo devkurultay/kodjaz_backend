@@ -151,6 +151,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.11/theme-vibrant_ink.min.js" integrity="sha256-IQ2CFOsaAexyrA3QCiqwFxfqVrl8+x0sXtv2mZqoQgo=" crossorigin="anonymous"></script>
 <script type="text/javascript">
 
+  var APPEND_MODE = 'a'
+
   $(document).ready(writeEditorContentToFileTextArea)
 
   var editor = ace.edit("code")
@@ -194,9 +196,14 @@
   }
 
   function filewrite(fileObj, x) {
-    // TODO(murat): handle append mode
-    var valueToWrite = x.v
     var fileTextAreaNode = document.getElementById(fileObj.name)
+    var valueToWrite = x.v
+    var mode = fileObj.mode.v
+    var isAppendMode = mode === APPEND_MODE
+    if (isAppendMode) {
+      var currentText = fileTextAreaNode.innerHTML
+      valueToWrite = currentText + valueToWrite
+    }
     // Update fileTextArea and the editor content
     fileTextAreaNode.innerHTML = valueToWrite
     fileEditor.session.setValue(valueToWrite)
