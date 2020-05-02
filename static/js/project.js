@@ -4,6 +4,9 @@
 
   $(document).ready(writeEditorContentToFileTextArea)
   $('#run').on('click', runit)
+  $('#hintToggle').on('click', function () {
+    $('#hint').toggleClass('hidden')
+  })
 
   var editor = ace.edit("code")
   editor.setTheme("ace/theme/vibrant_ink")
@@ -92,10 +95,6 @@
     });
   }
 
-  function toggleHint() {
-    $('#hint').toggleClass('hidden')
-  }
-
   function checkInput(codeText) {
     var positiveAssertionWords = someObject.inputShouldContain
     var negativeAssertionWords = someObject.inputShouldNotContain
@@ -115,7 +114,7 @@
     var resultsInd = [];
     if (assertionWords.length >= 1 && assertionWords[0].length > 0) {
       for (var i = 0; i < assertionWords.length; i++) {
-          resultsInd.push(textToCheck.indexOf(assertionWords[i]))
+        resultsInd.push(textToCheck.indexOf(assertionWords[i]))
       }
     } else {
       return true

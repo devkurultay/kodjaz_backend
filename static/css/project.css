@@ -51,11 +51,6 @@
   overflow-y: auto;
 }
 
-.fixed-height {
-  max-height: 85vh;
-  overflow-y: auto;
-}
-
 #turtle-canvas {
   margin-top: -17vh;
 }
@@ -136,7 +131,7 @@
     margin-top: 30px;
   }
   .editor-wrapper {
-    height: 100%;
+    height: 75vh;
   }
 }
 
