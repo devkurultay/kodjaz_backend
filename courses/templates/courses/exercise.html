@@ -112,7 +112,7 @@
           </div>
           <div class="row padding-top-5px">
             <div class="col-sm-4 padding-bottom-5px">
-              <button type="button" class="btn btn-primary" onclick="runit()">{% trans 'Run and Check' %}</button>
+              <button id="run" type="button" class="btn btn-primary">{% trans 'Run and Check' %}</button>
             </div>
             {% if not request.user.is_authenticated %}
             <div class="col-sm-6 col-sm-offset-1 padding-0">
@@ -162,6 +162,8 @@
     path: '{% url 'courses:create_submission' %}',
     csrfToken: '{{ csrf_token }}',
     objectId: {{ object.id }},
+    outputElementId: "{{ outputElementId }}",
+    notLoggedInMessage: "{% trans 'Your progress not saved.' %}",
   }
   {% endautoescape %}
 </script>
