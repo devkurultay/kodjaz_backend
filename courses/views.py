@@ -63,20 +63,23 @@ class ExerciseTemplateView(TemplateView):
         context = super(ExerciseTemplateView, self).get_context_data(**kwargs)
         obj = Exercise.objects.get(id=kwargs['pk'])
         current_object = self._get_current_obj(obj)
-        context['object'] = obj
-        context['lecture'] = current_object.lecture
-        context['instruction'] = current_object.instruction
-        context['hint'] = current_object.hint
-        context['default_code'] = self._get_default_code(current_object)
-        context['unit_test'] = current_object.unit_test
-        context['input_should_contain'] = current_object.input_should_contain
-        context['input_should_not_contain'] = current_object.input_should_not_contain
-        context['input_error_text'] = current_object.input_error_text
-        context['output_should_contain'] = current_object.output_should_contain
-        context['output_should_not_contain'] = current_object.output_should_not_contain
-        context['output_error_text'] = current_object.output_error_text
-        context['outputElementId'] = settings.OUTPUT_CONTAINER_ID_IN_EXERCISES_TEMPLATE
-        context['text_file_content'] = current_object.text_file_content
+        new_context = {
+            'object': obj,
+            'lecture': current_object.lecture,
+            'instruction': current_object.instruction,
+            'hint': current_object.hint,
+            'default_code': self._get_default_code(current_object),
+            'unit_test': current_object.unit_test,
+            'input_should_contain': current_object.input_should_contain,
+            'input_should_not_contain': current_object.input_should_not_contain,
+            'input_error_text': current_object.input_error_text,
+            'output_should_contain': current_object.output_should_contain,
+            'output_should_not_contain': current_object.output_should_not_contain,
+            'output_error_text': current_object.output_error_text,
+            'outputElementId': settings.OUTPUT_CONTAINER_ID_IN_EXERCISES_TEMPLATE,
+            'text_file_content': current_object.text_file_content
+        }
+        context.update(new_context)
         return context
 
     def _get_current_obj(self, obj):
