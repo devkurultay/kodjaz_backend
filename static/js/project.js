@@ -104,8 +104,8 @@
 
   function checkOutput() {
     var output = document.getElementById('output').innerHTML.trim();
-    var positiveAssertionWords = outputShouldContain
-    var negativeAssertionWords = outputShouldNotContain
+    var positiveAssertionWords = someObject.outputShouldContain
+    var negativeAssertionWords = someObject.outputShouldNotContain
     negativeAssertionWords.push('exception');
     negativeAssertionWords.push('Fail:');
     return _checkImpl(positiveAssertionWords, output, true) && _checkImpl(negativeAssertionWords, output, false)
