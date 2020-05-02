@@ -119,7 +119,7 @@
 
 .editor-wrapper {
   position: relative;
-  height: 100%;
+  height: 50vh;
 }
 
 .editor {
@@ -129,3 +129,11 @@
   bottom: 0;
   left: 0;
 }
+
+/* From tablets to desktop displays */
+@media (min-width: 992px) {
+  .editor-wrapper {
+    height: 100%;
+  }
+}
+
