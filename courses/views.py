@@ -76,6 +76,7 @@ class ExerciseTemplateView(TemplateView):
         context['output_should_not_contain'] = current_object.output_should_not_contain
         context['output_error_text'] = current_object.output_error_text
         context['outputElementId'] = settings.OUTPUT_CONTAINER_ID_IN_EXERCISES_TEMPLATE
+        context['text_file_content'] = current_object.text_file_content
         return context
 
     def _get_current_obj(self, obj):
@@ -104,9 +105,15 @@ class CreateSubmissionView(CreateView):
             return JsonResponse({'not_logged_in': True, 'saved': False})
         exercise = self._get_exercise(data)
         submitted_code = data['submitted_code']
+        text_file_content = data['text_file_content']
         passed = json.loads(data['passed'])
         try:
-            self.model.create_from_exercise(user=user, exercise=exercise, submitted_code=submitted_code, passed=passed)
+            self.model.create_from_exercise(
+                user=user,
+                exercise=exercise,
+                submitted_code=submitted_code,
+                text_file_content=text_file_content,
+                passed=passed)
             return JsonResponse({'saved': True})
         except SubmissionCreationException:
             return JsonResponse({'saved': False})

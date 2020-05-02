@@ -118,6 +118,7 @@ class Exercise(models.Model):
     lesson = models.ForeignKey(Lesson, related_name='lesson_exercise', on_delete=models.CASCADE)
     date_time_created = models.DateTimeField(_('Exercise Creation Date and Time'), auto_now_add=True, editable=False)
     date_time_modified = models.DateTimeField(_('Exercise Modification Date and Time'), auto_now=True)
+    text_file_content = models.TextField(_('If this field has a content, file.txt tab will be shown'), blank=True)
 
     def __str__(self):
         return self.name
@@ -152,15 +153,17 @@ class Submission(models.Model):
                                                   blank=True, default=0)
     date_time_created = models.DateTimeField(_('Submission Date and Time'), auto_now_add=True, editable=False)
     date_time_modified = models.DateTimeField(_('Submission Modification Date and Time'), auto_now=True)
+    text_file_content = models.TextField(_('file.txt tab content'), blank=True)
 
     def __str__(self):
         return '{0} submission'.format(self.user)
 
     @classmethod
-    def create_from_exercise(cls, user, exercise, submitted_code, passed):
+    def create_from_exercise(cls, user, exercise, submitted_code, text_file_content, passed):
         try:
             obj, created = cls.objects.get_or_create(user=user, exercise=exercise)
             obj.submitted_code = submitted_code
+            obj.text_file_content = text_file_content
             if created:
                 obj.name = exercise.name
                 obj.lecture = exercise.lecture

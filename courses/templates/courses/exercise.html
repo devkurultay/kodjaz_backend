@@ -104,7 +104,7 @@
               class="editor tab-pane fade"
               id="file"
               role="tabpanel"
-              aria-labelledby="file-tab">File contents</pre>
+              aria-labelledby="file-tab">{{ text_file_content }}</pre>
               <textarea id="file.txt" style="display: none;"></textarea> 
           </div>
           <div class="row padding-top-5px">
@@ -284,6 +284,7 @@
         csrfmiddlewaretoken: '{{ csrf_token }}',
         exercise: {{ object.id }},
         submitted_code: prog,
+        text_file_content: fileEditor.getValue(),
         passed: passed
       }
     })
