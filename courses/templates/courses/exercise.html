@@ -88,11 +88,13 @@
                 code.py
               </a>
             </li>
+            {% if text_file_content %}
             <li class="nav-item">
               <a class="nav-link" id="file-tab" data-toggle="tab" href="#file" role="tab" aria-controls="file" aria-selected="false">
                 file.txt
               </a>
             </li>
+            {% endif %}
           </ul>
           <div class="tab-content editor-wrapper" id="editorsTabContent">
             <pre
