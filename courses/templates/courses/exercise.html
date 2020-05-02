@@ -75,7 +75,7 @@
             <div class="padding-top-bottom-5px">{{ lecture|linebreaks }}</div>
             <div class="instructions-divider padding-5px">{% trans 'Instructions' %}</div>
             <div class="padding-top-bottom-5px">{{ instruction|linebreaks }}</div>
-            <div class="instructions-divider padding-5px cursor" onclick="toggleHint()">{% trans 'Need help? Click here.' %}</div>
+            <div class="instructions-divider padding-5px cursor" id="hintToggle">{% trans 'Need help? Click here.' %}</div>
             <div class="padding-top-bottom-5px hidden" id="hint">
                 {% if hint|length > 0 %}
                     {{ hint|linebreaks }}
@@ -127,7 +127,7 @@
           </div>
         </div>
         <div class="col-sm-4">
-            <div class="padding-top-1em">
+            <div class="padding-top-1em output-console">
                 <div class="card card-fixed-height">
                     <div class="card-body">
                         <div class="card-text">
