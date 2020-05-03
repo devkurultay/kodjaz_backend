@@ -1,4 +1,4 @@
-(function(someObject){
+(function(payload){
 
   var APPEND_MODE = 'a'
 
@@ -37,7 +37,7 @@
   })
 
   function outf(text) {
-    var mypre = document.getElementById(someObject.outputElementId)
+    var mypre = document.getElementById(payload.outputElementId)
     text = text.replace(/</g, '&lt;')
     mypre.innerHTML = mypre.innerHTML + text
   }
@@ -66,9 +66,9 @@
     var prog = editor.getValue();
     var unitTest = document.getElementById('code_checker').value;
     var readyProg = prog + '\n' + unitTest;
-    var outputElement = document.getElementById(someObject.outputElementId);
+    var outputElement = document.getElementById(payload.outputElementId);
     outputElement.innerHTML = '';
-    Sk.pre = someObject.outputElementId;
+    Sk.pre = payload.outputElementId;
     Sk.configure({
       output: outf,
       inBrowser: true,
@@ -96,15 +96,15 @@
   }
 
   function checkInput(codeText) {
-    var positiveAssertionWords = someObject.inputShouldContain
-    var negativeAssertionWords = someObject.inputShouldNotContain
+    var positiveAssertionWords = payload.inputShouldContain
+    var negativeAssertionWords = payload.inputShouldNotContain
     return _checkImpl(positiveAssertionWords, codeText, true) && _checkImpl(negativeAssertionWords, codeText, false)
   }
 
   function checkOutput() {
     var output = document.getElementById('output').innerHTML.trim();
-    var positiveAssertionWords = someObject.outputShouldContain
-    var negativeAssertionWords = someObject.outputShouldNotContain
+    var positiveAssertionWords = payload.outputShouldContain
+    var negativeAssertionWords = payload.outputShouldNotContain
     negativeAssertionWords.push('exception');
     negativeAssertionWords.push('Fail:');
     return _checkImpl(positiveAssertionWords, output, true) && _checkImpl(negativeAssertionWords, output, false)
@@ -125,11 +125,11 @@
   function createSubmissionAndShowModal(prog, passed, err) {
     err === undefined ? err = '' : err;
     $.ajax({
-      url: someObject.path,
+      url: payload.path,
       type: 'POST',
       data: {
-        csrfmiddlewaretoken: someObject.csrfToken,
-        exercise: someObject.objectId,
+        csrfmiddlewaretoken: payload.csrfToken,
+        exercise: payload.objectId,
         submitted_code: prog,
         text_file_content: fileEditor.getValue(),
         passed: passed
@@ -146,7 +146,7 @@
     })
   }
 
-  var notLoggedInMessageContainer = '<p id="notLoggedInMessage">' + someObject.notLoggedInMessage + '</p>';
+  var notLoggedInMessageContainer = '<p id="notLoggedInMessage">' + payload.notLoggedInMessage + '</p>';
   var notLoggedInMessageElement = $("#notLoggedInMessage");
 
   function _toggleSuccessModal(loggedIn) {
@@ -170,4 +170,4 @@
     $("#failModal").modal('toggle');
   }
 
-})(someObject);
+})(payload);
