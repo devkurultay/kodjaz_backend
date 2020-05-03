@@ -10,7 +10,12 @@
 
   var editor = ace.edit("code")
   editor.setTheme("ace/theme/vibrant_ink")
-  editor.session.setMode("ace/mode/python")
+  if (payload.programmingLanguage == 'Python') {
+    editor.session.setMode("ace/mode/python")
+  }
+  else if (payload.programmingLanguage === 'JavaScript') {
+    editor.session.setMode("ace/mode/javascript")
+  }
 
   // Textarea for working with a "file"
   var fileTextAreaId = "file.txt"
@@ -62,7 +67,40 @@
     fileEditor.session.setValue(valueToWrite)
   }
 
+  function printToWeb(someArgs) {
+    // Prints arbitrary arguments to web consolse
+    var toLog = []
+    for (var i = 0; i < arguments.length; i++) {
+      toLog.push(arguments[i])
+    }
+    document.getElementById('output').innerHTML = toLog.join(' ')
+  }
+
+  function executeJsCode() {
+    var prog = editor.getValue();
+    // Replace console.log with a custom printing function
+    prog = prog.replace('console.log', 'printToWeb')
+    eval(prog)
+    if (checkInput(prog) && checkOutput()) {
+      createSubmissionAndShowModal(prog, true);
+    } else {
+      createSubmissionAndShowModal(prog, false);
+    }
+  }
+
   function runit() {
+    if (payload.programmingLanguage === 'JavaScript') {
+      executeJsCode()
+    }
+    else if (payload.programmingLanguage === 'Python') {
+      executePythonCode()
+    }
+    else {
+      alert('Кечирип коюңуз, бул тилди колдой элекпиз')
+    }
+  }
+
+  function executePythonCode() {
     var prog = editor.getValue();
     var unitTest = document.getElementById('code_checker').value;
     var readyProg = prog + '\n' + unitTest;
