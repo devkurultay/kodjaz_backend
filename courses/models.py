@@ -17,6 +17,7 @@ class Track(models.Model):
     is_published = models.BooleanField()
     date_time_created = models.DateTimeField(_('Track Creation Date and Time'), auto_now_add=True, editable=False)
     date_time_modified = models.DateTimeField(_('Track Modification Date and Time'), auto_now=True)
+    programming_language = models.CharField(_('Programming language name'), max_length=255)
 
     def __str__(self):
         return self.name

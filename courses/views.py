@@ -77,7 +77,8 @@ class ExerciseTemplateView(TemplateView):
             'output_should_not_contain': current_object.output_should_not_contain,
             'output_error_text': current_object.output_error_text,
             'outputElementId': settings.OUTPUT_CONTAINER_ID_IN_EXERCISES_TEMPLATE,
-            'text_file_content': current_object.text_file_content
+            'text_file_content': current_object.text_file_content,
+            'programming_language': obj.lesson.unit.track.programming_language
         }
         context.update(new_context)
         return context
