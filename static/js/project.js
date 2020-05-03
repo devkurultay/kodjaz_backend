@@ -1,6 +1,8 @@
 (function(payload){
 
   var APPEND_MODE = 'a'
+  var OUTPUT_EL = document.getElementById('output')
+  var w
 
   $(document).ready(writeEditorContentToFileTextArea)
   $('#run').on('click', runit)
@@ -67,20 +69,26 @@
     fileEditor.session.setValue(valueToWrite)
   }
 
-  function printToWeb(someArgs) {
-    // Prints arbitrary arguments to web consolse
-    var toLog = []
-    for (var i = 0; i < arguments.length; i++) {
-      toLog.push(arguments[i])
-    }
-    document.getElementById('output').innerHTML = toLog.join(' ')
-  }
-
   function executeJsCode() {
     var prog = editor.getValue();
-    // Replace console.log with a custom printing function
-    prog = prog.replace('console.log', 'printToWeb')
-    eval(prog)
+    w = undefined
+    OUTPUT_EL.innerHTML = ''
+    if (typeof(Worker) !== "undefined") {
+      w = new Worker(payload.worker)
+      w.postMessage({prog: prog})
+      w.onmessage = function(event){
+        var val = OUTPUT_EL.innerHTML
+        val += event.data + '\n'
+        OUTPUT_EL.innerHTML = val
+      }
+      // Terminate webworker after 10 seconds
+      setTimeout(() => {
+        if (w !== "undefined") {
+          w.terminate()
+          w = undefined
+        }
+      }, 5 * 1000)
+    }
     if (checkInput(prog) && checkOutput()) {
       createSubmissionAndShowModal(prog, true);
     } else {
