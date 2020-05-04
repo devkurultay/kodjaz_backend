@@ -81,13 +81,15 @@
         val += event.data + '\n'
         OUTPUT_EL.innerHTML = val
       }
-      // Terminate webworker after 10 seconds
+      // Terminate webworker after 5 seconds
       setTimeout(() => {
         if (w !== "undefined") {
           w.terminate()
           w = undefined
         }
       }, 5 * 1000)
+    } else {
+      // TODO(murat): run JS code in the main thread
     }
     if (checkInput(prog) && checkOutput()) {
       createSubmissionAndShowModal(prog, true);
