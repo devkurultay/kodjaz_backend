@@ -90,6 +90,8 @@
                   code.py
                 {% elif programming_language == 'JavaScript' %}
                   code.js
+                {% elif programming_language == 'TypeScript' %}
+                  code.ts
                 {% endif %}
               </a>
             </li>
@@ -159,6 +161,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.11/theme-vibrant_ink.min.js" integrity="sha256-IQ2CFOsaAexyrA3QCiqwFxfqVrl8+x0sXtv2mZqoQgo=" crossorigin="anonymous"></script>
 {% if programming_language == 'JavaScript' %}
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+{% elif programming_language == 'TypeScript' %}
+  <script src="{% static 'js/typescriptServices.js' %}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.11/mode-typescript.min.js" integrity="sha256-+SkRqydbTRTCFyyYwSqfcE3PGTWrrY3UplUDh4aYGUk=" crossorigin="anonymous"></script>
 {% endif %}
 <script type="text/javascript">
   {% autoescape off %}
