@@ -69,8 +69,24 @@
     fileEditor.session.setValue(valueToWrite)
   }
 
+  function writeToWebConsole(someArgs) {
+    // Joins arbitrary number of arguments
+    var toLog = []
+    for (var i = 0; i < arguments.length; i++) {
+      toLog.push(arguments[i])
+    }
+    var val = OUTPUT_EL.innerHTML
+    val += toLog.join(' ') + '\n'
+    OUTPUT_EL.innerHTML = val
+  }
+
+  function evalInMainThread(code) {
+    var newCode = code.split('console.log').join('writeToWebConsole')
+    eval(newCode)
+  }
+
   function executeJsCode() {
-    var prog = editor.getValue();
+    var prog = editor.getValue()
     w = undefined
     OUTPUT_EL.innerHTML = ''
     if (typeof(Worker) !== "undefined") {
@@ -89,7 +105,7 @@
         }
       }, 5 * 1000)
     } else {
-      // TODO(murat): run JS code in the main thread
+      evalInMainThread(code)
     }
     if (checkInput(prog) && checkOutput()) {
       createSubmissionAndShowModal(prog, true);
