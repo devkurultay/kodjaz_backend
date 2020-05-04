@@ -18,6 +18,9 @@
   else if (payload.programmingLanguage === 'JavaScript') {
     editor.session.setMode("ace/mode/javascript")
   }
+  else if (payload.programmingLanguage === 'TypeScript') {
+    editor.session.setMode("ace/mode/typescript")
+  }
 
   // Textarea for working with a "file"
   var fileTextAreaId = "file.txt"
@@ -85,8 +88,7 @@
     eval(newCode)
   }
 
-  function executeJsCode() {
-    var prog = editor.getValue()
+  function executeJsCode(prog, tsCode) {
     w = undefined
     OUTPUT_EL.innerHTML = ''
     if (typeof(Worker) !== "undefined") {
@@ -108,6 +110,7 @@
       evalInMainThread(code)
     }
     if (checkInput(prog) && checkOutput()) {
+      prog = tsCode || prog
       createSubmissionAndShowModal(prog, true);
     } else {
       createSubmissionAndShowModal(prog, false);
@@ -115,19 +118,23 @@
   }
 
   function runit() {
+    var prog = editor.getValue();
     if (payload.programmingLanguage === 'JavaScript') {
-      executeJsCode()
+      executeJsCode(prog)
     }
     else if (payload.programmingLanguage === 'Python') {
-      executePythonCode()
+      executePythonCode(prog)
+    }
+    else if (payload.programmingLanguage === 'TypeScript') {
+      var transpiled = ts.transpile(prog)
+      executeJsCode(transpiled, prog)
     }
     else {
       alert('Кечирип коюңуз, бул тилди колдой элекпиз')
     }
   }
 
-  function executePythonCode() {
-    var prog = editor.getValue();
+  function executePythonCode(prog) {
     var unitTest = document.getElementById('code_checker').value;
     var readyProg = prog + '\n' + unitTest;
     var outputElement = document.getElementById(payload.outputElementId);
