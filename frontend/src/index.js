@@ -1,12 +1,12 @@
-import React from 'react'
-import {BrowserRouter} from 'react-router-dom'
-import {render} from 'react-dom'
-import App from './components/App'
+const arr = [1, 2, 3];
+const result = () => console.log(...arr);
+// check console - Destructuring assignment is a cool feature that came along with ES6
+result();
 
-render(
-  (
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  ), document.getElementById('root')
-)
+import bsStyles from 'bootstrap/dist/css/bootstrap.min.css';
+import appStyles from './styles/styles.scss';
+
+import 'bootstrap';
+import App from './App';
+
+module.hot.accept();
