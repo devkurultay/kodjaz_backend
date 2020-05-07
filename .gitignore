@@ -83,4 +83,7 @@ env
 # static files
 staticfiles
 
+# React build artifact
+static/frontend/public/main.js
+
 db.sqlite3
