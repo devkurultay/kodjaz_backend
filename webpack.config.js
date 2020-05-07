@@ -95,7 +95,7 @@ module.exports = {
   //devServer: {
   //  contentBase: path.resolve(__dirname, "frontend/src/"),
   //  hot: true,
-  },
+  //},
   plugins: [
     extractSass,
     // new ExtractTextPlugin('[name].[hash].css'),
