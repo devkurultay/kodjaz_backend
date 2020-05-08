@@ -1,5 +1,18 @@
-<!doctype html> <html lang=en> <head> <meta charset=UTF-8 /> <meta name=viewport content="width=device-width,initial-scale=1"/> <meta http-equiv=X-UA-Compatible content="ie=edge"/> <title>Webpack 4 starter template</title> <link href="../../../static/frontend/public/vendor.92eb834e9f7af463521e.css" rel="stylesheet"><link href="../../../static/frontend/public/app.92eb834e9f7af463521e.css" rel="stylesheet"></head> <body> <div id=app> </div> <script type="text/javascript" src="../../../static/frontend/public/vendor.92eb834e9f7af463521e.js"></script><script type="text/javascript" src="../../../static/frontend/public/app.92eb834e9f7af463521e.js"></script></body> <script> {% autoescape off %}
+<!doctype html> <html lang=en> <head> <meta charset=UTF-8 /> <meta name=viewport content="width=device-width,initial-scale=1"/> <meta http-equiv=X-UA-Compatible content="ie=edge"/> <title>Webpack 4 starter template</title> <link href="../../../static/frontend/public/vendor.18478b29add125c2581d.css" rel="stylesheet"><link href="../../../static/frontend/public/app.18478b29add125c2581d.css" rel="stylesheet"></head> <body> <div id=app> </div> <script type="text/javascript" src="../../../static/frontend/public/vendor.18478b29add125c2581d.js"></script><script type="text/javascript" src="../../../static/frontend/public/app.18478b29add125c2581d.js"></script></body> <script> {% autoescape off %}
     var context = {
       test: "{{ test }}"
     }
-  {% endautoescape %} </script> </html> 
+  {% endautoescape %}
+
+	const ws = new WebSocket('ws://localhost:9898/');
+
+	ws.onopen = function() {
+	  console.log('WebSocket Client Connected');
+	  ws.send('Hi this is web client.');
+	};
+
+	ws.onmessage = function(e) {
+    if(e && e.data == 'RELOAD') {
+      location.reload()
+    }
+	}; </script> </html> 
