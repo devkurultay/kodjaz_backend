@@ -61,6 +61,10 @@ module.exports = {
         ],
       },
       {
+        test: /\.(eot|woff|woff2|ttf)(\?\S*)?$/,
+        loader: 'url?limit=100000&name=[name].[ext]'
+      },
+      {
         test: /\.html$/,
         use: [
           {
