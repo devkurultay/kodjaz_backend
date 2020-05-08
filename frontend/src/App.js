@@ -1,9 +1,57 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import ReactDOM from 'react-dom'
+import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav'
+import { Router, Route, Link } from "react-router-dom"
+import { createBrowserHistory } from 'history'
 
-import ReactDOM from 'react-dom';
+const history = createBrowserHistory()
 
 const App = () => {
   return (
+    <Router history={history}>
+      <Route render={({ location, history }) => (
+        <React.Fragment>
+          <SideNav
+            onSelect={(selected) => {
+            const to = '/' + selected;
+              if (location.pathname !== to) {
+                history.push(to);
+              }
+            }}
+          >
+          <SideNav.Toggle />
+          <SideNav.Nav defaultSelected="home">
+            <NavItem eventKey="home">
+              <NavIcon>
+                <i className="fa fa-fw fa-home" style={{ fontSize: '1.75em' }} />
+              </NavIcon>
+              <NavText>
+                Home
+              </NavText>
+            </NavItem>
+            <NavItem eventKey="form">
+              <NavIcon>
+                <i className="fa fa-fw fa-form" style={{ fontSize: '1.75em' }} />
+              </NavIcon>
+              <NavText>
+                Form
+              </NavText>
+            </NavItem>
+        </SideNav.Nav>
+      </SideNav>
+      <main>
+          <Route path="/" exact component={props => <Home />} />
+          <Route path="/form" component={props => <FormDemo />} />
+      </main>
+      </React.Fragment>
+    )}
+    />
+	</Router>
+	)
+}
+
+const Home = () => {
+	return (
     <div className="container">
       <h1>Webpack 4 starter boilerplate template with React, Bootstrap 4</h1>
       <div className="welcome">
@@ -24,8 +72,8 @@ const App = () => {
       <BgDemo />
       <FormDemo />
     </div>
-  );
-};
+  )
+}
 
 function BgDemo() {
   return (
