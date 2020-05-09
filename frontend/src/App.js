@@ -13,7 +13,7 @@ const App = () => {
         <React.Fragment>
           <SideNav
             onSelect={(selected) => {
-            const to = '/' + selected;
+            const to = '/cabinet' + selected;
               if (location.pathname !== to) {
                 history.push(to);
               }
@@ -21,7 +21,7 @@ const App = () => {
           >
             <SideNav.Toggle />
             <SideNav.Nav defaultSelected="home">
-              <NavItem eventKey="home">
+              <NavItem eventKey="/">
                 <NavIcon>
                   <i className="fa fa-fw fa-home" style={{ fontSize: '1.75em' }} />
                 </NavIcon>
@@ -29,7 +29,7 @@ const App = () => {
                   Home
                 </NavText>
               </NavItem>
-              <NavItem eventKey="form">
+              <NavItem eventKey="/form">
                 <NavIcon>
                   <i className="fa fa-fw fa-form" style={{ fontSize: '1.75em' }} />
                 </NavIcon>
@@ -40,8 +40,8 @@ const App = () => {
             </SideNav.Nav>
           </SideNav>
           <main>
-            <Route path="/" exact component={props => <Home />} />
-            <Route path="/form" component={props => <FormDemo />} />
+            <Route path="/cabinet/" exact component={props => <Home />} />
+            <Route path="/cabinet/form" component={props => <FormDemo />} />
           </main>
         </React.Fragment>
       )}/>
