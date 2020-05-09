@@ -19,35 +19,34 @@ const App = () => {
               }
             }}
           >
-          <SideNav.Toggle />
-          <SideNav.Nav defaultSelected="home">
-            <NavItem eventKey="home">
-              <NavIcon>
-                <i className="fa fa-fw fa-home" style={{ fontSize: '1.75em' }} />
-              </NavIcon>
-              <NavText>
-                Home
-              </NavText>
-            </NavItem>
-            <NavItem eventKey="form">
-              <NavIcon>
-                <i className="fa fa-fw fa-form" style={{ fontSize: '1.75em' }} />
-              </NavIcon>
-              <NavText>
-                Form
-              </NavText>
-            </NavItem>
-        </SideNav.Nav>
-      </SideNav>
-      <main>
-          <Route path="/" exact component={props => <Home />} />
-          <Route path="/form" component={props => <FormDemo />} />
-      </main>
-      </React.Fragment>
-    )}
-    />
-	</Router>
-	)
+            <SideNav.Toggle />
+            <SideNav.Nav defaultSelected="home">
+              <NavItem eventKey="home">
+                <NavIcon>
+                  <i className="fa fa-fw fa-home" style={{ fontSize: '1.75em' }} />
+                </NavIcon>
+                <NavText>
+                  Home
+                </NavText>
+              </NavItem>
+              <NavItem eventKey="form">
+                <NavIcon>
+                  <i className="fa fa-fw fa-form" style={{ fontSize: '1.75em' }} />
+                </NavIcon>
+                <NavText>
+                  Form
+                </NavText>
+              </NavItem>
+            </SideNav.Nav>
+          </SideNav>
+          <main>
+            <Route path="/" exact component={props => <Home />} />
+            <Route path="/form" component={props => <FormDemo />} />
+          </main>
+        </React.Fragment>
+      )}/>
+    </Router>
+  )
 }
 
 const Home = () => {
