@@ -1,17 +1,20 @@
-import React, { Component } from 'react'
+import React, { useState, Component } from 'react'
 import ReactDOM from 'react-dom'
 import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav'
 import { Router, Route, Link } from "react-router-dom"
 import { createBrowserHistory } from 'history'
+import classnames from 'classnames'
 
 const history = createBrowserHistory()
 
 const App = () => {
+  const [ isExpanded, setIsExpanded ] = useState(false)
   return (
     <Router history={history}>
       <Route render={({ location, history }) => (
         <React.Fragment>
           <SideNav
+            onToggle={setIsExpanded}
             onSelect={(selected) => {
             const to = '/cabinet' + selected;
               if (location.pathname !== to) {
@@ -39,7 +42,7 @@ const App = () => {
               </NavItem>
             </SideNav.Nav>
           </SideNav>
-          <main>
+          <main className={classnames("main-content", { "margin-left-240": isExpanded })}>
             <Route path="/cabinet/" exact component={props => <Home />} />
             <Route path="/cabinet/form" component={props => <FormDemo />} />
           </main>
