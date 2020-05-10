@@ -8,11 +8,9 @@ const extractSass = new ExtractTextPlugin({
   disable: process.env.NODE_ENV === 'development',
 });
 module.exports = {
-  // mode: 'production',
-  entry: { app: path.resolve(__dirname, 'frontend/src/index.js') },
+  entry: { app: path.resolve(__dirname, '../frontend/src/index.js') },
   output: {
-    // TODO(murat): fix for production
-    path: path.resolve(__dirname, "static/frontend/public/"),
+    path: path.resolve(__dirname, "../static/frontend/public/"),
     filename: '[name].[hash].js',
   },
   module: {
@@ -30,7 +28,6 @@ module.exports = {
           {
             loader: 'file-loader',
             options: {
-              // name: "./images/[name].[hash].[ext]",
               name: '[path][name]-[hash:8].[ext]',
             },
           },
@@ -97,16 +94,11 @@ module.exports = {
       },
     ],
   },
-  // devServer: {
-  //  contentBase: path.resolve(__dirname, "frontend/templates/frontend/"),
-  //  hot: true,
-  // },
   plugins: [
     extractSass,
-    // new ExtractTextPlugin('[name].[hash].css'),
     new HtmlWebPackPlugin({
-      template: path.resolve(__dirname, 'frontend/templates/frontend/base.html'),
-      filename: path.resolve(__dirname, 'frontend/templates/frontend/index.html'),
+      template: path.resolve(__dirname, '../frontend/templates/frontend/base.html'),
+      filename: path.resolve(__dirname, '../frontend/templates/frontend/index.html'),
     }),
     new CleanWebpackPlugin(),
     new webpack.NamedModulesPlugin(),
