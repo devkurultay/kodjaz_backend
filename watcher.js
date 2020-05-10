@@ -26,7 +26,7 @@ wsServer.on('request', function(request) {
 })
 
 function buildAndInform () {
-  var dev = spawn('./node_modules/.bin/webpack', ['--mode', 'development'])
+  var dev = spawn('npm', ['run', 'dev'])
 
   dev.stdout.on("data", data => {
     console.log(`stdout: ${data}`)
@@ -57,7 +57,7 @@ function changed (file, stats) {
 // Build when this module is called
 buildAndInform()
 // ... and open browser
-open('http://localhost:8000/front/')
+open('http://localhost:8000/cabinet/')
 
 // Set folder here
 var testFolder = './frontend/src'
