@@ -2,7 +2,7 @@
 npm run build
 source env/bin/activate
 python manage.py collectstatic --noinput
-tar -cf codomodo.tar config/ courses/ server_configs/ staticfiles/ requirements/ users/ manage.py requirements.txt
+tar -cf codomodo.tar authentication/ config/ courses/ frontend/ server_configs/ staticfiles/ requirements/ users/ manage.py robots.txt
 scp codomodo.tar almaz@104.248.142.48:lessons/
 rm  codomodo.tar
 ssh -tt almaz@104.248.142.48 << END
