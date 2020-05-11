@@ -10,7 +10,7 @@ const extractSass = new ExtractTextPlugin({
 module.exports = {
   entry: { app: path.resolve(__dirname, '../frontend/src/index.js') },
   output: {
-    path: path.resolve(__dirname, "../static/frontend/public/"),
+    path: path.resolve(__dirname, "../static/frontend/"),
     filename: '[name].[hash].js',
   },
   module: {
@@ -28,7 +28,7 @@ module.exports = {
           {
             loader: 'file-loader',
             options: {
-              name: '[path][name]-[hash:8].[ext]',
+              name: 'img/[name]-[hash:8].[ext]',
             },
           },
           {
