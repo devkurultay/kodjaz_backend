@@ -14,6 +14,7 @@ const App = () => {
       <Route render={({ location, history }) => (
         <React.Fragment>
           <SideNav
+            className="sidenav"
             onToggle={setIsExpanded}
             onSelect={(selected) => {
             const to = '/cabinet' + selected;

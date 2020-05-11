@@ -33,3 +33,10 @@ a{
 .margin-left-240 {
   margin-left: 240px;
 }
+
+.sidenav {
+  position: fixed;
+  min-width: 64px;
+  background: #db3d44;
+  transition: min-width 0.2s;
+}
