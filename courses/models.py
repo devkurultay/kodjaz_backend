@@ -24,16 +24,16 @@ class Track(models.Model):
 
     @property
     def unit_lessons_duration(self):
-        return self.track_unit.filter(is_published=True).aggregate(
+        return self.track_units.filter(is_published=True).aggregate(
             Sum('unit_lesson__lesson_exercise__duration'))['unit_lesson__lesson_exercise__duration__sum']
 
     @property
     def units_count(self):
-        return self.track_unit.filter(is_published=True).count()
+        return self.track_units.filter(is_published=True).count()
 
     @property
     def lessons_count(self):
-        units = self.track_unit.filter(is_published=True)
+        units = self.track_units.filter(is_published=True)
         return sum([u.lesson_exercises_count for u in units])
 
 
@@ -41,7 +41,7 @@ class Unit(models.Model):
     name = models.CharField(_('Name of a Unit'), max_length=255)
     description = models.CharField(_('Description of a Unit'), max_length=255)
     is_published = models.BooleanField()
-    track = models.ForeignKey(Track, related_name='track_unit', on_delete=models.CASCADE)
+    track = models.ForeignKey(Track, related_name='track_units', on_delete=models.CASCADE)
     date_time_created = models.DateTimeField(_('Unit Creation Date and Time'), auto_now_add=True, editable=False)
     date_time_modified = models.DateTimeField(_('Unit Modification Date and Time'), auto_now=True)
 
