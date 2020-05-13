@@ -1,9 +1,14 @@
-import React, { useState, Component } from 'react'
+import React, { useState, useEffect, Component } from 'react'
 import ReactDOM from 'react-dom'
 import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav'
 import { Router, Route, Link } from "react-router-dom"
 import { createBrowserHistory } from 'history'
 import classnames from 'classnames'
+
+import axiosInstance from './axiosApi'
+
+import Signup from './components/auth/signup'
+import Login from './components/auth/login'
 
 const history = createBrowserHistory()
 
@@ -44,6 +49,8 @@ const App = () => {
             </SideNav.Nav>
           </SideNav>
           <main className={classnames("main-content", { "margin-left-240": isExpanded })}>
+            <Route path="/cabinet/login/" exact component={props => <Login />} />
+            <Route path="/cabinet/signup/" exact component={props => <Signup />} />
             <Route path="/cabinet/" exact component={props => <Home />} />
             <Route path="/cabinet/form" component={props => <FormDemo />} />
           </main>
@@ -73,7 +80,6 @@ const Home = () => {
         encourage you to create a pull request on Github.
       </p>
       <BgDemo />
-      <FormDemo />
     </div>
   )
 }
@@ -88,6 +94,9 @@ function BgDemo() {
 }
 
 function FormDemo() {
+  useEffect(() => {
+    axiosInstance.get('/v1/tracks/').then(r => console.log(r))
+  }, [])
   return (
     <React.Fragment>
       <h4>Boostrap Form demo</h4>
