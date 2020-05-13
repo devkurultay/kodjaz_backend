@@ -15,12 +15,12 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.response.use(
     response => response,
     error => {
-        const originalRequest = error.config;
+        const originalRequest = error.config
 
         // Prevent infinite loops early
-        if (error.response.status === 401 && originalRequest.url === baseURL+'token/refresh/') {
-            window.location.href = '/cabinet/login/';
-            return Promise.reject(error);
+        if (error.response.status === 401) {
+            window.location.href = '/cabinet/login/'
+            return Promise.reject(error)
         }
 
         if (error.response.data.code === "token_not_valid" &&
