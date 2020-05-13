@@ -54,9 +54,6 @@ function changed (file, stats) {
   buildAndInform()
 }
 
-// Build when this module is called
-buildAndInform()
-// ... and open browser
 open('http://localhost:8000/cabinet/')
 
 // Set folder here
