@@ -1,16 +1,17 @@
 import axios from 'axios'
+import Cookies from 'js-cookie'
 
 const baseURL = 'http://localhost:8000/api/'
 
 const axiosInstance = axios.create({
-    baseURL: baseURL,
-    timeout: 5000,
-    headers: {
-        'Authorization': localStorage.getItem('access_token') ? "JWT " + localStorage.getItem('access_token') : null,
-        'Content-Type': 'application/json',
-        'accept': 'application/json'
-    }
-});
+  baseURL: baseURL,
+  timeout: 5000,
+  headers: {
+    'Authorization': Cookies.get('access_token') ? "JWT " + Cookies.get('access_token') : null,
+    'Content-Type': 'application/json',
+    'accept': 'application/json'
+  }
+})
 
 axiosInstance.interceptors.response.use(
     response => response,
@@ -27,7 +28,7 @@ axiosInstance.interceptors.response.use(
             error.response.status === 401 && 
             error.response.statusText === "Unauthorized")
             {
-                const refreshToken = localStorage.getItem('refresh_token');
+                const refreshToken = Cookies.get('refresh_token');
 
                 if (refreshToken){
                     const tokenParts = JSON.parse(atob(refreshToken.split('.')[1]));
@@ -41,8 +42,8 @@ axiosInstance.interceptors.response.use(
                         .post('/token/refresh/', {refresh: refreshToken})
                         .then((response) => {
             
-                            localStorage.setItem('access_token', response.data.access);
-                            localStorage.setItem('refresh_token', response.data.refresh);
+                            Cookies.set('access_token', response.data.access);
+                            Cookies.set('refresh_token', response.data.refresh);
             
                             axiosInstance.defaults.headers['Authorization'] = "JWT " + response.data.access;
                             originalRequest.headers['Authorization'] = "JWT " + response.data.access;
