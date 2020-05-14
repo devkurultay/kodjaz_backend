@@ -18,14 +18,14 @@ axiosInstance.interceptors.response.use(
         const originalRequest = error.config
 
         // Prevent infinite loops early
-        if (error.response.status === 401) {
+        if (error.response.status === 401 && originalRequest.url === baseURL + 'token/refresh/') {
             window.location.href = '/cabinet/login/'
             return Promise.reject(error)
         }
 
         if (error.response.data.code === "token_not_valid" &&
             error.response.status === 401 && 
-            error.response.statusText === "Unauthorized") 
+            error.response.statusText === "Unauthorized")
             {
                 const refreshToken = localStorage.getItem('refresh_token');
 
