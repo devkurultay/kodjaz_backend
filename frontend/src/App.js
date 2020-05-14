@@ -1,10 +1,19 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { BrowserRouter } from "react-router-dom"
 
-import Cabinet from './Cabinet'
+import Routes from './Routes'
+
+const routerConfig = {
+  basename: '/cabinet',
+}
 
 const App = () => {
-  return <Cabinet />
+  return (
+    <BrowserRouter {...routerConfig} >
+      <Routes />
+    </BrowserRouter>
+  )
 }
 
 export default App
