@@ -1,15 +1,13 @@
 export const dataToTree = (data) => {
-  const r = data.map(track => {
-    const node = {
+  return data.map(track => {
+    return {
       id: track.id,
       title: track.name,
       subtitle: track.description,
-      expanded: true,
+      expanded: false,
       children: getUnits(track.track_units)
     }
-    return node
   })
-  return r
 }
 
 const getUnits = (units) => {
