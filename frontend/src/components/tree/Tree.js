@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import SortableTree from 'react-sortable-tree'
+import FileExplorerTheme from 'react-sortable-tree-theme-minimal'
 
 import './Tree.scss'
 
@@ -19,7 +20,8 @@ const Tree = () => {
     <div className="tree">
       <SortableTree
         treeData={nodes}
-        onChange={console.log}
+        onChange={setNodes}
+        theme={FileExplorerTheme}
       />
     </div>
   )
