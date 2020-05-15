@@ -1,10 +1,6 @@
-import React, { useEffect } from 'react'
-import axiosInstance from '../../axiosApi'
+import React from 'react'
 
 function Form() {
-  useEffect(() => {
-    axiosInstance.get('/v1/tracks/').then(r => console.log(r))
-  }, [])
   return (
     <React.Fragment>
       <h4>Boostrap Form demo</h4>
