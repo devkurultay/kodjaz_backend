@@ -24,16 +24,16 @@ class Track(models.Model):
 
     @property
     def unit_lessons_duration(self):
-        return self.track_unit.filter(is_published=True).aggregate(
-            Sum('unit_lesson__lesson_exercise__duration'))['unit_lesson__lesson_exercise__duration__sum']
+        return self.track_units.filter(is_published=True).aggregate(
+            Sum('unit_lessons__lesson_exercises__duration'))['unit_lessons__lesson_exercises__duration__sum']
 
     @property
     def units_count(self):
-        return self.track_unit.filter(is_published=True).count()
+        return self.track_units.filter(is_published=True).count()
 
     @property
     def lessons_count(self):
-        units = self.track_unit.filter(is_published=True)
+        units = self.track_units.filter(is_published=True)
         return sum([u.lesson_exercises_count for u in units])
 
 
@@ -41,7 +41,7 @@ class Unit(models.Model):
     name = models.CharField(_('Name of a Unit'), max_length=255)
     description = models.CharField(_('Description of a Unit'), max_length=255)
     is_published = models.BooleanField()
-    track = models.ForeignKey(Track, related_name='track_unit', on_delete=models.CASCADE)
+    track = models.ForeignKey(Track, related_name='track_units', on_delete=models.CASCADE)
     date_time_created = models.DateTimeField(_('Unit Creation Date and Time'), auto_now_add=True, editable=False)
     date_time_modified = models.DateTimeField(_('Unit Modification Date and Time'), auto_now=True)
 
@@ -50,18 +50,18 @@ class Unit(models.Model):
 
     @property
     def lessons_exercises_duration(self):
-        return self.unit_lesson.filter(is_published=True).aggregate(
-            Sum('lesson_exercise__duration'))['lesson_exercise__duration__sum']
+        return self.unit_lessons.filter(is_published=True).aggregate(
+            Sum('lesson_exercises__duration'))['lesson_exercises__duration__sum']
 
     @property
     def lesson_exercises_count(self):
-        return self.unit_lesson.filter(is_published=True).count()
+        return self.unit_lessons.filter(is_published=True).count()
 
 
 class Lesson(models.Model):
     name = models.CharField(_('Name of a Lesson'), max_length=255)
     is_published = models.BooleanField()
-    unit = models.ForeignKey(Unit, related_name='unit_lesson', on_delete=models.CASCADE)
+    unit = models.ForeignKey(Unit, related_name='unit_lessons', on_delete=models.CASCADE)
     badge = models.ForeignKey(Badge, null=True, blank=True, related_name='lesson_badge', on_delete=models.CASCADE)
     date_time_created = models.DateTimeField(_('Lesson Creation Date and Time'), auto_now_add=True, editable=False)
     date_time_modified = models.DateTimeField(_('Lesson Modification Date and Time'), auto_now=True)
@@ -71,11 +71,11 @@ class Lesson(models.Model):
 
     @property
     def exercises_duration(self):
-        return self.lesson_exercise.filter(is_published=True).aggregate(Sum('duration'))['duration__sum']
+        return self.lesson_exercises.filter(is_published=True).aggregate(Sum('duration'))['duration__sum']
 
     @property
     def exercises_number(self):
-        return self.lesson_exercise.filter(is_published=True).count()
+        return self.lesson_exercises.filter(is_published=True).count()
 
 
 CHECKER_HELP_TEXT = _('separate with comma, without spaces, like this: my_var,hello world')
@@ -116,7 +116,7 @@ class Exercise(models.Model):
     next_exercise = models.ForeignKey('self', blank=True, null=True, on_delete=models.CASCADE)
     karma = models.PositiveSmallIntegerField(_('Point to be given for passing the current exercise'), default=1)
     is_published = models.BooleanField()
-    lesson = models.ForeignKey(Lesson, related_name='lesson_exercise', on_delete=models.CASCADE)
+    lesson = models.ForeignKey(Lesson, related_name='lesson_exercises', on_delete=models.CASCADE)
     date_time_created = models.DateTimeField(_('Exercise Creation Date and Time'), auto_now_add=True, editable=False)
     date_time_modified = models.DateTimeField(_('Exercise Modification Date and Time'), auto_now=True)
     text_file_content = models.TextField(_('If this field has a content, file.txt tab will be shown'), blank=True)

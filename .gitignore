@@ -83,4 +83,9 @@ env
 # static files
 staticfiles
 
+# React build artifact
+static/frontend/
+
 db.sqlite3
+
+frontend/templates/frontend/index.html

@@ -1,12 +1,8 @@
-import React from 'react'
-import {BrowserRouter} from 'react-router-dom'
-import {render} from 'react-dom'
-import App from './components/App'
+import bsStyles from 'bootstrap/dist/css/bootstrap.min.css'
+import appStyles from './styles/styles.scss'
+import '@trendmicro/react-sidenav/dist/react-sidenav.css'
+import 'react-sortable-tree/style.css'
+import '@fortawesome/fontawesome-free/js/all'
 
-render(
-  (
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-  ), document.getElementById('root')
-)
+import 'bootstrap'
+import App from './App'

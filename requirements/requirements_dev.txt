@@ -1,0 +1,2 @@
+-r requirements_prod.txt
+ipython==7.14.0
