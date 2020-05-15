@@ -25,7 +25,7 @@ class Track(models.Model):
     @property
     def unit_lessons_duration(self):
         return self.track_units.filter(is_published=True).aggregate(
-            Sum('unit_lessons__lesson_exercise__duration'))['unit_lessons__lesson_exercise__duration__sum']
+            Sum('unit_lessons__lesson_exercises__duration'))['unit_lessons__lesson_exercises__duration__sum']
 
     @property
     def units_count(self):
@@ -51,7 +51,7 @@ class Unit(models.Model):
     @property
     def lessons_exercises_duration(self):
         return self.unit_lessons.filter(is_published=True).aggregate(
-            Sum('lesson_exercise__duration'))['lesson_exercise__duration__sum']
+            Sum('lesson_exercises__duration'))['lesson_exercises__duration__sum']
 
     @property
     def lesson_exercises_count(self):
@@ -71,11 +71,11 @@ class Lesson(models.Model):
 
     @property
     def exercises_duration(self):
-        return self.lesson_exercise.filter(is_published=True).aggregate(Sum('duration'))['duration__sum']
+        return self.lesson_exercises.filter(is_published=True).aggregate(Sum('duration'))['duration__sum']
 
     @property
     def exercises_number(self):
-        return self.lesson_exercise.filter(is_published=True).count()
+        return self.lesson_exercises.filter(is_published=True).count()
 
 
 CHECKER_HELP_TEXT = _('separate with comma, without spaces, like this: my_var,hello world')
@@ -116,7 +116,7 @@ class Exercise(models.Model):
     next_exercise = models.ForeignKey('self', blank=True, null=True, on_delete=models.CASCADE)
     karma = models.PositiveSmallIntegerField(_('Point to be given for passing the current exercise'), default=1)
     is_published = models.BooleanField()
-    lesson = models.ForeignKey(Lesson, related_name='lesson_exercise', on_delete=models.CASCADE)
+    lesson = models.ForeignKey(Lesson, related_name='lesson_exercises', on_delete=models.CASCADE)
     date_time_created = models.DateTimeField(_('Exercise Creation Date and Time'), auto_now_add=True, editable=False)
     date_time_modified = models.DateTimeField(_('Exercise Modification Date and Time'), auto_now=True)
     text_file_content = models.TextField(_('If this field has a content, file.txt tab will be shown'), blank=True)

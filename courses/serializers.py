@@ -6,28 +6,7 @@ from courses.models import Lesson
 from courses.models import Exercise
 
 
-class TrackSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Track
-        fields = ['id', 'name', 'description', 'is_published', 'programming_language']
-
-
-class UnitSerializer(serializers.ModelSerializer):
-    track = TrackSerializer()
-    class Meta:
-        model = Unit
-        fields = ['id', 'name', 'description', 'is_published', 'track']
-
-
-class LessonSerializer(serializers.ModelSerializer):
-    unit = UnitSerializer()
-    class Meta:
-        model = Lesson
-        fields = ['id', 'name', 'is_published', 'unit']
-
-
 class ExerciseSerializer(serializers.ModelSerializer):
-    lesson = LessonSerializer()
     class Meta:
         model = Exercise
         fields = [
@@ -36,3 +15,24 @@ class ExerciseSerializer(serializers.ModelSerializer):
             'output_should_contain', 'output_should_not_contain', 'output_error_text',
             'unit_test', 'next_exercise', 'is_published', 'lesson', 'text_file_content'
         ]
+
+
+class LessonSerializer(serializers.ModelSerializer):
+    lesson_exercises = ExerciseSerializer(many=True, read_only=True)
+    class Meta:
+        model = Lesson
+        fields = ['id', 'name', 'is_published', 'lesson_exercises', 'unit']
+
+
+class UnitSerializer(serializers.ModelSerializer):
+    unit_lessons = LessonSerializer(many=True, read_only=True)
+    class Meta:
+        model = Unit
+        fields = ['id', 'name', 'description', 'unit_lessons', 'is_published', 'track']
+
+
+class TrackSerializer(serializers.ModelSerializer):
+    track_units = UnitSerializer(many=True, read_only=True)
+    class Meta:
+        model = Track
+        fields = ['id', 'name', 'description', 'track_units', 'is_published', 'programming_language']
