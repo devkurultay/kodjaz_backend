@@ -25,7 +25,7 @@ class Track(models.Model):
     @property
     def unit_lessons_duration(self):
         return self.track_units.filter(is_published=True).aggregate(
-            Sum('unit_lesson__lesson_exercise__duration'))['unit_lesson__lesson_exercise__duration__sum']
+            Sum('unit_lessons__lesson_exercise__duration'))['unit_lessons__lesson_exercise__duration__sum']
 
     @property
     def units_count(self):
@@ -50,18 +50,18 @@ class Unit(models.Model):
 
     @property
     def lessons_exercises_duration(self):
-        return self.unit_lesson.filter(is_published=True).aggregate(
+        return self.unit_lessons.filter(is_published=True).aggregate(
             Sum('lesson_exercise__duration'))['lesson_exercise__duration__sum']
 
     @property
     def lesson_exercises_count(self):
-        return self.unit_lesson.filter(is_published=True).count()
+        return self.unit_lessons.filter(is_published=True).count()
 
 
 class Lesson(models.Model):
     name = models.CharField(_('Name of a Lesson'), max_length=255)
     is_published = models.BooleanField()
-    unit = models.ForeignKey(Unit, related_name='unit_lesson', on_delete=models.CASCADE)
+    unit = models.ForeignKey(Unit, related_name='unit_lessons', on_delete=models.CASCADE)
     badge = models.ForeignKey(Badge, null=True, blank=True, related_name='lesson_badge', on_delete=models.CASCADE)
     date_time_created = models.DateTimeField(_('Lesson Creation Date and Time'), auto_now_add=True, editable=False)
     date_time_modified = models.DateTimeField(_('Lesson Modification Date and Time'), auto_now=True)
