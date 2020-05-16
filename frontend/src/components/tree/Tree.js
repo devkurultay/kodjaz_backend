@@ -15,10 +15,13 @@ const Tree = () => {
   const [ currentPath, setCurrentPath ] = useState([])
   const [ currentNode, setCurrentNode ] = useState({})
 
-  useEffect(() => {
+  const getDataAndSetToState = () => {
     axiosInstance.get('/v1/tracks/').then(r => {
       setNodes(dataToTree(r.data))
     })
+  }
+  useEffect(() => {
+    getDataAndSetToState()
   }, [])
 
   const handleClose = () => {
@@ -32,6 +35,16 @@ const Tree = () => {
   const getNodeKey = ({ treeIndex }) => treeIndex
 
   const handleSave = () => {
+    const { type, id } = currentNode
+    if (type && type === 'Track') {
+      const payload = {
+        name: currentNode.title,
+        description: currentNode.subtitle,
+        is_published: currentNode.is_published,
+        programming_language: currentNode.programming_language
+      }
+      axiosInstance.put(`/v1/tracks/${id}/`, payload).then(() => getDataAndSetToState())
+    }
     const newNodes = changeNodeAtPath({
       treeData: nodes,
       path: currentPath,
