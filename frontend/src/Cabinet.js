@@ -43,7 +43,7 @@ const Cabinet = () => {
           </NavItem>
         </SideNav.Nav>
       </SideNav>
-      <main className={classnames("main-content", { "margin-left-240": isExpanded })}>
+      <main className={classnames("main-content mt-3", { "margin-left-240": isExpanded })}>
         <Route path="/" exact render={() => <Home />} />
         <Route path="/form" render={() => <Form />} />
       </main>
