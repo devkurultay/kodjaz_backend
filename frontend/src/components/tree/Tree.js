@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import Modal from 'react-bootstrap/Modal'
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button'
 import SortableTree, { changeNodeAtPath } from 'react-sortable-tree'
 import FileExplorerTheme from 'react-sortable-tree-theme-minimal'
+
+import EntityEditModal from '../form/EntityEditModal'
 
 import './Tree.scss'
 
@@ -57,31 +56,13 @@ const Tree = () => {
 
   return (
     <div className="tree">
-      <Modal show={showModal} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Editing {currentNode?.title}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form>
-            <Form.Group controlId="formBasicEmail">
-              <Form.Label>Title</Form.Label>
-              <Form.Control
-                type="input"
-                value={currentNode?.title}
-                onChange={handleTitleChange}
-              />
-            </Form.Group>
-          </Form>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleSave}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <EntityEditModal
+        showModal={showModal}
+        currentNode={currentNode}
+        handleSave={handleSave}
+        handleClose={handleClose}
+        handleTitleChange={handleTitleChange}
+      />
       <SortableTree
         treeData={nodes}
         onChange={setNodes}
