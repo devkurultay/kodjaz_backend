@@ -5,6 +5,12 @@ export const dataToTree = (data) => {
       title: track.name,
       subtitle: track.description,
       expanded: false,
+      type: track.entity_type,
+      // These are needed for saving
+      name: track.name,
+      description: track.description,
+      is_published: track.is_published,
+      programming_language: track.programming_language,
       children: getUnits(track.track_units)
     }
   })

@@ -33,6 +33,14 @@ class UnitSerializer(serializers.ModelSerializer):
 
 class TrackSerializer(serializers.ModelSerializer):
     track_units = UnitSerializer(many=True, read_only=True)
+    entity_type = serializers.SerializerMethodField()
+
     class Meta:
         model = Track
-        fields = ['id', 'name', 'description', 'track_units', 'is_published', 'programming_language']
+        fields = [
+            'id', 'name', 'entity_type', 'description',
+            'track_units', 'is_published', 'programming_language'
+        ]
+
+    def get_entity_type(self, obj):
+        return Track.__name__
