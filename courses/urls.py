@@ -1,10 +1,14 @@
 from django.urls import path
+from rest_framework import routers
 
 from . import views
-from courses.api_views import TracksList
+from courses.api_views import TracksViewSet
 
 
 app_name = 'courses'
+
+router = routers.SimpleRouter()
+router.register(r'api/v1/tracks', TracksViewSet)
 
 urlpatterns = [
     path('', views.TracksListView.as_view(), name='tracks_list'),
@@ -13,6 +17,6 @@ urlpatterns = [
     path('lesson/<int:lesson_id>/', views.ExerciseListView.as_view(), name='exercises_list'),
     path('exercise/<int:pk>/', views.ExerciseTemplateView.as_view(), name='exercise'),
     path('create_submission', views.CreateSubmissionView.as_view(), name='create_submission'),
-
-    path('api/v1/tracks/', TracksList.as_view(), name='api-tracks-list'),
 ]
+
+urlpatterns += router.urls
