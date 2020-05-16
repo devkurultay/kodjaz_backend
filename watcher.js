@@ -13,6 +13,7 @@ var wsServer = new WebSocketServer({
 })
 
 var connection
+var isInitialStart = true
 
 wsServer.on('request', function(request) {
   connection = request.accept(null, request.origin)
@@ -30,10 +31,6 @@ function buildAndInform () {
 
   dev.stdout.on("data", data => {
     console.log(`stdout: ${data}`)
-    // Send reload command
-    if(connection) {
-      connection.sendUTF('RELOAD')
-    }
   });
 
   dev.stderr.on("data", data => {
@@ -46,6 +43,15 @@ function buildAndInform () {
 
   dev.on("close", code => {
     console.log(`child process exited with code ${code}`)
+    if (isInitialStart) {
+      // Open browser when ready
+      open('http://localhost:8000/cabinet/')
+      isInitialStart = false
+    }
+    // Send reload command
+    if(connection) {
+      connection.sendUTF('RELOAD')
+    }
   })
 }
 
@@ -56,8 +62,6 @@ function changed (file, stats) {
 
 // Rebuild when started
 buildAndInform()
-
-open('http://localhost:8000/cabinet/')
 
 // Set folder here
 var testFolder = './frontend/src'
