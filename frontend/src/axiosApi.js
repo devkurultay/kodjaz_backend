@@ -1,7 +1,9 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
 
-const baseURL = 'http://localhost:8000/api/'
+const baseURL = '/api/'
+const cabinetURL = '/cabinet/'
+const v1URL = '/v1/'
 
 const axiosInstance = axios.create({
   baseURL: baseURL,
@@ -13,13 +15,20 @@ const axiosInstance = axios.create({
   }
 })
 
+const isProtectedUrl = (url) => {
+  const isTokenRefresh = url === baseURL + 'token/refresh/'
+  const isCabinet = url === cabinetURL
+  const isStartsWithProtected = url.startsWith(v1URL)
+  return isTokenRefresh || isCabinet || isStartsWithProtected
+}
+
 axiosInstance.interceptors.response.use(
     response => response,
     error => {
         const originalRequest = error.config
 
         // Prevent infinite loops early
-        if (error.response.status === 401 && originalRequest.url === baseURL + 'token/refresh/') {
+        if (error.response.status === 401 && isProtectedUrl(originalRequest.url)) {
             window.location.href = '/cabinet/login/'
             return Promise.reject(error)
         }
