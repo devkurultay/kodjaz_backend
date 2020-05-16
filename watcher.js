@@ -54,6 +54,9 @@ function changed (file, stats) {
   buildAndInform()
 }
 
+// Rebuild when started
+buildAndInform()
+
 open('http://localhost:8000/cabinet/')
 
 // Set folder here
