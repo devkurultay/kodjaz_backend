@@ -6,18 +6,12 @@ import axiosInstance from '../../axiosApi'
 
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
-  axiosInstance.post(
-    'token/verify/',
-    { token: Cookies.get('access_token') }
-  ).then(r => console.log(r))
-
+  const { isAuthenticated } = rest
   return (
     <Route {...rest} render={(props) => (
-      // TODO: check if user is authenticated.
-      // Use reducer
-      true === true
+      isAuthenticated
         ? <Component {...props} />
-        : <Redirect to={{ pathname: '/cabinet/login', state: { from: props.location }}} />   
+        : <Redirect to={{ pathname: '/login', state: { from: props.location }}} />   
     )} />
   )
 }
