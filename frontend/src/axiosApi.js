@@ -23,59 +23,88 @@ const isProtectedUrl = (url) => {
 }
 
 axiosInstance.interceptors.response.use(
-    response => response,
-    error => {
-        const originalRequest = error.config
-
-        // Prevent infinite loops early
-        if (error.response.status === 401 && isProtectedUrl(originalRequest.url)) {
-            window.location.href = '/cabinet/login/'
-            return Promise.reject(error)
-        }
-
-        if (error.response.data.code === "token_not_valid" &&
-            error.response.status === 401 && 
-            error.response.statusText === "Unauthorized")
-            {
-                const refreshToken = Cookies.get('refresh_token');
-
-                if (refreshToken){
-                    const tokenParts = JSON.parse(atob(refreshToken.split('.')[1]));
-
-                    // exp date in token is expressed in seconds, while now() returns milliseconds:
-                    const now = Math.ceil(Date.now() / 1000);
-                    console.log(tokenParts.exp);
-
-                    if (tokenParts.exp > now) {
-                        return axiosInstance
-                        .post('/token/refresh/', {refresh: refreshToken})
-                        .then((response) => {
-            
-                            Cookies.set('access_token', response.data.access);
-                            Cookies.set('refresh_token', response.data.refresh);
-            
-                            axiosInstance.defaults.headers['Authorization'] = "JWT " + response.data.access;
-                            originalRequest.headers['Authorization'] = "JWT " + response.data.access;
-            
-                            return axiosInstance(originalRequest);
-                        })
-                        .catch(err => {
-                            console.log(err)
-                        });
-                    }else{
-                        console.log("Refresh token is expired", tokenParts.exp, now);
-                        window.location.href = '/cabinet/login/';
-                    }
-                }else{
-                    console.log("Refresh token not available.")
-                    window.location.href = '/cabinet/login/';
-                }
-        }
-      
-     
-      // specific error handling done elsewhere
-      return Promise.reject(error);
+  response => response,
+  error => {
+    const errorResp = error.response
+    if (isTokenExpired(errorResp)) {
+      return refreshTokenAndResendRequest(error)
+    }
+    if (isWrongCredentials(errorResp)) {
+      return Promise.reject(errorResp?.data?.detail)
+    }
+    return Promise.reject(error)
   }
-);
+)
+
+const isTokenExpired = (errorResp) => {
+  const { data, status } = errorResp
+  const { detail } = data
+  return status === 401 && detail === "Token has been expired."
+}
+
+const isWrongCredentials = (errorResp) => {
+  const { data, status, statusText } = errorResp
+  return data?.detail === 'No active account found with the given credentials' &&
+    status === 401 &&
+    statusText === 'Unauthorized'
+}
+
+const getRefreshTokenFromCookies = async () => {
+  const token = await Cookies.get('access_token')
+  const refreshToken = await Cookies.get('refresh_token')
+  return { token, refreshToken }
+}
+
+const setTokensToCookies = async (access_token, refresh_token) => {
+  await Cookies.set('access_token', access_token)
+  await Cookies.set('refresh_token', refresh_token)
+}
+
+let isFetchingAccessTokenInProgress = false
+
+let subscribers = []
+
+const addSubscriber = (cb) => {
+  subscribers.push(cb)
+}
+
+const triggerSubscribers = (accessToken) => {
+  subscribers.forEach(cb => cb(accessToken))
+  subscribers = []
+}
+
+const refreshTokenAndResendRequest = async (error) => {
+  try {
+    const { response: errorResponse } = error
+	  const { accessToken, refreshToken } = await getRefreshTokenFromCookies()
+    if (!accessToken || !refreshToken) {
+      return Promise.reject(error)
+    }
+    const resendOriginalRequest = new Promise(resolve => {
+      addSubscriber(token => {
+        errorResp.config.headers.Authorization = 'JWT ' + token
+        resolve(axios(errorResp.config))
+      })
+    })
+    if(!isFetchingAccessTokenInProgress) {
+      isFetchingAccessTokenInProgress = true
+      const response = await axios.post(
+        '/token/refresh/',
+        { refresh: refreshToken }
+      )
+      if (response && !response.data) {
+        return Promise.reject(error)
+      }
+      const newAccessToken = response?.data?.access
+      const newRefreshToken = response?.data?.refresh
+      await setTokensToCookies(newAccessToken, newRefreshToken)
+      isFetchingAccessTokenInProgress = false
+      triggerSubscribers(newAccessToken)
+    }
+    return resendOriginalRequest
+  } catch (e) {
+    return Promise.reject(e)
+  }
+}
 
 export default axiosInstance
