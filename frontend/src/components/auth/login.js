@@ -1,10 +1,11 @@
-import React, { Component } from "react";
+import React, { Component } from 'react'
 import Cookies from 'js-cookie'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import { Redirect } from 'react-router-dom'
 import { login } from '../../actions/login'
 
-import axiosInstance from "../../axiosApi";
+import axiosInstance from '../../axiosApi'
 
 class Login extends Component {
   constructor(props) {
@@ -35,6 +36,10 @@ class Login extends Component {
   }
 
   render() {
+    if (this.props.isAuthenticated) {
+      // TODO: get `from` path and redirec there
+      return <Redirect to={{ pathname: '/' }} />
+    }
     return (
       <div>
         Login
