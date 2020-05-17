@@ -29,8 +29,9 @@ axiosInstance.interceptors.response.use(
     if (isTokenExpired(errorResp)) {
       return refreshTokenAndResendRequest(error)
     }
-    if (isWrongCredentials(errorResp)) {
-      return Promise.reject(errorResp?.data?.detail)
+    const wrongCredentialsErrors = getWrongCredentialsErrorMessages(errorResp)
+    if (wrongCredentialsErrors.length > 0) {
+      return Promise.reject(wrongCredentialsErrors)
     }
     return Promise.reject(error)
   }
@@ -42,11 +43,17 @@ const isTokenExpired = (errorResp) => {
   return status === 401 && detail === "Token has been expired."
 }
 
-const isWrongCredentials = (errorResp) => {
-  const { data, status, statusText } = errorResp
-  return data?.detail === 'No active account found with the given credentials' &&
-    status === 401 &&
-    statusText === 'Unauthorized'
+const getWrongCredentialsErrorMessages = (errorResp) => {
+  const { data, status } = errorResp
+  if (status > 401) {
+    return []
+  }
+  const { username, password, detail } = data
+  const errorMsg = []
+  detail && errorMsg.push(detail)
+  username && errorMsg.push(`Username: ${username?.[0]}`)
+  password && errorMsg.push(`Password: ${password?.[0]}`)
+  return errorMsg
 }
 
 const getRefreshTokenFromCookies = async () => {

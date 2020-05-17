@@ -1,7 +1,6 @@
-
 const initialState = {
   isAuthenticated: false,
-  loginError: ''
+  loginError: []
 }
 
 function cabinet(state = initialState, action) {
@@ -9,7 +8,7 @@ function cabinet(state = initialState, action) {
     case 'LOG_IN':
       return {
         ...state,
-        loginError: '',
+        loginError: [],
         isAuthenticated: true
       }
     case 'FAILED_TO_LOG_IN':

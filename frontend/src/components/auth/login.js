@@ -31,14 +31,14 @@ class Login extends Component {
   }
 
   renderError () {
-    return <div>{this.props.loginError}</div>
+    return this.props.loginError.map(e => <div key={e}>{e}</div>)
   }
 
   render() {
     return (
       <div>
         Login
-        { this.props.loginError ? this.renderError() : null }
+        { this.props.loginError.length > 0 ? this.renderError() : null }
         <form onSubmit={this.handleSubmit}>
           <label>
             Username:
