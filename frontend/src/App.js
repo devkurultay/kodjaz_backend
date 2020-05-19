@@ -1,6 +1,16 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { createStore, applyMiddleware } from 'redux'
+import { Provider } from 'react-redux'
+import thunk from 'redux-thunk'
 import { BrowserRouter } from "react-router-dom"
+
+import cabinet from './reducers/reducers'
+
+const store = createStore(
+  cabinet,
+  applyMiddleware(thunk)
+)
 
 import Routes from './Routes'
 
@@ -10,9 +20,11 @@ const routerConfig = {
 
 const App = () => {
   return (
-    <BrowserRouter {...routerConfig} >
-      <Routes />
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter {...routerConfig} >
+        <Routes />
+      </BrowserRouter>
+    </Provider>
   )
 }
 

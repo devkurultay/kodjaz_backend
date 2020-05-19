@@ -2,17 +2,16 @@ import React from 'react'
 import { Switch, Route } from "react-router-dom"
 
 import Cabinet from './Cabinet'
-import Signup from './components/auth/signup'
-import Login from './components/auth/login'
+import Signup from './components/auth/Signup'
+import Login from './components/auth/Login'
+import ProtectedRoute from './components/auth/ProtectedRoute'
 
-
-
-const Routes = () => {
+const Routes = ({isAuthenticated, checkIsAuth}) => {
   return (
     <Switch>
       <Route path="/login" component={Login} />
       <Route path="/signup" component={Signup} />
-      <Route path="/" component={Cabinet} />
+      <ProtectedRoute path="/" component={Cabinet} />
     </Switch>
   )
 }
