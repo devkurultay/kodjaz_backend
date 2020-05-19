@@ -1,0 +1,316 @@
+[
+{
+    "model": "courses.track",
+    "pk": 1,
+    "fields": {
+        "name": "Python",
+        "description": "Python \u0442\u0438\u043b\u0438\u043d\u0435 \u043a\u0438\u0440\u0438\u0448\u04af\u04af.",
+        "is_published": true,
+        "date_time_created": "2020-02-15T17:12:36.963Z",
+        "date_time_modified": "2020-05-19T04:53:02.735Z",
+        "programming_language": "Python"
+    }
+},
+{
+    "model": "courses.track",
+    "pk": 2,
+    "fields": {
+        "name": "JavaScript",
+        "description": "JavaScript \u0442\u0438\u043b\u0438\u043d\u0435 \u043a\u0438\u0440\u0438\u0448\u04af\u04af",
+        "is_published": true,
+        "date_time_created": "2020-02-15T17:12:58.223Z",
+        "date_time_modified": "2020-05-03T13:06:25.186Z",
+        "programming_language": "JavaScript"
+    }
+},
+{
+    "model": "courses.track",
+    "pk": 3,
+    "fields": {
+        "name": "TypeScript",
+        "description": "TypeScript \u043d\u0435\u0433\u0438\u0437\u0434\u0435\u0440\u0438",
+        "is_published": true,
+        "date_time_created": "2020-05-03T15:51:02.539Z",
+        "date_time_modified": "2020-05-03T15:51:02.540Z",
+        "programming_language": "TypeScript"
+    }
+},
+{
+    "model": "courses.unit",
+    "pk": 1,
+    "fields": {
+        "name": "\u041f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0430\u043b\u043e\u043e \u043d\u0435\u0433\u0438\u0437\u0434\u0435\u0440\u0438",
+        "description": "\u04e8\u0437\u0433\u04e9\u0440\u043c\u04e9\u043b\u04e9\u0440, \u0442\u0438\u0437\u043c\u0435\u043a\u0442\u0435\u0440, \u043a\u043e\u0440\u0442\u0435\u0436\u0434\u0435\u0440, \u0441\u04e9\u0437\u0434\u04af\u043a\u0442\u04e9\u0440",
+        "is_published": true,
+        "track": 1,
+        "date_time_created": "2020-02-15T17:15:18.213Z",
+        "date_time_modified": "2020-02-15T17:15:18.213Z"
+    }
+},
+{
+    "model": "courses.unit",
+    "pk": 2,
+    "fields": {
+        "name": "\u0411\u0430\u0448\u043a\u0430\u0440\u0443\u0443 \u043b\u043e\u0433\u0438\u043a\u0430\u0441\u044b",
+        "description": "\u0411\u0430\u0448\u043a\u0430\u0440\u0443\u0443 \u043b\u043e\u0433\u0438\u043a\u0430\u0441\u044b: if/else/elif",
+        "is_published": true,
+        "track": 1,
+        "date_time_created": "2020-02-15T17:15:54.188Z",
+        "date_time_modified": "2020-02-15T17:17:59.818Z"
+    }
+},
+{
+    "model": "courses.unit",
+    "pk": 3,
+    "fields": {
+        "name": "\u0426\u0438\u043a\u043b\u0434\u0435\u0440",
+        "description": "while-\u0446\u0438\u043a\u043b\u0434\u0435\u0440\u0438, for-\u0446\u0438\u043a\u043b\u0434\u0435\u0440\u0438",
+        "is_published": true,
+        "track": 1,
+        "date_time_created": "2020-02-15T17:19:22.747Z",
+        "date_time_modified": "2020-02-15T17:19:22.747Z"
+    }
+},
+{
+    "model": "courses.unit",
+    "pk": 4,
+    "fields": {
+        "name": "\u0422\u0438\u043b\u0433\u0435 \u043a\u0438\u0440\u0438\u0448\u04af\u04af",
+        "description": "JavaScript \u043c\u0435\u043d\u0435\u043d \u0442\u0430\u0430\u043d\u044b\u0448\u0443\u0443",
+        "is_published": true,
+        "track": 2,
+        "date_time_created": "2020-05-03T13:07:30.065Z",
+        "date_time_modified": "2020-05-03T13:07:30.065Z"
+    }
+},
+{
+    "model": "courses.unit",
+    "pk": 5,
+    "fields": {
+        "name": "TypeScript'\u043a\u0435 \u043a\u0438\u0440\u0438\u0448\u04af\u04af",
+        "description": "TypeScript \u0436\u04e9\u043d\u04e9\u043a\u04e9\u0439 \u0442\u0438\u043f\u0442\u0435\u0440, \u04e9\u0437\u0433\u04e9\u0440\u043c\u04e9\u043b\u04e9\u0440",
+        "is_published": true,
+        "track": 3,
+        "date_time_created": "2020-05-03T15:53:23.418Z",
+        "date_time_modified": "2020-05-03T15:53:23.418Z"
+    }
+},
+{
+    "model": "courses.lesson",
+    "pk": 1,
+    "fields": {
+        "name": "\u041a\u043e\u0434 \u0436\u0430\u0437\u0443\u0443\u0433\u0430 \u043a\u0438\u0440\u0438\u0448\u04af\u04af",
+        "is_published": true,
+        "unit": 1,
+        "badge": null,
+        "date_time_created": "2020-02-15T17:23:34.132Z",
+        "date_time_modified": "2020-02-15T17:23:34.132Z"
+    }
+},
+{
+    "model": "courses.lesson",
+    "pk": 2,
+    "fields": {
+        "name": "\u041a\u043e\u0434 \u0436\u0430\u0437\u0443\u0443\u0433\u0430 \u043a\u0438\u0440\u0438\u0448\u04af\u04af",
+        "is_published": true,
+        "unit": 4,
+        "badge": null,
+        "date_time_created": "2020-05-03T13:07:50.099Z",
+        "date_time_modified": "2020-05-03T13:07:50.099Z"
+    }
+},
+{
+    "model": "courses.lesson",
+    "pk": 3,
+    "fields": {
+        "name": "\u0411\u0430\u0448\u0442\u0430\u043f\u043a\u044b \u043a\u0430\u0434\u0430\u043c\u0434\u0430\u0440",
+        "is_published": true,
+        "unit": 5,
+        "badge": null,
+        "date_time_created": "2020-05-03T15:53:57.980Z",
+        "date_time_modified": "2020-05-03T15:53:57.980Z"
+    }
+},
+{
+    "model": "courses.exercise",
+    "pk": 1,
+    "fields": {
+        "name": "Hello world",
+        "lecture": "\u0410\u043b\u0433\u0430\u0447\u043a\u044b \u043a\u043e\u0434 \u0436\u0430\u0437\u0433\u0430\u043d\u0434\u0430, \u0441\u0430\u043b\u0442 \u043a\u0430\u0442\u0430\u0440\u044b \"Hello world\" \u0434\u0435\u0433\u0435\u043d \u0441\u04af\u0439\u043b\u04e9\u043c\u0434\u04af \u0447\u044b\u0433\u0430\u0440\u044b\u0448\u0430\u0442.",
+        "instruction": "\u0420\u0435\u0434\u0430\u043a\u0442\u043e\u0440\u0434\u043e \u0436\u0430\u0437\u044b\u043b\u0433\u0430\u043d \u043a\u043e\u0434\u0434\u0443 \u0430\u0442\u043a\u0430\u0440\u0443\u0443\u0433\u0430 \u0436\u04e9\u043d\u04e9\u0442\u04af\u04a3\u04af\u0437. \u0411\u0430\u0441\u0430, print \u0434\u0435\u0433\u0435\u043d \u0441\u04e9\u0437 \u043a\u044b\u0440\u0433\u044b\u0437 \u0442\u0438\u043b\u0438\u043d\u0434\u0435 \u043a\u0430\u043d\u0434\u0430\u0439 \u0431\u043e\u043b\u043e\u0442, \u0431\u0438\u043b\u0435\u0441\u0438\u04a3\u0435\u0440\u0431\u0438?",
+        "hint": "\u0410\u0442\u043a\u0430\u0440\u0443\u0443 \u0431\u0430\u0441\u043a\u044b\u0447\u044b\u043d \u0431\u0430\u0441\u044b\u043f \u043a\u043e\u044e\u04a3\u0443\u0437.",
+        "default_code": "print(\"Hello world\")",
+        "duration": 5,
+        "input_should_contain": "print,Hello,world",
+        "input_should_not_contain": "",
+        "input_error_text": "print(\"Hello world\") \u0434\u0435\u043f \u0436\u0430\u0437\u0433\u0430\u043d \u0436\u043e\u043a\u0441\u0443\u0437 \u0433\u043e?",
+        "output_should_contain": "",
+        "output_should_not_contain": "",
+        "output_error_text": "",
+        "unit_test": "",
+        "next_exercise": 2,
+        "karma": 1,
+        "is_published": true,
+        "lesson": 1,
+        "date_time_created": "2020-02-15T17:28:42.187Z",
+        "date_time_modified": "2020-05-02T15:25:49.986Z",
+        "text_file_content": ""
+    }
+},
+{
+    "model": "courses.exercise",
+    "pk": 2,
+    "fields": {
+        "name": "\u0421\u0430\u043d\u0434\u0430\u0440",
+        "lecture": "\u0421\u0430\u043d\u0434\u0430\u0440 Python \u0442\u0438\u043b\u0438\u043d\u0434\u0435 \u044d\u043a\u0438 \u0442\u04af\u0440\u0434\u04e9 \u0431\u043e\u043b\u043e\u0442 -- \u0431\u04af\u0442\u04af\u043d \u0441\u0430\u043d\u0434\u0430\u0440 (\u043c\u0438\u0441\u0430\u043b\u044b, 42) \u0436\u0430\u043d\u0430 \u043e\u043d\u0434\u0443\u043a \u0431\u04e9\u043b\u0447\u04e9\u043a\u0442\u04e9\u0440 (\u043c\u0438\u0441\u0430\u043b\u044b, 3.14). \u041e\u043d\u0434\u0443\u043a \u0431\u04e9\u043b\u0447\u04e9\u043a\u0442\u04e9\u0440 \u04af\u0442\u04af\u0440 \u044d\u043c\u0435\u0441, \u0447\u0435\u043a\u0438\u0442 \u0430\u0440\u043a\u044b\u043b\u0443\u0443 \u0430\u0436\u044b\u0440\u0430\u0442\u044b\u043b\u0430\u0442.\r\n\u0421\u0430\u043d\u0434\u0430\u0440\u0434\u044b \u0431\u0438\u0440\u0438-\u0431\u0438\u0440\u0438\u043d\u0435 \u043a\u043e\u0448\u0441\u043e\u043a \u0431\u043e\u043b\u043e\u0442: 2 + 2.34\r\n\u041e\u0448\u043e\u043d\u0434\u043e\u0439 \u044d\u043b\u0435, \u0430\u043b\u0430\u0440\u0434\u044b \u043a\u04e9\u0431\u04e9\u0439\u0442\u0441\u04e9\u043a \u0431\u043e\u043b\u043e\u0442: 43 * 4\r\n\u0411\u04e9\u043b\u0441\u04e9\u043a \u0434\u0430\u0433\u044b \u0431\u043e\u043b\u043e\u0442: 3 / 5",
+        "instruction": "34 \u043a\u043e\u0448\u0443\u0443 23 \u043a\u04e9\u0431\u04e9\u0439\u0442\u04af\u04af 2 \u0431\u04e9\u043b\u04af\u043d\u0433\u04e9\u043d 5 \u0434\u0435\u0433\u0435\u043d \u0430\u043c\u0430\u043b\u0434\u044b print() \u0444\u0443\u043d\u043a\u0446\u0438\u044f\u0441\u044b \u043c\u0435\u043d\u0435\u043d \u043a\u043e\u043d\u0441\u043e\u043b\u0433\u043e \u0447\u044b\u0433\u0430\u0440\u044b\u04a3\u044b\u0437. \u041a\u0430\u043d\u0434\u0430\u0439 \u043a\u044b\u043b\u0430\u0430\u0440\u0434\u044b \u0431\u0438\u043b\u0431\u0435\u0439 \u0436\u0430\u0442\u0441\u0430\u04a3\u044b\u0437 \u0442\u04e9\u043c\u04e9\u043d\u0434\u04e9\u0433\u04af \u041a\u044b\u0439\u044b\u0442\u043c\u0430\u043d\u044b \u0431\u0430\u0441\u044b\u043f \u043a\u043e\u044e\u04a3\u0443\u0437. \u0411\u0438\u0440\u043e\u043a \u0447\u044b\u043d \u044d\u043b\u0435 \u0431\u0438\u043b\u0431\u0435\u0439 \u0436\u0430\u0442\u0441\u0430\u04a3\u044b\u0437 \u0433\u0430\u043d\u0430.",
+        "hint": "print(23 + 11 / 3) \u0441\u044b\u044f\u043a\u0442\u0443\u0443 \u0436\u0430\u0437\u044b\u043f \u043a\u04e9\u0440\u0441\u04e9\u04a3\u04af\u0437.",
+        "default_code": "# \u0423\u0448\u0443\u043d\u0434\u0430\u0439 \u0442\u043e\u0440\u0447\u043e \u043a\u043e\u044e\u043f \u043a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0439 \u0436\u0430\u0437\u0441\u0430\u043a \u0431\u043e\u043b\u043e\u0442.\r\n# \u0411\u0443\u043b \u0442\u0435\u043a\u0441\u0442 \u0441\u0438\u0437\u0434\u0438\u043d \u043a\u043e\u0434\u0443\u04a3\u0443\u0437\u0433\u0430 \u044d\u0447 \u0442\u0430\u0430\u0441\u0438\u0440 \u044d\u0442\u043f\u0435\u0439\u0442.\r\n# \u041a\u043e\u0434\u0443\u04a3\u0443\u0437\u0434\u0443 \u0442\u04e9\u043c\u04e9\u043d\u043a\u04af \u0441\u0430\u043f\u0442\u0430\u043d \u0431\u0430\u0448\u0442\u0430\u043f \u0436\u0430\u0437\u044b\u04a3\u044b\u0437.",
+        "duration": 0,
+        "input_should_contain": "print,34,+,23,*,2,/,5",
+        "input_should_not_contain": "43.2",
+        "input_error_text": "print()'\u0442\u0438\u043d \u0438\u0447\u0438\u043d\u0435 \u0430\u0439\u0442\u044b\u043b\u0433\u0430\u043d \u0441\u0430\u043d\u0434\u0430\u0440\u0434\u044b \u0436\u0430\u0437\u0434\u044b\u04a3\u044b\u0437\u0431\u044b?",
+        "output_should_contain": "43.2",
+        "output_should_not_contain": "",
+        "output_error_text": "43.2 \u0434\u0435\u0433\u0435\u043d \u0441\u0430\u043d \u0447\u044b\u0433\u044b\u0448 \u043a\u0435\u0440\u0435\u043a \u044d\u043b\u0435. \u0414\u0430\u0433\u044b \u043a\u04e9\u0440\u0441\u04e9\u04a3\u04af\u0437.",
+        "unit_test": "",
+        "next_exercise": 3,
+        "karma": 1,
+        "is_published": true,
+        "lesson": 1,
+        "date_time_created": "2020-05-02T15:22:51.876Z",
+        "date_time_modified": "2020-05-02T18:36:43.878Z",
+        "text_file_content": ""
+    }
+},
+{
+    "model": "courses.exercise",
+    "pk": 3,
+    "fields": {
+        "name": "\u0421\u0430\u043f\u0442\u0430\u0440",
+        "lecture": "\u0421\u0430\u043f\u0442\u0430\u0440 -- \u0431\u0443\u043b \u0442\u0430\u043c\u0433\u0430\u043b\u0430\u0440\u0434\u044b\u043d \u0442\u043e\u0431\u0443. \u0416\u04e9\u043d\u04e9\u043a\u04e9\u0439 \u0441\u04e9\u0437 \u043c\u0435\u043d\u0435\u043d \u0430\u0439\u0442\u043a\u0430\u043d\u0434\u0430, \u0441\u0430\u043f\u0442\u0430\u0440 -- \u0431\u0443\u043b \u0442\u0435\u043a\u0441\u0442\u0442\u0438\u043a \u043c\u0430\u0430\u043d\u0438\u043b\u0435\u0440. \u0410\u043b\u0430\u0440\u0434\u044b Python \u0442\u0438\u043b\u0438\u043d\u0434\u0435 \u043a\u043e\u0448 \u0442\u044b\u0440\u043c\u0430\u043a\u0447\u0430 ( \" ) \u0436\u0435 \u0436\u0430\u043b\u0433\u044b\u0437 \u0442\u044b\u0440\u043c\u0430\u043a\u0447\u0430\u0433\u0430 ( ' ) \u0430\u043b\u044b\u043f \u0436\u0430\u0437\u0430\u0431\u044b\u0437.\r\n\u042d\u0441\u0438\u04a3\u0438\u0437\u0434\u0435 \u0431\u043e\u043b\u0441\u043e \u043a\u0435\u0440\u0435\u043a, \u0431\u0443\u0433\u0430 \u0447\u0435\u0439\u0438\u043d print(\"Hello world\") \u0434\u0435\u043f \u0436\u0430\u0437\u0433\u0430\u043d\u0434\u0430 print() \u0444\u0443\u043d\u043a\u0446\u0438\u044f\u0441\u044b\u043d\u0430 \"Hello world\" \u0434\u0435\u0433\u0435\u043d \u0441\u0430\u043f \u0431\u0435\u0440\u0433\u0435\u043d\u0431\u0438\u0437.",
+        "instruction": "print() \u0444\u0443\u043d\u043a\u0446\u0438\u044f\u0441\u044b\u043d\u044b\u043d \u0436\u0430\u0440\u0434\u0430\u043c\u044b \u043c\u0435\u043d\u0435\u043d \"\u041c\u0435\u043d\u0438\u043d \u0430\u0442\u044b\u043c ...\" \u0436\u0430\u043d\u0430 '\u041c\u0435\u043d ... \u0436\u0430\u0448\u0442\u0430\u043c\u044b\u043d' \u0434\u0435\u0433\u0435\u043d \u0441\u0430\u043f\u0442\u044b\u043a \u043c\u0430\u0430\u043d\u0438\u043b\u0435\u0440\u0434\u0438 \u044d\u043a\u0438 \u04e9\u0437\u04af\u043d\u0447\u04e9 \u0436\u0430\u0437\u044b\u04a3\u044b\u0437. \u0410\u043b\u0431\u0435\u0442\u0442\u0435 \u0447\u0435\u043a\u0438\u0442\u0442\u0435\u0440\u0434\u0438\u043d \u043e\u0440\u0434\u0443\u043d\u0430 \u0447\u044b\u043d\u0434\u044b\u043a\u043a\u0430 \u0442\u0443\u0443\u0440\u0430 \u043a\u0435\u043b\u0433\u0435\u043d \u043c\u0430\u0430\u043b\u044b\u043c\u0430\u0442 \u0436\u0430\u0437\u044b\u0448\u044b\u04a3\u044b\u0437 \u043a\u0435\u0440\u0435\u043a \u0431\u043e\u043b\u043e\u0442.\r\n\u0422\u044b\u0440\u043c\u0430\u043a\u0447\u0430\u043b\u0430\u0440\u0434\u044b \u0431\u0430\u0439\u043a\u0430\u04a3\u044b\u0437.",
+        "hint": "\u041c\u0435\u043d \u043c\u043e\u0433\u0443\u043d\u0434\u0430\u0439 \u043a\u044b\u043b\u044b\u043f \u0436\u0430\u0437\u0433\u0430\u043c:\r\nprint(\"\u041c\u0435\u043d\u0438\u043d \u0430\u0442\u044b\u043c \u041c\u0443\u0440\u0430\u0442\")\r\nprint('\u041c\u0435\u043d 37 \u0436\u0430\u0448\u0442\u0430\u043c\u044b\u043d')\r\n\r\n\u0421\u0438\u0437 \u04e9\u0437\u04af\u04a3\u04af\u0437\u0433\u04e9 \u0442\u0438\u0435\u0448\u0435\u043b\u04af\u04af \u043c\u0430\u0430\u043b\u044b\u043c\u0430\u0442 \u0436\u0430\u0437\u044b\u04a3\u044b\u0437 \u0434\u0430.",
+        "default_code": "",
+        "duration": 0,
+        "input_should_contain": "\u041c\u0435\u043d\u0438\u043d \u0430\u0442\u044b\u043c,\u041c\u0435\u043d",
+        "input_should_not_contain": "",
+        "input_error_text": "\u0414\u0430\u0433\u044b \u0430\u0440\u0430\u043a\u0435\u0442 \u043a\u044b\u043b\u044b\u04a3\u044b\u0437\u0447\u044b. Python \u0442\u0438\u043b\u0438\u043d\u0434\u0435 \u0447\u043e\u04a3 \u0442\u0430\u043c\u0433\u0430 \u0436\u0430\u043d\u0430 \u043a\u0438\u0447\u0438\u043d\u0435 \u0442\u0430\u043c\u0433\u0430 \u0430\u0440 \u0431\u0430\u0448\u043a\u0430 \u043c\u0430\u0430\u043d\u0438 \u0431\u0435\u0440\u0435\u0442.",
+        "output_should_contain": "\u041c\u0435\u043d\u0438\u043d \u0430\u0442\u044b\u043c,\u041c\u0435\u043d",
+        "output_should_not_contain": "",
+        "output_error_text": "",
+        "unit_test": "",
+        "next_exercise": 4,
+        "karma": 1,
+        "is_published": true,
+        "lesson": 1,
+        "date_time_created": "2020-05-02T18:36:33.752Z",
+        "date_time_modified": "2020-05-03T04:15:23.721Z",
+        "text_file_content": ""
+    }
+},
+{
+    "model": "courses.exercise",
+    "pk": 4,
+    "fields": {
+        "name": "\u04e8\u0437\u0433\u04e9\u0440\u043c\u04e9\u043b\u04e9\u0440",
+        "lecture": "\u04e8\u0437\u0433\u04e9\u0440\u043c\u04e9 (variable, \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u0430\u044f) -- \u0431\u0443\u043b \u043a\u0435\u0440\u0435\u043a\u0442\u04af\u04af \u0434\u0430\u0439\u044b\u043d\u0434\u0430\u0440\u0434\u044b \u0443\u0431\u0430\u043a\u0442\u044b\u043b\u0443\u0443 \u043a\u0430\u0440\u043c\u0430\u043f \u0442\u0443\u0440\u0443\u0443\u0447\u0443 \"\u0447\u04e9\u043d\u0442\u04e9\u043a\u0447\u04e9\". \u0430\u043d\u044b \u0431\u0438\u0437 \u043b\u0430\u0442\u044b\u043d \u0442\u0430\u043c\u0433\u0430\u043b\u0430\u0440\u044b \u043c\u0435\u043d\u0435\u043d \u043a\u0430\u0434\u0438\u043c\u043a\u0438 \u0441\u04e9\u0437 \u043a\u0430\u0442\u0430\u0440\u044b \u0436\u0430\u0437\u0430\u0431\u044b\u0437, \u0434\u0430\u0439\u044b\u043d\u0434\u0430\u0440\u044b\u043d \u0431\u0430\u0440\u0430\u0431\u0430\u0440 \u0431\u0435\u043b\u0433\u0438\u0441\u0438\u043d\u0435\u043d \u043a\u0438\u0439\u0438\u043d \u0431\u0435\u0440\u0435\u0431\u0438\u0437. \u041c\u0438\u0441\u0430\u043b\u044b,\r\nname = \"\u041c\u0443\u0440\u0430\u0442\"\r\nage = 37\r\nprint(name)\r\nprint(age)",
+        "instruction": "\u0420\u0435\u0434\u0430\u043a\u0442\u043e\u0440\u0433\u043e 2 \u04e9\u0437\u0433\u04e9\u0440\u043c\u04e9 \u0436\u0430\u0437\u044b\u04a3\u044b\u0437. \u041e\u0448\u043e\u043b \u044d\u043a\u0438 \u04e9\u0437\u0433\u04e9\u0440\u043c\u04e9\u043d\u04af\u043d \u0441\u0443\u043c\u043c\u0430\u0441\u044b summa \u04e9\u0437\u0433\u04e9\u0440\u043c\u04e9\u0441\u04af\u043d\u04e9 \u0431\u0435\u0440\u0438\u043b\u0441\u0438\u043d (\u0441\u044b\u0437\u044b\u043a\u0447\u0430\u043b\u0430\u0440\u0434\u044b\u043d \u043e\u0440\u0434\u0443\u043d\u0430 \u0442\u04af\u0437\u0433\u04e9\u043d \u04e9\u0437\u0433\u04e9\u0440\u043c\u04e9\u043b\u04e9\u0440\u04af\u04a3\u04af\u0437\u0434\u04af \u0436\u0430\u0437\u044b\u043f \u043a\u043e\u044e\u04a3\u0443\u0437). \u0410\u043d\u0434\u0430\u043d \u0441\u043e\u04a3 print() \u0444\u0443\u043d\u043a\u0446\u0438\u044f\u0441\u044b\u043d\u044b\u043d \u0436\u0430\u0440\u0434\u0430\u043c\u044b \u043c\u0435\u043d\u0435\u043d \u043a\u043e\u043d\u0441\u043e\u043b\u0433\u043e \u0447\u044b\u0433\u0430\u0440\u044b\u043b\u0441\u044b\u043d.\r\n\u0422\u0430\u043a\u0430\u043b\u044b\u043f \u043a\u0430\u043b\u0441\u0430\u04a3\u044b\u0437 \u044d\u0447 \u043a\u04af\u043d\u04e9\u04e9\u04a3\u04af\u0437 \u0436\u043e\u043a. \u041c\u0435\u043d \u0442\u0435\u043a\u0441\u0442\u0442\u0438 \u0442\u04af\u0448\u04af\u043d\u04af\u043a\u0441\u04af\u0437 \u0436\u0430\u0437\u0441\u0430\u043c \u043a\u0435\u0440\u0435\u043a. \u041a\u044b\u0439\u044b\u0442\u043c\u0430\u0433\u0430 \u0431\u0430\u0448 \u0431\u0430\u0433\u044b\u043f \u043a\u04e9\u0440\u04af\u04a3\u04af\u0437.",
+        "hint": "bir = 123\r\neki = 456\r\nsumma = bir + eki\r\nprint(summa)",
+        "default_code": "summa = _ + _\r\nprint(summa)",
+        "duration": 0,
+        "input_should_contain": "summa,print,+",
+        "input_should_not_contain": "",
+        "input_error_text": "\u0421\u0438\u0437 summa \u04e9\u0437\u0433\u04e9\u0440\u043c\u04e9\u0441\u04af\u043d print \u043a\u044b\u043b\u0434\u044b\u04a3\u044b\u0437\u0431\u044b?",
+        "output_should_contain": "",
+        "output_should_not_contain": "",
+        "output_error_text": "",
+        "unit_test": "",
+        "next_exercise": null,
+        "karma": 1,
+        "is_published": true,
+        "lesson": 1,
+        "date_time_created": "2020-05-03T04:15:08.058Z",
+        "date_time_modified": "2020-05-03T04:20:32.248Z",
+        "text_file_content": ""
+    }
+},
+{
+    "model": "courses.exercise",
+    "pk": 5,
+    "fields": {
+        "name": "JS Test",
+        "lecture": "some text",
+        "instruction": "some text",
+        "hint": "",
+        "default_code": "const a = () => {\r\n    console.log(124)\r\n    console.log(124)\r\n}\r\na()",
+        "duration": 0,
+        "input_should_contain": "function",
+        "input_should_not_contain": "",
+        "input_error_text": "\u0421\u0438\u0437 \u0444\u0443\u043d\u043a\u0446\u0438\u044f \u0436\u0430\u0437\u0433\u0430\u043d\u0441\u044b\u0437\u0431\u044b?",
+        "output_should_contain": "",
+        "output_should_not_contain": "",
+        "output_error_text": "",
+        "unit_test": "",
+        "next_exercise": null,
+        "karma": 1,
+        "is_published": true,
+        "lesson": 2,
+        "date_time_created": "2020-05-03T04:27:47.343Z",
+        "date_time_modified": "2020-05-04T04:52:46.076Z",
+        "text_file_content": ""
+    }
+},
+{
+    "model": "courses.exercise",
+    "pk": 6,
+    "fields": {
+        "name": "TS test",
+        "lecture": "Some text",
+        "instruction": "Some instructions",
+        "hint": "",
+        "default_code": "",
+        "duration": 0,
+        "input_should_contain": "",
+        "input_should_not_contain": "",
+        "input_error_text": "",
+        "output_should_contain": "",
+        "output_should_not_contain": "",
+        "output_error_text": "",
+        "unit_test": "",
+        "next_exercise": null,
+        "karma": 1,
+        "is_published": true,
+        "lesson": 3,
+        "date_time_created": "2020-05-03T15:54:48.993Z",
+        "date_time_modified": "2020-05-03T15:54:48.993Z",
+        "text_file_content": ""
+    }
+},
+{
+    "model": "courses.submission",
+    "pk": 28,
+    "fields": {
+        "user": [
+            "jumasheff"
+        ],
+        "exercise": 1,
+        "submitted_code": "print(\"Hello world\")",
+        "lecture": "\u0410\u043b\u0433\u0430\u0447\u043a\u044b \u043a\u043e\u0434 \u0436\u0430\u0437\u0433\u0430\u043d\u0434\u0430, \u0441\u0430\u043b\u0442 \u043a\u0430\u0442\u0430\u0440\u044b \"Hello world\" \u0434\u0435\u0433\u0435\u043d \u0441\u04af\u0439\u043b\u04e9\u043c\u0434\u04af \u0447\u044b\u0433\u0430\u0440\u044b\u0448\u0430\u0442.",
+        "instruction": "\u0420\u0435\u0434\u0430\u043a\u0442\u043e\u0440\u0434\u043e \u0436\u0430\u0437\u044b\u043b\u0433\u0430\u043d \u043a\u043e\u0434\u0434\u0443 \u0430\u0442\u043a\u0430\u0440\u0443\u0443\u0433\u0430 \u0436\u04e9\u043d\u04e9\u0442\u04af\u04a3\u04af\u0437. \u0411\u0430\u0441\u0430, print \u0434\u0435\u0433\u0435\u043d \u0441\u04e9\u0437 \u043a\u044b\u0440\u0433\u044b\u0437 \u0442\u0438\u043b\u0438\u043d\u0434\u0435 \u043a\u0430\u043d\u0434\u0430\u0439 \u0431\u043e\u043b\u043e\u0442, \u0431\u0438\u043b\u0435\u0441\u0438\u04a3\u0435\u0440\u0431\u0438?",
+        "hint": "\u0410\u0442\u043a\u0430\u0440\u0443\u0443 \u0431\u0430\u0441\u043a\u044b\u0447\u044b\u043d \u0431\u0430\u0441\u044b\u043f \u043a\u043e\u044e\u04a3\u0443\u0437.",
+        "input_should_contain": "print,Hello,world",
+        "input_should_not_contain": "",
+        "input_error_text": "print(\"Hello world\") \u0434\u0435\u043f \u0436\u0430\u0437\u0433\u0430\u043d \u0436\u043e\u043a\u0441\u0443\u0437 \u0433\u043e?",
+        "output_should_contain": "",
+        "output_should_not_contain": "",
+        "output_error_text": "",
+        "unit_test": "",
+        "karma": 1,
+        "failed_attempts": 0,
+        "date_time_created": "2020-05-06T12:06:36.799Z",
+        "date_time_modified": "2020-05-06T12:11:29.847Z",
+        "text_file_content": ""
+    }
+}
+]
