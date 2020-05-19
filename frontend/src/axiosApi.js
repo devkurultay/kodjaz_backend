@@ -15,13 +15,6 @@ const axiosInstance = axios.create({
   }
 })
 
-const isProtectedUrl = (url) => {
-  const isTokenRefresh = url === baseURL + 'token/refresh/'
-  const isCabinet = url === cabinetURL
-  const isStartsWithProtected = url.startsWith(v1URL)
-  return isTokenRefresh || isCabinet || isStartsWithProtected
-}
-
 axiosInstance.interceptors.response.use(
   response => response,
   error => {
@@ -56,9 +49,9 @@ const getWrongCredentialsErrorMessages = (errorResp) => {
   return errorMsg
 }
 
-const getRefreshTokenFromCookies = async () => {
-  const token = await Cookies.get('access_token')
-  const refreshToken = await Cookies.get('refresh_token')
+const getTokensFromCookies = () => {
+  const token = Cookies.get('access_token')
+  const refreshToken = Cookies.get('refresh_token')
   return { token, refreshToken }
 }
 
@@ -82,11 +75,11 @@ const triggerSubscribers = (accessToken) => {
 
 const refreshTokenAndResendRequest = async (error) => {
   try {
-    const { response: errorResponse } = error
-	  const { accessToken, refreshToken } = await getRefreshTokenFromCookies()
+    const { accessToken, refreshToken } = getTokensFromCookies()
     if (!accessToken || !refreshToken) {
       return Promise.reject(error)
     }
+    const { response: errorResponse } = error
     const resendOriginalRequest = new Promise(resolve => {
       addSubscriber(token => {
         errorResp.config.headers.Authorization = 'JWT ' + token
