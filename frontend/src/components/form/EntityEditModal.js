@@ -9,7 +9,7 @@ const EntityEditModal = ({
   currentNode,
   handleSave,
   handleClose,
-  handleTitleChange
+  handleFieldChange
 }) => {
   return (
     <Modal show={showModal} onHide={handleClose}>
@@ -18,12 +18,29 @@ const EntityEditModal = ({
       </Modal.Header>
       <Modal.Body>
         <Form>
-          <Form.Group controlId="formBasicEmail">
+          <Form.Group controlId="formTitle">
             <Form.Label>Title</Form.Label>
             <Form.Control
               type="input"
               value={currentNode?.title}
-              onChange={handleTitleChange}
+              onChange={(e) => handleFieldChange(e, 'title')}
+            />
+          </Form.Group>
+          <Form.Group controlId="formDescription">
+            <Form.Label>Description</Form.Label>
+            <Form.Control
+              type="input"
+              value={currentNode?.subtitle}
+              onChange={(e) => handleFieldChange(e, 'subtitle')}
+            />
+          </Form.Group>
+          <Form.Group controlId="formIsPublishedCheckbox">
+            <Form.Check
+              type="checkbox"
+              id="is_published"
+              checked={currentNode?.is_published}
+              onChange={(e) => handleFieldChange(e, 'is_published')}
+              label="Is the track published?"
             />
           </Form.Group>
         </Form>

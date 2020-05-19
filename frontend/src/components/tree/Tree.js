@@ -61,9 +61,12 @@ const Tree = () => {
     handleShow()
   }
 
-  const handleTitleChange = (event) => {
-    const title = event.target.value
-    const newNode = { ...currentNode, title }
+  const handleFieldChange = (event, fieldName) => {
+    let value = event.target.value
+    if (fieldName === 'is_published') {
+      value = event.target.checked
+    }
+    const newNode = { ...currentNode, [fieldName]: value }
     setCurrentNode(newNode)
   }
 
@@ -74,7 +77,7 @@ const Tree = () => {
         currentNode={currentNode}
         handleSave={handleSave}
         handleClose={handleClose}
-        handleTitleChange={handleTitleChange}
+        handleFieldChange={handleFieldChange}
       />
       <SortableTree
         treeData={nodes}
