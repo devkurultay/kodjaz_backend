@@ -47,6 +47,8 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'courses.apps.CoursesConfig',
     'frontend.apps.FrontendConfig',
+    'allauth.socialaccount.providers.google',
+ 
 ]
 
 REST_FRAMEWORK = {
