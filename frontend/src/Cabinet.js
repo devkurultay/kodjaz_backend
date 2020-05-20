@@ -6,7 +6,7 @@ import classnames from 'classnames'
 import axiosInstance from './axiosApi'
 
 import Home from './components/home/Home'
-import Form from './components/form/Form'
+import ExerciseForm from './components/form/ExerciseForm'
 
 const Cabinet = () => {
   const history = useHistory()
@@ -33,19 +33,11 @@ const Cabinet = () => {
               Home
             </NavText>
           </NavItem>
-          <NavItem eventKey="/form">
-            <NavIcon>
-              <i className="fa fa-fw fa-form" style={{ fontSize: '1.75em' }} />
-            </NavIcon>
-            <NavText>
-              Form
-            </NavText>
-          </NavItem>
         </SideNav.Nav>
       </SideNav>
-      <main className={classnames("main-content mt-3", { "margin-left-240": isExpanded })}>
+      <main className={classnames("main-content mt-3 px-5", { "margin-left-240": isExpanded })}>
         <Route path="/" exact render={() => <Home />} />
-        <Route path="/form" render={() => <Form />} />
+        <Route path="/exercise/:id" render={() => <ExerciseForm />} />
       </main>
     </>
   )
