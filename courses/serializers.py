@@ -19,16 +19,26 @@ class ExerciseSerializer(serializers.ModelSerializer):
 
 class LessonSerializer(serializers.ModelSerializer):
     lesson_exercises = ExerciseSerializer(many=True, read_only=True)
+    entity_type = serializers.SerializerMethodField()
+
     class Meta:
         model = Lesson
         fields = ['id', 'name', 'is_published', 'lesson_exercises', 'unit']
+    
+    def get_entity_type(self, obj):
+        return Lesson.__name__
 
 
 class UnitSerializer(serializers.ModelSerializer):
     unit_lessons = LessonSerializer(many=True, read_only=True)
+    entity_type = serializers.SerializerMethodField()
+
     class Meta:
         model = Unit
         fields = ['id', 'name', 'description', 'unit_lessons', 'is_published', 'track']
+
+    def get_entity_type(self, obj):
+        return Unit.__name__
 
 
 class TrackSerializer(serializers.ModelSerializer):
