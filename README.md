@@ -23,20 +23,20 @@ Happy coding!
 Each task should be done within its own branch. For this, we keep our local master clean and synced. Let's walk throug an example. Imagine you are given a task related to creating a new page for editing an exercise. Your steps should be as follows:
 1. Make sure you are on the `master` branch. When you issue the following command there should be an asterisk before the name of the branch `* master`: `git branch`
 2. Make sure the branch is clean. After issue the following command you should see the text as follows: `git status`
+    1. If it's not up to date, pull updates: `git pull origin master`
 ```
 On branch master
 Your branch is up to date with 'origin/master'.
 
 nothing to commit, working tree clean
 ```
-  1 If it's not up to date, pull updates: `git pull origin master`
 3. Create a new branch: `git checkout -b create-exercise-editing-page`
 4. Write your code. Commit as often as possible. Educate yourself: `https://sethrobertson.github.io/GitBestPractices/`
 5. After you are done with the task, create a Pull Request (PR):
-  1 Push your code to the repository, to a new remote branch with an identical name: `git push origin create-exercise-editing-page`
-  2 Go to the repository and refresh the page. You should see a button called `Create a pull request`. Click on it and fill the form –– insert the task's URL to the text field and create a pull request.
-  3 Send your PR's URL to a person who is responsible for the code (team lead?).
-  4 Do not merge until the PR is approved. When it's approved, make sure it has no conflicts.
+    1. Push your code to the repository, to a new remote branch with an identical name: `git push origin create-exercise-editing-page`
+    2. Go to the repository and refresh the page. You should see a button called `Create a pull request`. Click on it and fill the form –– insert the task's URL to the text field and create a pull request.
+    3. Send your PR's URL to a person who is responsible for the code (team lead?).
+    4. Do not merge until the PR is approved. When it's approved, make sure it has no conflicts.
 6. In case you have a conflicts (the same file or set of files was edited by you and your peer), in your machine switch to `master` (please, make sure that you are really on `master`), pull updates (`git pull origin master`) and go to your branch: `git checkout create-exercise-editing-page` and rebase from master: `git rebase master`.
 7. Resolve conflicts. VSCode has a good tool, Github itself has its own one. A good video on the topic: `https://www.youtube.com/watch?v=JtIX3HJKwfo`. If you are resloving the conflict locally, edit the files, `git add` the resolved files, don't forget to `git rebase --continue` etc. Talk to your team lead in case you have questions.
 8. Push the resolved code to your remote branch: `git push -f origin create-exercise-editing-page`. See `-f`? It means `force`, that is, you should force-push to your branch, because your local one's git history is different than the remote one.
