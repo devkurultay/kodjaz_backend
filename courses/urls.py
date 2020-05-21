@@ -2,13 +2,19 @@ from django.urls import path
 from rest_framework import routers
 
 from . import views
-from courses.api_views import TracksViewSet
+from courses.api_views import TrackViewSet
+from courses.api_views import UnitViewSet
+from courses.api_views import LessonViewSet
+from courses.api_views import ExerciseViewSet
 
 
 app_name = 'courses'
 
 router = routers.SimpleRouter()
-router.register(r'api/v1/tracks', TracksViewSet)
+router.register(r'api/v1/tracks', TrackViewSet)
+router.register(r'api/v1/units', UnitViewSet)
+router.register(r'api/v1/lessons', LessonViewSet)
+router.register(r'api/v1/exercises', ExerciseViewSet)
 
 urlpatterns = [
     path('', views.TracksListView.as_view(), name='tracks_list'),
