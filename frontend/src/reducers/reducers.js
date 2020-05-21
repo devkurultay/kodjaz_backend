@@ -1,6 +1,7 @@
 const initialState = {
   isAuthenticated: null,
-  loginError: []
+  loginError: [],
+  currentExercise: {},
 }
 
 function cabinet(state = initialState, action) {
@@ -16,6 +17,11 @@ function cabinet(state = initialState, action) {
         ...state,
         isAuthenticated: false,
         loginError: action.payload
+      }
+    case 'LOAD_EXERCISE':
+      return {
+        ...state,
+        currentExercise: action.payload
       }
     default:
       return state
