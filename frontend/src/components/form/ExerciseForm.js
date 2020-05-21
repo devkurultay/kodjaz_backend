@@ -1,25 +1,31 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { useParams } from "react-router-dom"
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import AceEditor from "react-ace"
 
 /*
- * Import modes depending on the language
+ * Import modes depending on the exercise language
  * languages.forEach(lang => {
- *   require(`ace-builds/src-noconflict/mode-${lang}`);
- *   require(`ace-builds/src-noconflict/snippets/${lang}`);
- * });
+ *   require(`ace-builds/src-noconflict/mode-${lang}`)
+ * })
  */
 
 import "ace-builds/src-noconflict/mode-python"
 import "ace-builds/src-noconflict/theme-github"
 
-const ExerciseForm = () => {
+const ExerciseForm = ({ currentExercise = {}, loadExercise }) => {
+  const { id } = useParams()
+  const [ exerciseData, setExerciseData ] = useState(currentExercise)
+
+  useEffect(() => {
+    if (id !== undefined || id !== null) {
+      loadExercise(id)
+    }
+  }, [])
   const handleCodeChange = (val) => {
     console.log(val)
   }
-  const { id } = useParams()
   return (
     <React.Fragment>
       <h4>Editing exercise #{ id }</h4>

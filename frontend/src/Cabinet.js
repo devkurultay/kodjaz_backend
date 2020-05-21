@@ -6,7 +6,7 @@ import classnames from 'classnames'
 import axiosInstance from './axiosApi'
 
 import Home from './components/home/Home'
-import ExerciseForm from './components/form/ExerciseForm'
+import ExerciseForm from './components/form/ExerciseFormContainer'
 
 const Cabinet = () => {
   const history = useHistory()
