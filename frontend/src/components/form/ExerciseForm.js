@@ -14,7 +14,7 @@ import AceEditor from "react-ace"
 import "ace-builds/src-noconflict/mode-python"
 import "ace-builds/src-noconflict/theme-github"
 
-const ExerciseForm = ({ currentExercise, loadExercise }) => {
+const ExerciseForm = ({ currentExercise, loadExercise, saveExercise }) => {
   const { id } = useParams()
   const [ exerciseData, setExerciseData ] = useState({})
 
@@ -30,6 +30,10 @@ const ExerciseForm = ({ currentExercise, loadExercise }) => {
 
   const handleFieldChange = (fieldName, value) => {
     setExerciseData({ ...exerciseData, [fieldName]: value })
+  }
+
+  const handleSave = () => {
+    saveExercise(id, exerciseData)
   }
 
   return (
@@ -169,7 +173,7 @@ const ExerciseForm = ({ currentExercise, loadExercise }) => {
             value={exerciseData?.text_file_content} />
         </Form.Group>
       </Form>
-      <Button variant="primary">
+      <Button variant="primary" onClick={handleSave}>
         Save Changes
       </Button>
     </React.Fragment>

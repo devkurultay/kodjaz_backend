@@ -2,6 +2,7 @@ const initialState = {
   isAuthenticated: null,
   loginError: [],
   currentExercise: {},
+  entityLoadingError: '',
 }
 
 function cabinet(state = initialState, action) {
@@ -21,7 +22,13 @@ function cabinet(state = initialState, action) {
     case 'LOAD_EXERCISE':
       return {
         ...state,
+        entityLoadingError: '',
         currentExercise: action.payload
+      }
+    case 'FAILED_TO_LOAD':
+      return {
+        ...state,
+        entityLoadingError: action.payload
       }
     default:
       return state

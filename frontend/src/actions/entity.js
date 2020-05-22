@@ -5,18 +5,46 @@ async function performExerciseLoading(id) {
   return response?.data
 }
 
-function getExercise(response) {
+async function performExerciseSaving(id, data) {
+  const response = await axiosInstance.put(`/v1/exercises/${id}/`, data)
+  return response?.data
+}
+
+function getExercise(data) {
   return {
     type: 'LOAD_EXERCISE',
-    payload: response
+    payload: data
+  }
+}
+
+function failedToLoad(error) {
+  return {
+    type: 'FAILED_TO_LOAD',
+    payload: error
+  }
+}
+
+function failedToSave(error) {
+  return {
+    type: 'FAILED_TO_SAVE',
+    payload: error
   }
 }
 
 export function loadExercise(id) {
   return function (dispatch) {
     return performExerciseLoading(id).then(
-      (response) => dispatch(getExercise(response)),
-      (error) => dispatch(failToLogIn(error))
+      (data) => dispatch(getExercise(data)),
+      (error) => dispatch(failedToLoad(error))
+    )
+  }
+}
+
+export function saveExercise(id, exercise) {
+  return function (dispatch) {
+    return performExerciseSaving(id, exercise).then(
+      (data) => dispatch(getExercise(data)),
+      (error) => dispatch(failedToSave(error))
     )
   }
 }

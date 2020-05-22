@@ -3,7 +3,10 @@ import { bindActionCreators } from 'redux'
 
 import ExerciseForm from './ExerciseForm'
 
-import { loadExercise } from '../../actions/entity'
+import {
+  loadExercise,
+  saveExercise
+} from '../../actions/entity'
 
 const mapStateToProps = (state) => {
   return {
@@ -12,10 +15,10 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators(
-    { loadExercise },
-    dispatch
-  )
+  return bindActionCreators({
+    loadExercise,
+    saveExercise
+  }, dispatch)
 }
 
 export default connect(
