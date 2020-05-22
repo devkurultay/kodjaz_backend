@@ -28,6 +28,7 @@
         "react-sortable-tree": "^2.7.1",
         "react-sortable-tree-theme-minimal": "0.0.14",
         "redux": "^4.0.5",
+        "redux-promise-middleware": "^6.1.2",
         "redux-thunk": "^2.3.0"
     },
     "devDependencies": {
