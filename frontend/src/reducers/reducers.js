@@ -4,7 +4,9 @@ const initialState = {
   currentExercise: {},
   entityLoadingError: '',
   isLoadTracksPending: false,
-  tracks: []
+  isLoadLessonsPending: false,
+  tracks: [],
+  lessons: [],
 }
 
 function cabinet(state = initialState, action) {
@@ -38,10 +40,21 @@ function cabinet(state = initialState, action) {
         isLoadTracksPending: true
       }
     case 'LOAD_TRACKS_FULFILLED':
-      console.log(action.payload.data)
       return {
         ...state,
+        isLoadTracksPending: false,
         tracks: action.payload.data
+      }
+    case 'LOAD_LESSONS_PENDING':
+      return {
+        ...state,
+        isLoadLessonsPending: true
+      }
+    case 'LOAD_LESSONS_FULFILLED':
+      return {
+        ...state,
+        isLoadLessonsPending: false,
+        lessons: action.payload.data
       }
     default:
       return state

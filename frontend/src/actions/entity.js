@@ -57,3 +57,12 @@ export function loadTracks() {
     })
   }
 }
+
+export function loadLessons() {
+  return function(dispatch) {
+    return dispatch({
+      type: 'LOAD_LESSONS',
+      payload: axiosInstance.get('/v1/lessons/')
+    })
+  }
+}

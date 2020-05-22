@@ -5,11 +5,13 @@ import ExerciseForm from './ExerciseForm'
 
 import {
   loadExercise,
+  loadLessons,
   saveExercise
 } from '../../actions/entity'
 
 const mapStateToProps = (state) => {
   return {
+    lessons: state.lessons,
     currentExercise: state.currentExercise
   }
 }
@@ -17,6 +19,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     loadExercise,
+    loadLessons,
     saveExercise
   }, dispatch)
 }

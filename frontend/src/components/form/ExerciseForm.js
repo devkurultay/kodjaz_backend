@@ -14,19 +14,31 @@ import AceEditor from "react-ace"
 import "ace-builds/src-noconflict/mode-python"
 import "ace-builds/src-noconflict/theme-github"
 
-const ExerciseForm = ({ currentExercise, loadExercise, saveExercise }) => {
+const ExerciseForm = ({
+  lessons,
+  currentExercise,
+  loadExercise,
+  loadLessons,
+  saveExercise
+}) => {
   const { id } = useParams()
   const [ exerciseData, setExerciseData ] = useState({})
+  const [ lesson, setLesson ] = useState({})
 
   useEffect(() => {
     if (id !== undefined || id !== null) {
       loadExercise(id)
     }
+    loadLessons()
   }, [])
 
   useEffect(() => {
     setExerciseData(currentExercise)
-  }, [ currentExercise ])
+    const currentLesson = lessons.filter(l => l.id === currentExercise?.lesson)
+    if (currentLesson) {
+      setLesson(currentLesson?.[0])
+    }
+  }, [ currentExercise, lessons ])
 
   const handleFieldChange = (fieldName, value) => {
     setExerciseData({ ...exerciseData, [fieldName]: value })
@@ -162,7 +174,7 @@ const ExerciseForm = ({ currentExercise, loadExercise, saveExercise }) => {
         </Form.Group>
         <Form.Group controlId="belongsToLesson">
           <Form.Label>Lesson the exercise belongs to</Form.Label>
-          <Form.Control type="text" />
+          <Form.Control type="text" value={lesson?.name} />
         </Form.Group>
         <Form.Group controlId="fileTxt">
           <Form.Label>If this field has a content, file.txt tab will be shown</Form.Label>
