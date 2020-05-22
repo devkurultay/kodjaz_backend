@@ -48,3 +48,12 @@ export function saveExercise(id, exercise) {
     )
   }
 }
+
+export function loadTracks() {
+  return function(dispatch) {
+    return dispatch({
+      type: 'LOAD_TRACKS',
+      payload: axiosInstance.get('/v1/tracks/')
+    })
+  }
+}

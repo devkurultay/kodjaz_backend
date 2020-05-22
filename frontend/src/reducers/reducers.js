@@ -3,6 +3,8 @@ const initialState = {
   loginError: [],
   currentExercise: {},
   entityLoadingError: '',
+  isLoadTracksPending: false,
+  tracks: []
 }
 
 function cabinet(state = initialState, action) {
@@ -29,6 +31,17 @@ function cabinet(state = initialState, action) {
       return {
         ...state,
         entityLoadingError: action.payload
+      }
+    case 'LOAD_TRACKS_PENDING':
+      return {
+        ...state,
+        isLoadTracksPending: true
+      }
+    case 'LOAD_TRACKS_FULFILLED':
+      console.log(action.payload.data)
+      return {
+        ...state,
+        tracks: action.payload.data
       }
     default:
       return state

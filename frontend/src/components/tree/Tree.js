@@ -9,20 +9,19 @@ import './Tree.scss'
 import axiosInstance from '../../axiosApi'
 import { dataToTree } from './helpers.js'
 
-const Tree = () => {
+const Tree = ({ tracks, loadTracks }) => {
   const [ nodes, setNodes ] = useState([])
   const [ showModal, setShowModal ] = useState(false)
   const [ currentPath, setCurrentPath ] = useState([])
   const [ currentNode, setCurrentNode ] = useState({})
 
-  const getDataAndSetToState = () => {
-    axiosInstance.get('/v1/tracks/').then(r => {
-      setNodes(dataToTree(r.data))
-    })
-  }
   useEffect(() => {
-    getDataAndSetToState()
+    loadTracks()
   }, [])
+
+  useEffect(() => {
+    setNodes(dataToTree(tracks))
+  }, [tracks])
 
   const handleClose = () => {
     setShowModal(false)
