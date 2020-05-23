@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { useParams } from "react-router-dom"
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
+import Modal from 'react-bootstrap/Modal'
 import AceEditor from "react-ace"
+
+import Tree from '../tree/TreeContainer'
 
 /*
  * Import modes depending on the exercise language
@@ -24,6 +27,7 @@ const ExerciseForm = ({
   const { id } = useParams()
   const [ exerciseData, setExerciseData ] = useState({})
   const [ lesson, setLesson ] = useState({})
+  const [ showModal, setShowModal ] = useState(false)
 
   useEffect(() => {
     if (id !== undefined || id !== null) {
@@ -32,24 +36,60 @@ const ExerciseForm = ({
     loadLessons()
   }, [])
 
-  useEffect(() => {
-    setExerciseData(currentExercise)
-    const currentLesson = lessons.filter(l => l.id === currentExercise?.lesson)
+  const setCurrentLessonById = (id) => {
+    const currentLesson = lessons.filter(l => l.id === id)
     if (currentLesson) {
       setLesson(currentLesson?.[0])
     }
+  }
+
+  useEffect(() => {
+    setExerciseData(currentExercise)
+    setCurrentLessonById(currentExercise?.lesson)
   }, [ currentExercise, lessons ])
 
   const handleFieldChange = (fieldName, value) => {
     setExerciseData({ ...exerciseData, [fieldName]: value })
   }
 
+  const handleLessonPick = (node) => {
+    setCurrentLessonById(node.id)
+    setExerciseData({ ...exerciseData, lesson: node.id })
+  }
+
   const handleSave = () => {
     saveExercise(id, exerciseData)
   }
 
+  const handleModalClose = () => {
+    setShowModal(false)
+  }
+
+  const handleModalSave = () => {
+    setShowModal(true)
+  }
+
   return (
     <React.Fragment>
+      <Modal show={showModal} onHide={handleModalClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Changing "{lesson?.name}"</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Tree
+            entityToPick={'Lesson'}
+            pickHandler={handleLessonPick}
+          />
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleModalClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleModalSave}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
       <h4>Editing exercise #{ id }</h4>
       <hr />
       <Form>
@@ -174,7 +214,7 @@ const ExerciseForm = ({
         </Form.Group>
         <Form.Group controlId="belongsToLesson">
           <Form.Label>Lesson the exercise belongs to</Form.Label>
-          <Form.Control type="text" value={lesson?.name} />
+          <Form.Control type="text" value={lesson?.name} onFocus={() => setShowModal(true)} />
         </Form.Group>
         <Form.Group controlId="fileTxt">
           <Form.Label>If this field has a content, file.txt tab will be shown</Form.Label>
