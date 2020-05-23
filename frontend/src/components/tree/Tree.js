@@ -9,7 +9,12 @@ import './Tree.scss'
 import axiosInstance from '../../axiosApi'
 import { dataToTree } from './helpers.js'
 
-const Tree = ({ tracks, loadTracks }) => {
+const Tree = ({
+  tracks,
+  loadTracks,
+  entityToPick = '',
+  pickHandler = () => {}
+}) => {
   const [ nodes, setNodes ] = useState([])
   const [ showModal, setShowModal ] = useState(false)
   const [ currentPath, setCurrentPath ] = useState([])
@@ -69,6 +74,30 @@ const Tree = ({ tracks, loadTracks }) => {
     setCurrentNode(newNode)
   }
 
+  const getPickBtn = (node) => {
+    return node.type === entityToPick
+      ? [
+          <button onClick={() => pickHandler(node)}>
+            Pick
+          </button>
+        ]
+      : []
+  }
+
+  const getEditBtn = (node, path) => {
+    return [
+      <button onClick={() => handleEditClick(node, path)}>
+        Edit
+      </button>
+    ]
+  }
+
+  const getButtons = (node, path) => {
+    return entityToPick
+      ? getPickBtn(node)
+      : getEditBtn(node, path)
+  }
+
   return (
     <div className="tree">
       <EntityEditModal
@@ -83,11 +112,7 @@ const Tree = ({ tracks, loadTracks }) => {
         onChange={setNodes}
         theme={FileExplorerTheme}
         generateNodeProps={({ node, path }) => ({
-					buttons: [
-						<button onClick={() => handleEditClick(node, path)}>
-							Edit
-						</button>
-					]
+					buttons: getButtons(node, path)
         })}
       />
     </div>

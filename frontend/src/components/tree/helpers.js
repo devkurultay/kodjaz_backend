@@ -23,6 +23,7 @@ const getUnits = (units) => {
       title: unit.name,
       subtitle: unit.description,
       expanded: true,
+      type: unit.entity_type,
       children: getLessons(unit.unit_lessons)
     }
   })
@@ -35,6 +36,7 @@ const getLessons = (lessons) => {
       title: lesson.name,
       subtitle: lesson.description,
       expanded: true,
+      type: lesson.entity_type,
       children: getExercises(lesson.lesson_exercises)
     }
   })
@@ -44,7 +46,8 @@ const getExercises = (exercises) => {
   return exercises.map(exercise => {
     return {
       id: exercise.id,
-      title: exercise.name
+      title: exercise.name,
+      type: exercise.entity_type
     }
   })
 }
