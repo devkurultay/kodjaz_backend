@@ -153,7 +153,7 @@
         "is_published": true,
         "lesson": 1,
         "date_time_created": "2020-02-15T17:28:42.187Z",
-        "date_time_modified": "2020-05-02T15:25:49.986Z",
+        "date_time_modified": "2020-05-21T05:04:12.790Z",
         "text_file_content": ""
     }
 },
@@ -291,9 +291,7 @@
     "model": "courses.submission",
     "pk": 28,
     "fields": {
-        "user": [
-            "jumasheff"
-        ],
+        "user": 1,
         "exercise": 1,
         "submitted_code": "print(\"Hello world\")",
         "lecture": "\u0410\u043b\u0433\u0430\u0447\u043a\u044b \u043a\u043e\u0434 \u0436\u0430\u0437\u0433\u0430\u043d\u0434\u0430, \u0441\u0430\u043b\u0442 \u043a\u0430\u0442\u0430\u0440\u044b \"Hello world\" \u0434\u0435\u0433\u0435\u043d \u0441\u04af\u0439\u043b\u04e9\u043c\u0434\u04af \u0447\u044b\u0433\u0430\u0440\u044b\u0448\u0430\u0442.",
