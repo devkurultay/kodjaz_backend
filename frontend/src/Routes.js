@@ -1,7 +1,7 @@
 import React from 'react'
 import { Switch, Route } from "react-router-dom"
 
-import Cabinet from './Cabinet'
+import Cabinet from './components/home/CabinetContainer'
 import Signup from './components/auth/Signup'
 import Login from './components/auth/Login'
 import ProtectedRoute from './components/auth/ProtectedRoute'

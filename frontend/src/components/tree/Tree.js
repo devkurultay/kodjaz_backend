@@ -11,7 +11,6 @@ import { dataToTree } from './helpers.js'
 
 const Tree = ({
   tracks,
-  loadTracks,
   entityToPick = '',
   pickHandler = () => {}
 }) => {
@@ -19,10 +18,6 @@ const Tree = ({
   const [ showModal, setShowModal ] = useState(false)
   const [ currentPath, setCurrentPath ] = useState([])
   const [ currentNode, setCurrentNode ] = useState({})
-
-  useEffect(() => {
-    loadTracks()
-  }, [])
 
   useEffect(() => {
     setNodes(dataToTree(tracks))
