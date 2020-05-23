@@ -3,15 +3,18 @@ import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText } from '@trendmicro/rea
 import { Route, useHistory, useLocation } from "react-router-dom"
 import classnames from 'classnames'
 
-import axiosInstance from './axiosApi'
+import axiosInstance from '../../axiosApi'
 
-import Home from './components/home/Home'
-import ExerciseForm from './components/form/ExerciseFormContainer'
+import Home from './Home'
+import ExerciseForm from '../form/ExerciseFormContainer'
 
-const Cabinet = () => {
+const Cabinet = ({ loadTracks }) => {
   const history = useHistory()
   const location = useLocation()
   const [ isExpanded, setIsExpanded ] = useState(false)
+  useEffect(() => {
+    loadTracks()
+  }, [])
   return (
     <>
       <SideNav

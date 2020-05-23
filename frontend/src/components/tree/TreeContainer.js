@@ -12,11 +12,6 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({ loadTracks }, dispatch)
-}
-
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
+  mapStateToProps
 )(Tree)

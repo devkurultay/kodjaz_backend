@@ -18,22 +18,23 @@ import "ace-builds/src-noconflict/mode-python"
 import "ace-builds/src-noconflict/theme-github"
 
 const ExerciseForm = ({
+  tracks,
   lessons,
-  currentExercise,
-  loadExercise,
+  exercises,
+  loadExercises,
   loadLessons,
   saveExercise
 }) => {
   const { id } = useParams()
   const [ exerciseData, setExerciseData ] = useState({})
+  const [ prevExercise, setPrevExercise ] = useState({})
+  const [ nextExercise, setNextExercise ] = useState({})
   const [ lesson, setLesson ] = useState({})
   const [ showModal, setShowModal ] = useState(false)
   const [ entityToPick, setEntityToPick ] = useState('')
 
   useEffect(() => {
-    if (id !== undefined || id !== null) {
-      loadExercise(id)
-    }
+    loadExercises()
     loadLessons()
   }, [])
 
@@ -44,10 +45,21 @@ const ExerciseForm = ({
     }
   }
 
+  const getExerciseDataById = (idOfExerciseToFind) => {
+    return exercises.filter(exercise => Number(exercise.id) === Number(idOfExerciseToFind))?.[0]
+  }
+
   useEffect(() => {
-    setExerciseData(currentExercise)
-    setCurrentLessonById(currentExercise?.lesson)
-  }, [ currentExercise, lessons ])
+    if (exercises.length) {
+      const currentExercise = getExerciseDataById(id)
+      const prev = getExerciseDataById(currentExercise?.previous_exercise)
+      const next = getExerciseDataById(currentExercise?.next_exercise)
+      setExerciseData(currentExercise)
+      setPrevExercise(prev)
+      setNextExercise(next)
+      setCurrentLessonById(currentExercise?.lesson)
+    }
+  }, [ exercises, lessons ])
 
   const handleFieldChange = (fieldName, value) => {
     setExerciseData({ ...exerciseData, [fieldName]: value })
@@ -225,7 +237,16 @@ const ExerciseForm = ({
           <Form.Control
             type="text"
             readOnly
-            onFocus={(e) => handleEntityPick(e, 'Exercise')}/>
+            onFocus={(e) => handleEntityPick(e, 'Exercise')}
+            value={prevExercise?.name || ''} />
+        </Form.Group>
+        <Form.Group controlId="nextExercise">
+          <Form.Label>Select next exercise</Form.Label>
+          <Form.Control
+            type="text"
+            readOnly
+            onFocus={(e) => handleEntityPick(e, 'Exercise')}
+            value={nextExercise?.name || ''} />
         </Form.Group>
         <Form.Group controlId="isPublishedCheckbox">
           <Form.Check

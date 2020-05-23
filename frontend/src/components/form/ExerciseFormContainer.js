@@ -4,21 +4,22 @@ import { bindActionCreators } from 'redux'
 import ExerciseForm from './ExerciseForm'
 
 import {
-  loadExercise,
+  loadExercises,
   loadLessons,
   saveExercise
 } from '../../actions/entity'
 
 const mapStateToProps = (state) => {
   return {
+    tracks: state.tracks,
     lessons: state.lessons,
-    currentExercise: state.currentExercise
+    exercises: state.exercises
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    loadExercise,
+    loadExercises,
     loadLessons,
     saveExercise
   }, dispatch)
