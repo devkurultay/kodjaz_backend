@@ -28,6 +28,7 @@ const ExerciseForm = ({
   const [ exerciseData, setExerciseData ] = useState({})
   const [ lesson, setLesson ] = useState({})
   const [ showModal, setShowModal ] = useState(false)
+  const [ entityToPick, setEntityToPick ] = useState('')
 
   useEffect(() => {
     if (id !== undefined || id !== null) {
@@ -57,6 +58,10 @@ const ExerciseForm = ({
     setExerciseData({ ...exerciseData, lesson: node.id })
   }
 
+  const handlePrevExercisePick = (node) => {
+    console.log(node)
+  }
+
   const handleSave = () => {
     saveExercise(id, exerciseData)
   }
@@ -73,9 +78,15 @@ const ExerciseForm = ({
     setShowModal(false)
   }
 
-  const handleLessonFocus = (e) => {
+  const handleEntityPick = (e, entityType) => {
+    setEntityToPick(entityType)
     handleModalShow()
     e.target.blur()
+  }
+
+  const entityPickers = {
+    Lesson: handleLessonPick,
+    Exercise: handlePrevExercisePick
   }
 
   return (
@@ -86,8 +97,8 @@ const ExerciseForm = ({
         </Modal.Header>
         <Modal.Body>
           <Tree
-            entityToPick={'Lesson'}
-            pickHandler={handleLessonPick}
+            entityToPick={entityToPick}
+            pickHandler={entityPickers[entityToPick]}
           />
         </Modal.Body>
         <Modal.Footer>
@@ -211,7 +222,7 @@ const ExerciseForm = ({
         />
         <Form.Group controlId="prevExercise">
           <Form.Label>Select previous exercise</Form.Label>
-          <Form.Control type="text" />
+          <Form.Control type="text" onFocus={(e) => handleEntityPick(e, 'Exercise')}/>
         </Form.Group>
         <Form.Group controlId="isPublishedCheckbox">
           <Form.Check
@@ -224,7 +235,7 @@ const ExerciseForm = ({
         </Form.Group>
         <Form.Group controlId="belongsToLesson">
           <Form.Label>Lesson the exercise belongs to</Form.Label>
-          <Form.Control type="text" value={lesson?.name} onFocus={handleLessonFocus} />
+          <Form.Control type="text" value={lesson?.name} onFocus={(e) => handleEntityPick(e, 'Lesson')} />
         </Form.Group>
         <Form.Group controlId="fileTxt">
           <Form.Label>If this field has a content, file.txt tab will be shown</Form.Label>
