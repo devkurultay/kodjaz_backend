@@ -1,6 +1,7 @@
 **Assumptions**
 1. I assume that you have added your ssh-keys to your github account: `https://github.com/settings/keys`. In case you don't know how to do it, refer to this page: `https://help.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh`
 2. Node.js v10.20.1 (I prefer nvm as a version manager -- you can install multiple versions using it.). However, this version requirement is subject to change.
+3. Python v3.6. or above
 
 **Installation**
 1. Clone the project using ssh url: `git@github.com:jumasheff/codomodo.git`
@@ -10,11 +11,12 @@
 5. Activate the virtual environment: `source env/bin/activate`
 6. Install Python dependencies: `pip install -r requirements/requirements_dev.txt`
 7. Open 2 terminal tabs/windows (whatever you prefer)
-8. In the 1st terminal (in the project directory) activate the virtual environment (in case it's not activated) and create a superuser: `./manage.py createsuperuser` (fill in all the fields)
-9. In the same terminal load the fixtures (dummy data): `./manage.py loaddata fixtures/courses.json`
-10. In the same terminal run the Django server: `./manage.py runserver`
-11. In the 2nd terminal issue the following command (which will run a watcher.js whose job is to rebuild the project each time it detects some changes under the frontend/src folder): `npm start`
-12. Now you can open your favorite editor and start writing your awesome code!
+8. In the 1st terminal (in the project directory) activate the virtual environment (in case it's not activated) and install migrations: `./manage.py migrate`
+9. Create a superuser: `./manage.py createsuperuser` (fill in all the fields)
+10. In the same terminal load the fixtures (dummy data): `./manage.py loaddata fixtures/courses.json`
+11. In the same terminal run the Django server: `./manage.py runserver`
+12. In the 2nd terminal issue the following command (which will run a watcher.js whose job is to rebuild the project each time it detects some changes under the frontend/src folder): `npm start`
+13. Now you can open your favorite editor and start writing your awesome code!
 
 Happy coding!
 
