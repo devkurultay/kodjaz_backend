@@ -9,20 +9,24 @@ import './Tree.scss'
 import axiosInstance from '../../axiosApi'
 import { dataToTree } from './helpers.js'
 
-const Tree = () => {
+const Tree = ({
+  tracks,
+  loadTracks,
+  entityToPick = '',
+  pickHandler = () => {}
+}) => {
   const [ nodes, setNodes ] = useState([])
   const [ showModal, setShowModal ] = useState(false)
   const [ currentPath, setCurrentPath ] = useState([])
   const [ currentNode, setCurrentNode ] = useState({})
 
-  const getDataAndSetToState = () => {
-    axiosInstance.get('/v1/tracks/').then(r => {
-      setNodes(dataToTree(r.data))
-    })
-  }
   useEffect(() => {
-    getDataAndSetToState()
+    loadTracks()
   }, [])
+
+  useEffect(() => {
+    setNodes(dataToTree(tracks))
+  }, [tracks])
 
   const handleClose = () => {
     setShowModal(false)
@@ -70,6 +74,30 @@ const Tree = () => {
     setCurrentNode(newNode)
   }
 
+  const getPickBtn = (node) => {
+    return node.type === entityToPick
+      ? [
+          <button onClick={() => pickHandler(node)}>
+            Pick
+          </button>
+        ]
+      : []
+  }
+
+  const getEditBtn = (node, path) => {
+    return [
+      <button onClick={() => handleEditClick(node, path)}>
+        Edit
+      </button>
+    ]
+  }
+
+  const getButtons = (node, path) => {
+    return entityToPick
+      ? getPickBtn(node)
+      : getEditBtn(node, path)
+  }
+
   return (
     <div className="tree">
       <EntityEditModal
@@ -84,11 +112,7 @@ const Tree = () => {
         onChange={setNodes}
         theme={FileExplorerTheme}
         generateNodeProps={({ node, path }) => ({
-					buttons: [
-						<button onClick={() => handleEditClick(node, path)}>
-							Edit
-						</button>
-					]
+					buttons: getButtons(node, path)
         })}
       />
     </div>

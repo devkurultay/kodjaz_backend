@@ -1,5 +1,5 @@
 import React from 'react'
-import Tree from '../tree/Tree'
+import Tree from '../tree/TreeContainer'
 
 const Home = () => {
 	return (
