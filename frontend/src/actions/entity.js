@@ -66,3 +66,12 @@ export function loadLessons() {
     })
   }
 }
+
+export function loadExercises() {
+  return function(dispatch) {
+    return dispatch({
+      type: 'LOAD_EXERCISES',
+      payload: axiosInstance.get('/v1/exercises/')
+    })
+  }
+}
