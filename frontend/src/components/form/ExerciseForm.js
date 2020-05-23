@@ -61,12 +61,21 @@ const ExerciseForm = ({
     saveExercise(id, exerciseData)
   }
 
+  const handleModalShow = () => {
+    setShowModal(true)
+  }
+
   const handleModalClose = () => {
     setShowModal(false)
   }
 
   const handleModalSave = () => {
-    setShowModal(true)
+    setShowModal(false)
+  }
+
+  const handleLessonFocus = (e) => {
+    handleModalShow()
+    e.target.blur()
   }
 
   return (
@@ -90,6 +99,7 @@ const ExerciseForm = ({
           </Button>
         </Modal.Footer>
       </Modal>
+
       <h4>Editing exercise #{ id }</h4>
       <hr />
       <Form>
@@ -214,7 +224,7 @@ const ExerciseForm = ({
         </Form.Group>
         <Form.Group controlId="belongsToLesson">
           <Form.Label>Lesson the exercise belongs to</Form.Label>
-          <Form.Control type="text" value={lesson?.name} onFocus={() => setShowModal(true)} />
+          <Form.Control type="text" value={lesson?.name} onFocus={handleLessonFocus} />
         </Form.Group>
         <Form.Group controlId="fileTxt">
           <Form.Label>If this field has a content, file.txt tab will be shown</Form.Label>
