@@ -26,16 +26,11 @@ async function performLogin(username, password) {
 
 async function performIsAuthCheck () {
   const { refreshToken, accessToken } = await getTokens()
-  if (refreshToken) {
+  if (accessToken) {
     const tokenParts = JSON.parse(atob(refreshToken.split('.')[1]))
     // exp date in token is expressed in seconds, while now() returns milliseconds:
     const now = Math.ceil(Date.now() / 1000)
     if (tokenParts.exp > now) {
-      const response = await axiosInstance.post('/token/refresh/', { refresh: refreshToken })
-      const newAccessToken = response?.data?.access
-      const newRefreshToken = response?.data?.refresh
-      await setTokens(newAccessToken, newRefreshToken)
-      axiosInstance.defaults.headers['Authorization'] = "JWT " + newAccessToken
       return Promise.resolve(true)
     } else {
       return Promise.reject('Token expired')

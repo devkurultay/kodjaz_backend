@@ -33,7 +33,8 @@ axiosInstance.interceptors.response.use(
 const isTokenExpired = (errorResp) => {
   const { data, status } = errorResp
   const { detail } = data
-  return status === 401 && detail === "Token has been expired."
+  const errorMsgs = ['Given token not valid for any token type', 'Token has been expired.']
+  return status === 401 && errorMsgs.includes(detail)
 }
 
 const getWrongCredentialsErrorMessages = (errorResp) => {
@@ -49,9 +50,9 @@ const getWrongCredentialsErrorMessages = (errorResp) => {
   return errorMsg
 }
 
-const getTokensFromCookies = () => {
-  const token = Cookies.get('access_token')
-  const refreshToken = Cookies.get('refresh_token')
+const getTokensFromCookies = async () => {
+  const token = await Cookies.get('access_token')
+  const refreshToken = await Cookies.get('refresh_token')
   return { token, refreshToken }
 }
 
@@ -75,7 +76,7 @@ const triggerSubscribers = (accessToken) => {
 
 const refreshTokenAndResendRequest = async (error) => {
   try {
-    const { accessToken, refreshToken } = getTokensFromCookies()
+    const { accessToken, refreshToken } = await getTokensFromCookies()
     if (!accessToken || !refreshToken) {
       return Promise.reject(error)
     }
