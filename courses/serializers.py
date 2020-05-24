@@ -6,9 +6,19 @@ from courses.models import Lesson
 from courses.models import Exercise
 
 
+class PreviousExerciseSerializerField(serializers.Field):
+    def to_representation(self, obj):
+        prev = Exercise.objects.filter(next_exercise__id=obj.id).first()
+        return prev.id if prev else None
+
+    def to_internal_value(self, data):
+        prev = Exercise.objects.get(id=data)
+        return { 'previous_exercise': prev }
+
+
 class ExerciseSerializer(serializers.ModelSerializer):
     entity_type = serializers.SerializerMethodField()
-    previous_exercise = serializers.SerializerMethodField()
+    previous_exercise = PreviousExerciseSerializerField(source='*')
 
     class Meta:
         model = Exercise
@@ -22,10 +32,6 @@ class ExerciseSerializer(serializers.ModelSerializer):
     
     def get_entity_type(self, obj):
         return Exercise.__name__
-
-    def get_previous_exercise(self, obj):
-        prev = Exercise.objects.filter(next_exercise__id=obj.id).first()
-        return prev.id if prev else None
 
 
 class LessonSerializer(serializers.ModelSerializer):
