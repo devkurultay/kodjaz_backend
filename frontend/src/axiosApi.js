@@ -51,9 +51,9 @@ const getWrongCredentialsErrorMessages = (errorResp) => {
 }
 
 const getTokensFromCookies = async () => {
-  const token = await Cookies.get('access_token')
+  const accessToken= await Cookies.get('access_token')
   const refreshToken = await Cookies.get('refresh_token')
-  return { token, refreshToken }
+  return { accessToken, refreshToken }
 }
 
 const setTokensToCookies = async (access_token, refresh_token) => {
@@ -83,14 +83,14 @@ const refreshTokenAndResendRequest = async (error) => {
     const { response: errorResponse } = error
     const resendOriginalRequest = new Promise(resolve => {
       addSubscriber(token => {
-        errorResp.config.headers.Authorization = 'JWT ' + token
-        resolve(axios(errorResp.config))
+        errorResponse.config.headers.Authorization = 'JWT ' + token
+        resolve(axios(errorResponse.config))
       })
     })
     if(!isFetchingAccessTokenInProgress) {
       isFetchingAccessTokenInProgress = true
       const response = await axios.post(
-        '/token/refresh/',
+        '/api/token/refresh/',
         { refresh: refreshToken }
       )
       if (response && !response.data) {
@@ -99,6 +99,7 @@ const refreshTokenAndResendRequest = async (error) => {
       const newAccessToken = response?.data?.access
       const newRefreshToken = response?.data?.refresh
       await setTokensToCookies(newAccessToken, newRefreshToken)
+      axiosInstance.defaults.headers.Authorization = 'JWT ' + newAccessToken
       isFetchingAccessTokenInProgress = false
       triggerSubscribers(newAccessToken)
     }
