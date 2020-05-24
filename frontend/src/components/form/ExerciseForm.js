@@ -29,6 +29,7 @@ const ExerciseForm = ({
   const [ exerciseData, setExerciseData ] = useState({})
   const [ prevExercise, setPrevExercise ] = useState({})
   const [ nextExercise, setNextExercise ] = useState({})
+  const [ exerciseToPick, setExerciseToPick ] = useState('')
   const [ lesson, setLesson ] = useState({})
   const [ showModal, setShowModal ] = useState(false)
   const [ entityToPick, setEntityToPick ] = useState('')
@@ -70,8 +71,15 @@ const ExerciseForm = ({
     setExerciseData({ ...exerciseData, lesson: node.id })
   }
 
-  const handlePrevExercisePick = (node) => {
-    console.log(node)
+  const handleExercisePick = (node) => {
+    const exerciseId = node.id
+    const exercise = getExerciseDataById(exerciseId)
+    if (exerciseToPick === 'previous_exercise') {
+      setPrevExercise(exercise)
+    } else if (exerciseToPick === 'next_exercise') {
+      setNextExercise(exercise)
+    }
+    setExerciseData({ ...exerciseData, [exerciseToPick]: node.id })
   }
 
   const handleSave = () => {
@@ -84,13 +92,20 @@ const ExerciseForm = ({
 
   const handleModalClose = () => {
     setShowModal(false)
+    setEntityToPick('')
+    setExerciseToPick('')
   }
 
   const handleModalSave = () => {
     setShowModal(false)
+    setEntityToPick('')
+    setExerciseToPick('')
   }
 
-  const handleEntityPick = (e, entityType) => {
+  const handleEntityPick = (e, entityType, exerciseType = '') => {
+    if (exerciseType.length) {
+      setExerciseToPick(exerciseType)
+    }
     setEntityToPick(entityType)
     handleModalShow()
     e.target.blur()
@@ -98,7 +113,7 @@ const ExerciseForm = ({
 
   const entityPickers = {
     Lesson: handleLessonPick,
-    Exercise: handlePrevExercisePick
+    Exercise: handleExercisePick
   }
 
   return (
@@ -237,7 +252,7 @@ const ExerciseForm = ({
           <Form.Control
             type="text"
             readOnly
-            onFocus={(e) => handleEntityPick(e, 'Exercise')}
+            onFocus={(e) => handleEntityPick(e, 'Exercise', 'previous_exercise')}
             value={prevExercise?.name || ''} />
         </Form.Group>
         <Form.Group controlId="nextExercise">
@@ -245,7 +260,7 @@ const ExerciseForm = ({
           <Form.Control
             type="text"
             readOnly
-            onFocus={(e) => handleEntityPick(e, 'Exercise')}
+            onFocus={(e) => handleEntityPick(e, 'Exercise', 'next_exercise')}
             value={nextExercise?.name || ''} />
         </Form.Group>
         <Form.Group controlId="isPublishedCheckbox">
