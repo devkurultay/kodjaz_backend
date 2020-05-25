@@ -72,6 +72,7 @@ const ExerciseForm = ({
   const handleLessonPick = (node) => {
     setCurrentLessonById(node.id)
     setExerciseData({ ...exerciseData, lesson: node.id })
+    handleModalClose()
   }
 
   const handleExercisePick = (node) => {
@@ -83,6 +84,7 @@ const ExerciseForm = ({
       setNextExercise(exercise)
     }
     setExerciseData({ ...exerciseData, [exerciseToPick]: node.id })
+    handleModalClose()
   }
 
   const handleSave = () => {
@@ -94,12 +96,6 @@ const ExerciseForm = ({
   }
 
   const handleModalClose = () => {
-    setShowModal(false)
-    setEntityToPick('')
-    setExerciseToPick('')
-  }
-
-  const handleModalSave = () => {
     setShowModal(false)
     setEntityToPick('')
     setExerciseToPick('')
@@ -128,7 +124,7 @@ const ExerciseForm = ({
     <React.Fragment>
       <Modal show={showModal} onHide={handleModalClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Changing "{lesson?.name}"</Modal.Title>
+          <Modal.Title>Picking another value for "{entityToPick}"</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Tree
@@ -140,9 +136,6 @@ const ExerciseForm = ({
         <Modal.Footer>
           <Button variant="secondary" onClick={handleModalClose}>
             Close
-          </Button>
-          <Button variant="primary" onClick={handleModalSave}>
-            Save Changes
           </Button>
         </Modal.Footer>
       </Modal>
@@ -306,6 +299,7 @@ const ExerciseForm = ({
         disabled={isSaveExercisePending}
         variant="primary"
         onClick={handleSave}
+        className="mb-5"
       >
         {isSaveExercisePending ? 'Saving…' : 'Save changes'}
       </Button>
