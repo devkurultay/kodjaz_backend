@@ -10,6 +10,8 @@ import AceEditor from "react-ace"
 import Tree from '../tree/TreeContainer'
 import WarningModal from './WarningModal'
 
+import './ExerciseForm.scss'
+
 /*
  * Import modes depending on the exercise language
  * languages.forEach(lang => {
@@ -41,6 +43,7 @@ const ExerciseForm = ({
   const [ showWarningModal, setShowWarningModal ] = useState(false)
   const [ entityToPick, setEntityToPick ] = useState('')
   const [ entityToClear, setEntityToClear ] = useState('')
+  const [ success, setSuccess ] = useState(false)
 
   useEffect(() => {
     loadExercises()
@@ -68,7 +71,10 @@ const ExerciseForm = ({
       setNextExercise(next)
       setLessonById(currentExercise?.lesson, setLesson)
     }
-  }, [ exercises, lessons ])
+    if (!saveExerciseError) {
+      setSuccess(false)
+    }
+  }, [ exercises, lessons, saveExerciseError ])
 
   const handleFieldChange = (fieldName, value) => {
     setExerciseData({ ...exerciseData, [fieldName]: value })
@@ -105,7 +111,9 @@ const ExerciseForm = ({
   }
 
   const handleSave = () => {
+    setSuccess(true)
     saveExercise(id, exerciseData)
+    setTimeout(() => setSuccess(false), 3000)
   }
 
   const handleModalShow = () => {
@@ -393,11 +401,17 @@ const ExerciseForm = ({
         ? saveExerciseError.map((msg, idx) => <Alert key={idx} variant="danger">{msg}</Alert>)
         : null
       }
+      <div className="exercise-form__alert-placeholder">
+        {success
+          ? <Alert variant="success">Successfully saved!</Alert>
+          : null
+        }
+      </div>
       <Button
         disabled={isSaveExercisePending}
         variant="primary"
         onClick={handleSave}
-        className="mb-5"
+        className="mt-2 mb-5"
       >
         {isSaveExercisePending ? 'Saving…' : 'Save changes'}
       </Button>
