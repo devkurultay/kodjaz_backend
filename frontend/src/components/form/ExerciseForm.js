@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom"
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
+import Alert from 'react-bootstrap/Alert'
 import AceEditor from "react-ace"
 
 import Tree from '../tree/TreeContainer'
@@ -22,6 +23,7 @@ const ExerciseForm = ({
   lessons,
   exercises,
   isSaveExercisePending,
+  saveExerciseError,
   loadExercises,
   loadLessons,
   saveExercise
@@ -290,6 +292,10 @@ const ExerciseForm = ({
             value={exerciseData?.text_file_content || ''} />
         </Form.Group>
       </Form>
+      {saveExerciseError.length
+        ? saveExerciseError.map((msg, idx) => <Alert key={idx} variant="danger">{msg}</Alert>)
+        : null
+      }
       <Button
         disabled={isSaveExercisePending}
         variant="primary"
