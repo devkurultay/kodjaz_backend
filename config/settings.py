@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'courses.apps.CoursesConfig',
     'frontend.apps.FrontendConfig',
+    'allauth.socialaccount.providers.facebook',
     'allauth.socialaccount.providers.google',
  
 ]
@@ -119,6 +120,7 @@ DATABASES = {
 }
 
 SITE_ID = 1
+LOGIN_REDIRECT_URL = '/'
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
