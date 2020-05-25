@@ -181,7 +181,7 @@ const ExerciseForm = ({
         </Modal.Body>
         <Modal.Footer>
           {Object.keys(newLesson).length
-            ? <Alert variant="warning">
+            ? <Alert variant="danger">
                 <div>If you choose a new lesson, previous and next exercise values will be lost. If you want to proceed, click "Proceed" button</div>
                 <Button onClick={handleLessonProceed}>Proceed</Button>
               </Alert>
@@ -339,11 +339,29 @@ const ExerciseForm = ({
         </Form.Group>
         <Form.Group controlId="nextExercise">
           <Form.Label>Select next exercise</Form.Label>
-          <Form.Control
-            type="text"
-            readOnly
-            onFocus={(e) => handleEntityPick(e, 'Exercise', 'next_exercise')}
-            value={nextExercise?.name || ''} />
+          <InputGroup>
+            <InputGroup.Prepend>
+              <InputGroup.Text
+                id="next_exercise"
+                onClick={(e) => handleEntityPick(e, 'Exercise', 'next_exercise')}
+              >
+                <i className="fa fa-fw fa-search" />
+              </InputGroup.Text>
+            </InputGroup.Prepend>
+            <InputGroup.Prepend>
+              <InputGroup.Text
+                id="next_exercise2"
+                onClick={() => handleWarningModalShow('next_exercise')}
+              >
+                <i className="fa fa-fw fa-times" />
+              </InputGroup.Text>
+            </InputGroup.Prepend>
+            <Form.Control
+              type="text"
+              readOnly
+              onFocus={(e) => handleEntityPick(e, 'Exercise', 'next_exercise')}
+              value={nextExercise?.name || ''} />
+          </InputGroup>
         </Form.Group>
         <Form.Group controlId="isPublishedCheckbox">
           <Form.Check
