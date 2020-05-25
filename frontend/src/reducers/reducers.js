@@ -8,6 +8,7 @@ const initialState = {
   isLoadExercisesPending: false,
   isSaveTrackPending: false,
   isSaveExercisePending: false,
+  saveExerciseError: [],
   tracks: [],
   lessons: [],
   exercises: [],
@@ -94,7 +95,8 @@ function cabinet(state = initialState, action) {
     case 'SAVE_EXERCISE_PENDING':
       return {
         ...state,
-        isSaveExercisePending: true
+        isSaveExercisePending: true,
+        saveExerciseError: [],
       }
     case 'SAVE_EXERCISE_FULFILLED':
       const updatedExercise = action.payload.data
@@ -110,6 +112,12 @@ function cabinet(state = initialState, action) {
         ...state,
         isSaveExercisePending: false,
         exercises
+      }
+    case 'SAVE_EXERCISE_ERROR':
+      return {
+        ...state,
+        isSaveExercisePending: false,
+        saveExerciseError: action.payload
       }
     default:
       return state

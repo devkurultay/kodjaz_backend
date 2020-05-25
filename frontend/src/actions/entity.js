@@ -5,11 +5,6 @@ async function performExerciseLoading(id) {
   return response?.data
 }
 
-async function performExerciseSaving(id, data) {
-  const response = await axiosInstance.put(`/v1/exercises/${id}/`, data)
-  return response?.data
-}
-
 function getExercise(data) {
   return {
     type: 'LOAD_EXERCISE',
@@ -24,10 +19,10 @@ function failedToLoad(error) {
   }
 }
 
-function failedToSave(error) {
+function failedToSaveExercise(error) {
   return {
-    type: 'FAILED_TO_SAVE',
-    payload: error
+    type: 'SAVE_EXERCISE_ERROR',
+    payload: error?.response?.data
   }
 }
 
@@ -45,7 +40,9 @@ export function saveExercise(id, exercise) {
     return dispatch({
       type: 'SAVE_EXERCISE',
       payload: axiosInstance.put(`/v1/exercises/${id}/`, exercise)
-    })
+    }).catch(
+      (error) => dispatch(failedToSaveExercise(error))
+    )
   }
 }
 
