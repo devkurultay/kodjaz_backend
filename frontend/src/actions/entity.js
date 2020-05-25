@@ -42,10 +42,10 @@ export function loadExercise(id) {
 
 export function saveExercise(id, exercise) {
   return function (dispatch) {
-    return performExerciseSaving(id, exercise).then(
-      (data) => dispatch(getExercise(data)),
-      (error) => dispatch(failedToSave(error))
-    )
+    return dispatch({
+      type: 'SAVE_EXERCISE',
+      payload: axiosInstance.put(`/v1/exercises/${id}/`, exercise)
+    })
   }
 }
 

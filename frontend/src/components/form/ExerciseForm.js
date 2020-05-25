@@ -21,6 +21,7 @@ const ExerciseForm = ({
   tracks,
   lessons,
   exercises,
+  isSaveExercisePending,
   loadExercises,
   loadLessons,
   saveExercise
@@ -289,8 +290,12 @@ const ExerciseForm = ({
             value={exerciseData?.text_file_content || ''} />
         </Form.Group>
       </Form>
-      <Button variant="primary" onClick={handleSave}>
-        Save Changes
+      <Button
+        disabled={isSaveExercisePending}
+        variant="primary"
+        onClick={handleSave}
+      >
+        {isSaveExercisePending ? 'Saving…' : 'Save changes'}
       </Button>
     </React.Fragment>
   )

@@ -7,6 +7,7 @@ const initialState = {
   isLoadLessonsPending: false,
   isLoadExercisesPending: false,
   isSaveTrackPending: false,
+  isSaveExercisePending: false,
   tracks: [],
   lessons: [],
   exercises: [],
@@ -89,6 +90,26 @@ function cabinet(state = initialState, action) {
         ...state,
         isSaveTrackPending: false,
         tracks
+      }
+    case 'SAVE_EXERCISE_PENDING':
+      return {
+        ...state,
+        isSaveExercisePending: true
+      }
+    case 'SAVE_EXERCISE_FULFILLED':
+      const updatedExercise = action.payload.data
+      const exercises = state.exercises.reduce((acc, ex, ind) => {
+        if (ex.id === updatedExercise.id) {
+          acc.push(updatedExercise)
+        } else {
+          acc.push(ex)
+        }
+        return acc
+      }, [])
+      return {
+        ...state,
+        isSaveExercisePending: false,
+        exercises
       }
     default:
       return state
