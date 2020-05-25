@@ -4,9 +4,11 @@ import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import Alert from 'react-bootstrap/Alert'
+import InputGroup from 'react-bootstrap/InputGroup'
 import AceEditor from "react-ace"
 
 import Tree from '../tree/TreeContainer'
+import WarningModal from './WarningModal'
 
 /*
  * Import modes depending on the exercise language
@@ -36,7 +38,9 @@ const ExerciseForm = ({
   const [ lesson, setLesson ] = useState({})
   const [ newLesson, setNewLesson ] = useState({})
   const [ showModal, setShowModal ] = useState(false)
+  const [ showWarningModal, setShowWarningModal ] = useState(false)
   const [ entityToPick, setEntityToPick ] = useState('')
+  const [ entityToClear, setEntityToClear ] = useState('')
 
   useEffect(() => {
     loadExercises()
@@ -114,13 +118,23 @@ const ExerciseForm = ({
     setExerciseToPick('')
   }
 
+  const handleWarningModalShow = (fieldName) => {
+    setEntityToClear(fieldName)
+    setShowWarningModal(true)
+  }
+
+  const handleWarningModalClose = () => {
+    setEntityToClear('')
+    setShowWarningModal(false)
+  }
+
   const handleEntityPick = (e, entityType, exerciseType = '') => {
     if (exerciseType.length) {
       setExerciseToPick(exerciseType)
     }
     setEntityToPick(entityType)
     handleModalShow()
-    e.target.blur()
+    e?.target?.blur()
   }
 
   const entityPickers = {
@@ -133,7 +147,24 @@ const ExerciseForm = ({
     Exercise: exerciseData?.id
   }
 
-  console.log('@@@', newLesson)
+  const handleFieldClear = (field) => {
+    setExerciseData({
+      ...exerciseData,
+      [field]: ''
+    })
+    setEntityToClear('')
+    setShowWarningModal(false)
+    switch (field) {
+      case 'lesson':
+        setLesson({})
+      case 'previous_exercise':
+        setPrevExercise({})
+      case 'next_exercise':
+        setNextExercise({})
+      default:
+        return
+    }
+  }
 
   return (
     <React.Fragment>
@@ -161,6 +192,14 @@ const ExerciseForm = ({
           </Button>
         </Modal.Footer>
       </Modal>
+
+      <WarningModal
+        showModal={showWarningModal}
+        warningTitle="You are about to clear the field value"
+        warningText="If you want to CLEAR the field, click Proceed. Otherwise, just close the modal."
+        closeHandler={handleWarningModalClose}
+        proceedHandler={() => handleFieldClear(entityToClear)}
+      />
 
       <h4>Editing exercise #{ id }</h4>
       <hr />
@@ -273,11 +312,30 @@ const ExerciseForm = ({
         />
         <Form.Group controlId="prevExercise">
           <Form.Label>Select previous exercise</Form.Label>
-          <Form.Control
-            type="text"
-            readOnly
-            onFocus={(e) => handleEntityPick(e, 'Exercise', 'previous_exercise')}
-            value={prevExercise?.name || ''} />
+          <InputGroup>
+            <InputGroup.Prepend>
+              <InputGroup.Text
+                id="previous_exercise"
+                onClick={(e) => handleEntityPick(e, 'Exercise', 'previous_exercise')}
+              >
+                <i className="fa fa-fw fa-search" />
+              </InputGroup.Text>
+            </InputGroup.Prepend>
+            <InputGroup.Prepend>
+              <InputGroup.Text
+                id="previous_exercise2"
+                onClick={() => handleWarningModalShow('previous_exercise')}
+              >
+                <i className="fa fa-fw fa-times" />
+              </InputGroup.Text>
+            </InputGroup.Prepend>
+            <Form.Control
+              type="text"
+              readOnly
+              aria-describedby="lessonIcon"
+              onFocus={(e) => handleEntityPick(e, 'Exercise', 'previous_exercise')}
+              value={prevExercise?.name || ''} />
+          </InputGroup>
         </Form.Group>
         <Form.Group controlId="nextExercise">
           <Form.Label>Select next exercise</Form.Label>
