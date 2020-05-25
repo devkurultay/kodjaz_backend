@@ -3,9 +3,14 @@ import { useParams } from "react-router-dom"
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
+import Alert from 'react-bootstrap/Alert'
+import InputGroup from 'react-bootstrap/InputGroup'
 import AceEditor from "react-ace"
 
 import Tree from '../tree/TreeContainer'
+import WarningModal from './WarningModal'
+
+import './ExerciseForm.scss'
 
 /*
  * Import modes depending on the exercise language
@@ -21,6 +26,8 @@ const ExerciseForm = ({
   tracks,
   lessons,
   exercises,
+  isSaveExercisePending,
+  saveExerciseError,
   loadExercises,
   loadLessons,
   saveExercise
@@ -31,18 +38,22 @@ const ExerciseForm = ({
   const [ nextExercise, setNextExercise ] = useState({})
   const [ exerciseToPick, setExerciseToPick ] = useState('')
   const [ lesson, setLesson ] = useState({})
+  const [ newLesson, setNewLesson ] = useState({})
   const [ showModal, setShowModal ] = useState(false)
+  const [ showWarningModal, setShowWarningModal ] = useState(false)
   const [ entityToPick, setEntityToPick ] = useState('')
+  const [ entityToClear, setEntityToClear ] = useState('')
+  const [ success, setSuccess ] = useState(false)
 
   useEffect(() => {
     loadExercises()
     loadLessons()
   }, [])
 
-  const setCurrentLessonById = (id) => {
+  const setLessonById = (id, cb) => {
     const currentLesson = lessons.filter(l => l.id === id)
     if (currentLesson) {
-      setLesson(currentLesson?.[0])
+      cb(currentLesson?.[0])
     }
   }
 
@@ -58,17 +69,33 @@ const ExerciseForm = ({
       setExerciseData(currentExercise)
       setPrevExercise(prev)
       setNextExercise(next)
-      setCurrentLessonById(currentExercise?.lesson)
+      setLessonById(currentExercise?.lesson, setLesson)
     }
-  }, [ exercises, lessons ])
+    if (!saveExerciseError) {
+      setSuccess(false)
+    }
+  }, [ exercises, lessons, saveExerciseError ])
 
   const handleFieldChange = (fieldName, value) => {
     setExerciseData({ ...exerciseData, [fieldName]: value })
   }
 
   const handleLessonPick = (node) => {
-    setCurrentLessonById(node.id)
-    setExerciseData({ ...exerciseData, lesson: node.id })
+    setLessonById(node.id, setNewLesson)
+  }
+
+  const handleLessonProceed = () => {
+    setLessonById(newLesson.id, setLesson)
+    setNewLesson({})
+    setExerciseData({
+      ...exerciseData,
+      lesson: newLesson.id,
+      previous_exercise: '',
+      next_exercise: ''
+    })
+    setPrevExercise({})
+    setNextExercise({})
+    handleModalClose()
   }
 
   const handleExercisePick = (node) => {
@@ -80,10 +107,13 @@ const ExerciseForm = ({
       setNextExercise(exercise)
     }
     setExerciseData({ ...exerciseData, [exerciseToPick]: node.id })
+    handleModalClose()
   }
 
   const handleSave = () => {
+    setSuccess(true)
     saveExercise(id, exerciseData)
+    setTimeout(() => setSuccess(false), 3000)
   }
 
   const handleModalShow = () => {
@@ -96,10 +126,14 @@ const ExerciseForm = ({
     setExerciseToPick('')
   }
 
-  const handleModalSave = () => {
-    setShowModal(false)
-    setEntityToPick('')
-    setExerciseToPick('')
+  const handleWarningModalShow = (fieldName) => {
+    setEntityToClear(fieldName)
+    setShowWarningModal(true)
+  }
+
+  const handleWarningModalClose = () => {
+    setEntityToClear('')
+    setShowWarningModal(false)
   }
 
   const handleEntityPick = (e, entityType, exerciseType = '') => {
@@ -108,35 +142,72 @@ const ExerciseForm = ({
     }
     setEntityToPick(entityType)
     handleModalShow()
-    e.target.blur()
+    e?.target?.blur()
   }
 
   const entityPickers = {
     Lesson: handleLessonPick,
     Exercise: handleExercisePick
   }
+  
+  const entityIds = {
+    Lesson: exerciseData.lesson,
+    Exercise: exerciseData?.id
+  }
+
+  const handleFieldClear = (field) => {
+    setExerciseData({
+      ...exerciseData,
+      [field]: ''
+    })
+    setEntityToClear('')
+    setShowWarningModal(false)
+    switch (field) {
+      case 'lesson':
+        setLesson({})
+      case 'previous_exercise':
+        setPrevExercise({})
+      case 'next_exercise':
+        setNextExercise({})
+      default:
+        return
+    }
+  }
 
   return (
     <React.Fragment>
       <Modal show={showModal} onHide={handleModalClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Changing "{lesson?.name}"</Modal.Title>
+          <Modal.Title>Picking another value for "{entityToPick}"</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Tree
             entityToPick={entityToPick}
+            entityId={entityIds[entityToPick]}
             pickHandler={entityPickers[entityToPick]}
           />
         </Modal.Body>
         <Modal.Footer>
+          {Object.keys(newLesson).length
+            ? <Alert variant="danger">
+                <div>If you choose a new lesson, previous and next exercise values will be lost. If you want to proceed, click "Proceed" button</div>
+                <Button onClick={handleLessonProceed}>Proceed</Button>
+              </Alert>
+            : null
+          }
           <Button variant="secondary" onClick={handleModalClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleModalSave}>
-            Save Changes
-          </Button>
         </Modal.Footer>
       </Modal>
+
+      <WarningModal
+        showModal={showWarningModal}
+        warningTitle="You are about to clear the field value"
+        warningText="If you want to CLEAR the field, click Proceed. Otherwise, just close the modal."
+        closeHandler={handleWarningModalClose}
+        proceedHandler={() => handleFieldClear(entityToClear)}
+      />
 
       <h4>Editing exercise #{ id }</h4>
       <hr />
@@ -249,19 +320,56 @@ const ExerciseForm = ({
         />
         <Form.Group controlId="prevExercise">
           <Form.Label>Select previous exercise</Form.Label>
-          <Form.Control
-            type="text"
-            readOnly
-            onFocus={(e) => handleEntityPick(e, 'Exercise', 'previous_exercise')}
-            value={prevExercise?.name || ''} />
+          <InputGroup>
+            <InputGroup.Prepend>
+              <InputGroup.Text
+                id="previous_exercise"
+                onClick={(e) => handleEntityPick(e, 'Exercise', 'previous_exercise')}
+              >
+                <i className="fa fa-fw fa-search" />
+              </InputGroup.Text>
+            </InputGroup.Prepend>
+            <InputGroup.Prepend>
+              <InputGroup.Text
+                id="previous_exercise2"
+                onClick={() => handleWarningModalShow('previous_exercise')}
+              >
+                <i className="fa fa-fw fa-times" />
+              </InputGroup.Text>
+            </InputGroup.Prepend>
+            <Form.Control
+              type="text"
+              readOnly
+              aria-describedby="lessonIcon"
+              onFocus={(e) => handleEntityPick(e, 'Exercise', 'previous_exercise')}
+              value={prevExercise?.name || ''} />
+          </InputGroup>
         </Form.Group>
         <Form.Group controlId="nextExercise">
           <Form.Label>Select next exercise</Form.Label>
-          <Form.Control
-            type="text"
-            readOnly
-            onFocus={(e) => handleEntityPick(e, 'Exercise', 'next_exercise')}
-            value={nextExercise?.name || ''} />
+          <InputGroup>
+            <InputGroup.Prepend>
+              <InputGroup.Text
+                id="next_exercise"
+                onClick={(e) => handleEntityPick(e, 'Exercise', 'next_exercise')}
+              >
+                <i className="fa fa-fw fa-search" />
+              </InputGroup.Text>
+            </InputGroup.Prepend>
+            <InputGroup.Prepend>
+              <InputGroup.Text
+                id="next_exercise2"
+                onClick={() => handleWarningModalShow('next_exercise')}
+              >
+                <i className="fa fa-fw fa-times" />
+              </InputGroup.Text>
+            </InputGroup.Prepend>
+            <Form.Control
+              type="text"
+              readOnly
+              onFocus={(e) => handleEntityPick(e, 'Exercise', 'next_exercise')}
+              value={nextExercise?.name || ''} />
+          </InputGroup>
         </Form.Group>
         <Form.Group controlId="isPublishedCheckbox">
           <Form.Check
@@ -289,8 +397,23 @@ const ExerciseForm = ({
             value={exerciseData?.text_file_content || ''} />
         </Form.Group>
       </Form>
-      <Button variant="primary" onClick={handleSave}>
-        Save Changes
+      {saveExerciseError.length
+        ? saveExerciseError.map((msg, idx) => <Alert key={idx} variant="danger">{msg}</Alert>)
+        : null
+      }
+      <div className="exercise-form__alert-placeholder">
+        {success
+          ? <Alert variant="success">Successfully saved!</Alert>
+          : null
+        }
+      </div>
+      <Button
+        disabled={isSaveExercisePending}
+        variant="primary"
+        onClick={handleSave}
+        className="mt-2 mb-5"
+      >
+        {isSaveExercisePending ? 'Saving…' : 'Save changes'}
       </Button>
     </React.Fragment>
   )

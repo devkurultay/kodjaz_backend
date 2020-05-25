@@ -11,7 +11,10 @@ import { dataToTree } from './helpers.js'
 
 const Tree = ({
   tracks,
+  saveTrack,
+  isSaveTrackPending,
   entityToPick = '',
+  entityId = '',
   pickHandler = () => {}
 }) => {
   const [ nodes, setNodes ] = useState([])
@@ -42,7 +45,7 @@ const Tree = ({
         is_published: currentNode.is_published,
         programming_language: currentNode.programming_language
       }
-      axiosInstance.put(`/v1/tracks/${id}/`, payload).then(() => getDataAndSetToState())
+      saveTrack(id, payload)
     }
     const newNodes = changeNodeAtPath({
       treeData: nodes,
@@ -70,7 +73,7 @@ const Tree = ({
   }
 
   const getPickBtn = (node) => {
-    return node.type === entityToPick
+    return node.type === entityToPick && node.id !== Number(entityId)
       ? [
           <button onClick={() => pickHandler(node)}>
             Pick

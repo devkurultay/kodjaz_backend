@@ -1,5 +1,6 @@
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.serializers import ValidationError
 
 from courses.serializers import TrackSerializer
 from courses.serializers import UnitSerializer
@@ -36,16 +37,19 @@ class ExerciseViewSet(ModelViewSet):
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
         prev = serializer.validated_data.get('previous_exercise')
-        if prev:
-            self.handle_previous_exercise(prev, instance)
+        self.handle_previous_exercise(prev, instance)
         data = serializer.data
         return Response(serializer.data)
 
     def handle_previous_exercise(self, prev, instance):
         # Unbind old exercise's next_exercise
+        if prev and prev.id == instance.id:
+            raise ValidationError(
+                'The exercise itself cannot be used as a previous exercise')
         next_of = Exercise.objects.filter(next_exercise__id=instance.id)
         for n in next_of:
             n.next_exercise = None
         Exercise.objects.bulk_update(next_of, ['next_exercise'])
-        prev.next_exercise = instance
-        prev.save()
+        if prev is not None:
+            prev.next_exercise = instance
+            prev.save()

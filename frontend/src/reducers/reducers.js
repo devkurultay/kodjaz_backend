@@ -6,6 +6,9 @@ const initialState = {
   isLoadTracksPending: false,
   isLoadLessonsPending: false,
   isLoadExercisesPending: false,
+  isSaveTrackPending: false,
+  isSaveExercisePending: false,
+  saveExerciseError: [],
   tracks: [],
   lessons: [],
   exercises: [],
@@ -68,6 +71,53 @@ function cabinet(state = initialState, action) {
         ...state,
         isLoadExercisesPending: false,
         exercises: action.payload.data
+      }
+    case 'SAVE_TRACK_PENDING':
+      return {
+        ...state,
+        isSaveTrackPending: true
+      }
+    case 'SAVE_TRACK_FULFILLED':
+      const updatedTrack = action.payload.data
+      const tracks = state.tracks.reduce((acc, tr, ind) => {
+        if (tr.id === updatedTrack.id) {
+          acc.push(updatedTrack)
+        } else {
+          acc.push(tr)
+        }
+        return acc
+      }, [])
+      return {
+        ...state,
+        isSaveTrackPending: false,
+        tracks
+      }
+    case 'SAVE_EXERCISE_PENDING':
+      return {
+        ...state,
+        isSaveExercisePending: true,
+        saveExerciseError: [],
+      }
+    case 'SAVE_EXERCISE_FULFILLED':
+      const updatedExercise = action.payload.data
+      const exercises = state.exercises.reduce((acc, ex, ind) => {
+        if (ex.id === updatedExercise.id) {
+          acc.push(updatedExercise)
+        } else {
+          acc.push(ex)
+        }
+        return acc
+      }, [])
+      return {
+        ...state,
+        isSaveExercisePending: false,
+        exercises
+      }
+    case 'SAVE_EXERCISE_ERROR':
+      return {
+        ...state,
+        isSaveExercisePending: false,
+        saveExerciseError: action.payload
       }
     default:
       return state
