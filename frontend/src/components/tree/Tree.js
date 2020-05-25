@@ -14,6 +14,7 @@ const Tree = ({
   saveTrack,
   isSaveTrackPending,
   entityToPick = '',
+  entityId = '',
   pickHandler = () => {}
 }) => {
   const [ nodes, setNodes ] = useState([])
@@ -71,8 +72,15 @@ const Tree = ({
     setCurrentNode(newNode)
   }
 
+  const isNotSameExercise = (node) => {
+    if (entityToPick !== 'Exercise') {
+      return true
+    }
+    return node.id !== Number(entityId)
+  }
+
   const getPickBtn = (node) => {
-    return node.type === entityToPick
+    return node.type === entityToPick && isNotSameExercise(node)
       ? [
           <button onClick={() => pickHandler(node)}>
             Pick

@@ -128,6 +128,7 @@ const ExerciseForm = ({
         <Modal.Body>
           <Tree
             entityToPick={entityToPick}
+            entityId={id}
             pickHandler={entityPickers[entityToPick]}
           />
         </Modal.Body>
