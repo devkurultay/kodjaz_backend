@@ -49,6 +49,15 @@ export function saveExercise(id, exercise) {
   }
 }
 
+export function saveTrack(id, track) {
+  return function(dispatch) {
+    return dispatch({
+      type: 'SAVE_TRACK',
+      payload: axiosInstance.put(`/v1/tracks/${id}/`, track)
+    })
+  }
+}
+
 export function loadTracks() {
   return function(dispatch) {
     return dispatch({
