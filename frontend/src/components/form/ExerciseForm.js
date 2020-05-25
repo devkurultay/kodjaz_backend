@@ -34,6 +34,7 @@ const ExerciseForm = ({
   const [ nextExercise, setNextExercise ] = useState({})
   const [ exerciseToPick, setExerciseToPick ] = useState('')
   const [ lesson, setLesson ] = useState({})
+  const [ newLesson, setNewLesson ] = useState({})
   const [ showModal, setShowModal ] = useState(false)
   const [ entityToPick, setEntityToPick ] = useState('')
 
@@ -42,10 +43,10 @@ const ExerciseForm = ({
     loadLessons()
   }, [])
 
-  const setCurrentLessonById = (id) => {
+  const setLessonById = (id, cb) => {
     const currentLesson = lessons.filter(l => l.id === id)
     if (currentLesson) {
-      setLesson(currentLesson?.[0])
+      cb(currentLesson?.[0])
     }
   }
 
@@ -61,7 +62,7 @@ const ExerciseForm = ({
       setExerciseData(currentExercise)
       setPrevExercise(prev)
       setNextExercise(next)
-      setCurrentLessonById(currentExercise?.lesson)
+      setLessonById(currentExercise?.lesson, setLesson)
     }
   }, [ exercises, lessons ])
 
@@ -70,8 +71,20 @@ const ExerciseForm = ({
   }
 
   const handleLessonPick = (node) => {
-    setCurrentLessonById(node.id)
-    setExerciseData({ ...exerciseData, lesson: node.id })
+    setLessonById(node.id, setNewLesson)
+  }
+
+  const handleLessonProceed = () => {
+    setLessonById(newLesson.id, setLesson)
+    setNewLesson({})
+    setExerciseData({
+      ...exerciseData,
+      lesson: newLesson.id,
+      previous_exercise: '',
+      next_exercise: ''
+    })
+    setPrevExercise({})
+    setNextExercise({})
     handleModalClose()
   }
 
@@ -120,6 +133,8 @@ const ExerciseForm = ({
     Exercise: exerciseData?.id
   }
 
+  console.log('@@@', newLesson)
+
   return (
     <React.Fragment>
       <Modal show={showModal} onHide={handleModalClose}>
@@ -134,6 +149,13 @@ const ExerciseForm = ({
           />
         </Modal.Body>
         <Modal.Footer>
+          {Object.keys(newLesson).length
+            ? <Alert variant="warning">
+                <div>If you choose a new lesson, previous and next exercise values will be lost. If you want to proceed, click "Proceed" button</div>
+                <Button onClick={handleLessonProceed}>Proceed</Button>
+              </Alert>
+            : null
+          }
           <Button variant="secondary" onClick={handleModalClose}>
             Close
           </Button>
