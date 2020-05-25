@@ -118,6 +118,11 @@ const ExerciseForm = ({
     Lesson: handleLessonPick,
     Exercise: handleExercisePick
   }
+  
+  const entityIds = {
+    Lesson: exerciseData.lesson,
+    Exercise: exerciseData?.id
+  }
 
   return (
     <React.Fragment>
@@ -128,7 +133,7 @@ const ExerciseForm = ({
         <Modal.Body>
           <Tree
             entityToPick={entityToPick}
-            entityId={id}
+            entityId={entityIds[entityToPick]}
             pickHandler={entityPickers[entityToPick]}
           />
         </Modal.Body>

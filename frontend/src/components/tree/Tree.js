@@ -72,15 +72,8 @@ const Tree = ({
     setCurrentNode(newNode)
   }
 
-  const isNotSameExercise = (node) => {
-    if (entityToPick !== 'Exercise') {
-      return true
-    }
-    return node.id !== Number(entityId)
-  }
-
   const getPickBtn = (node) => {
-    return node.type === entityToPick && isNotSameExercise(node)
+    return node.type === entityToPick && node.id !== Number(entityId)
       ? [
           <button onClick={() => pickHandler(node)}>
             Pick
