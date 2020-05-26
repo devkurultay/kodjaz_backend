@@ -39,6 +39,7 @@ const EntityEditModal = ({
               </Form.Group>
             : null
           }
+<<<<<<< HEAD
           {Object.keys(currentNode).includes('programming_language')
             ? <Form.Group controlId="formProgrammingLang">
                 <Form.Label>Programming language</Form.Label>
@@ -50,6 +51,8 @@ const EntityEditModal = ({
               </Form.Group>
             : null
           }
+=======
+>>>>>>> Make it possible to edit Unit
           <Form.Group controlId="formIsPublishedCheckbox">
             <Form.Check
               type="checkbox"
