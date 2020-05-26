@@ -22,6 +22,8 @@ const getUnits = (units) => {
       id: unit.id,
       title: unit.name,
       subtitle: unit.description,
+      is_published: unit.is_published,
+      track: unit.track,
       expanded: true,
       type: unit.entity_type,
       children: getLessons(unit.unit_lessons)
@@ -34,7 +36,6 @@ const getLessons = (lessons) => {
     return {
       id: lesson.id,
       title: lesson.name,
-      subtitle: lesson.description,
       expanded: true,
       type: lesson.entity_type,
       children: getExercises(lesson.lesson_exercises)

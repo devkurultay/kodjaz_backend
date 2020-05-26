@@ -26,14 +26,17 @@ const EntityEditModal = ({
               onChange={(e) => handleFieldChange(e, 'title')}
             />
           </Form.Group>
-          <Form.Group controlId="formDescription">
-            <Form.Label>Description</Form.Label>
-            <Form.Control
-              type="input"
-              value={currentNode?.subtitle}
-              onChange={(e) => handleFieldChange(e, 'subtitle')}
-            />
-          </Form.Group>
+          {Object.keys(currentNode).includes('subtitle')
+            ? <Form.Group controlId="formDescription">
+                <Form.Label>Description</Form.Label>
+                <Form.Control
+                  type="input"
+                  value={currentNode?.subtitle}
+                  onChange={(e) => handleFieldChange(e, 'subtitle')}
+                />
+              </Form.Group>
+            : null
+          }
           <Form.Group controlId="formIsPublishedCheckbox">
             <Form.Check
               type="checkbox"

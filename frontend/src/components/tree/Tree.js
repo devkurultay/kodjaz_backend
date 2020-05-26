@@ -12,6 +12,7 @@ import { dataToTree } from './helpers.js'
 const Tree = ({
   tracks,
   saveTrack,
+  saveUnit,
   isSaveTrackPending,
   entityToPick = '',
   entityId = '',
@@ -46,6 +47,14 @@ const Tree = ({
         programming_language: currentNode.programming_language
       }
       saveTrack(id, payload)
+    } else if (type && type === 'Unit') {
+      const payload = {
+        name: currentNode.title,
+        description: currentNode.subtitle,
+        is_published: currentNode.is_published,
+        track: currentNode.track,
+      }
+      saveUnit(id, payload)
     }
     const newNodes = changeNodeAtPath({
       treeData: nodes,
