@@ -4,13 +4,10 @@ import { bindActionCreators } from 'redux'
 import {
   saveTrack,
   saveUnit,
-<<<<<<< HEAD
   saveLesson,
   createTrack,
   createUnit,
   createLesson
-=======
->>>>>>> Make it possible to edit Unit
 } from '../../actions/entity'
 
 import Tree from './Tree'
@@ -27,13 +24,10 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     saveTrack,
     saveUnit,
-<<<<<<< HEAD
     saveLesson,
     createTrack,
     createUnit,
-    createLesson,
-=======
->>>>>>> Make it possible to edit Unit
+    createLesson
   }, dispatch)
 }
 

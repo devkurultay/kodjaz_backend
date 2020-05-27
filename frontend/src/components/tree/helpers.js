@@ -37,11 +37,10 @@ const getLessons = (lessons) => {
     return {
       id: lesson.id,
       title: lesson.name,
-<<<<<<< HEAD
       is_published: lesson.is_published,
       unit: lesson.unit,
-=======
->>>>>>> Make it possible to edit Unit
+      is_published: lesson.is_published,
+      unit: lesson.unit,
       expanded: true,
       type: lesson.entity_type,
       childrenType: 'Exercise',

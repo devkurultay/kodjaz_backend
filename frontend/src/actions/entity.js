@@ -56,7 +56,6 @@ export function saveTrack(id, track) {
   }
 }
 
-<<<<<<< HEAD
 export function createTrack(track) {
   return function(dispatch) {
     return dispatch({
@@ -95,8 +94,6 @@ export function createExercise(exercise) {
   }
 }
 
-=======
->>>>>>> Make it possible to edit Unit
 export function saveUnit(id, unit) {
   return function(dispatch) {
     return dispatch({
@@ -106,7 +103,6 @@ export function saveUnit(id, unit) {
   }
 }
 
-<<<<<<< HEAD
 export function saveLesson(id, lesson) {
   return function(dispatch) {
     return dispatch({
@@ -116,8 +112,6 @@ export function saveLesson(id, lesson) {
   }
 }
 
-=======
->>>>>>> Make it possible to edit Unit
 export function loadTracks() {
   return function(dispatch) {
     return dispatch({

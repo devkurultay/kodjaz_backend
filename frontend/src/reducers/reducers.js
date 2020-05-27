@@ -85,6 +85,11 @@ function cabinet(state = initialState, action) {
         ...state,
         isSaveUnitPending: true
       }
+    case 'SAVE_LESSON_PENDING':
+      return {
+        ...state,
+        isSaveLessonPending: true
+      }
     case 'SAVE_TRACK_FULFILLED':
       const updatedTrack = action.payload.data
       const tracks = state.tracks.reduce((acc, tr, ind) => {
