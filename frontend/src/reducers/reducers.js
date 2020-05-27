@@ -8,6 +8,7 @@ const initialState = {
   isLoadExercisesPending: false,
   isSaveTrackPending: false,
   isSaveUnitPending: false,
+  isSaveLessonPending: false,
   isSaveExercisePending: false,
   saveExerciseError: [],
   tracks: [],
@@ -83,6 +84,11 @@ function cabinet(state = initialState, action) {
         ...state,
         isSaveUnitPending: true
       }
+    case 'SAVE_LESSON_PENDING':
+      return {
+        ...state,
+        isSaveLessonPending: true
+      }
     case 'SAVE_TRACK_FULFILLED':
       const updatedTrack = action.payload.data
       const tracks = state.tracks.reduce((acc, tr, ind) => {
@@ -127,6 +133,37 @@ function cabinet(state = initialState, action) {
         ...state,
         isSaveUnitPending: false,
         tracks: updatedTracks
+      }
+    case 'SAVE_LESSON_FULFILLED':
+      const updatedLesson = action.payload.data
+      const updatedTrs = state.tracks.reduce((tracks, tr, idx) => {
+        // Try to update each track's unit's lessons
+        const updUnits = tr.track_units.reduce((acc, un) => {
+          // Get the lesson's unit by id
+          if (un.id === updatedLesson.unit) {
+            // Update unit's lessons
+            const updatedLessons = un.unit_lessons.reduce((acc, les) => {
+              if (les.id === updatedLesson.id) {
+                acc.push(updatedLesson)
+              } else {
+                acc.push(les)
+              }
+              return acc
+            }, [])
+            un.unit_lessons = updatedLessons
+            acc.push(un)
+          } else {
+            acc.push(un)
+          }
+          return acc
+        }, [])
+        tr.track_units = updUnits
+        tracks.push(tr)
+        return tracks
+      }, [])
+      return {
+        ...state,
+        tracks: updatedTrs
       }
     case 'SAVE_EXERCISE_PENDING':
       return {

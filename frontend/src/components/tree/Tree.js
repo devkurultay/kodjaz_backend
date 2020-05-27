@@ -13,6 +13,7 @@ const Tree = ({
   tracks,
   saveTrack,
   saveUnit,
+  saveLesson,
   isSaveTrackPending,
   entityToPick = '',
   entityId = '',
@@ -55,6 +56,13 @@ const Tree = ({
         track: currentNode.track,
       }
       saveUnit(id, payload)
+    } else if (type && type === 'Lesson') {
+      const payload = {
+        name: currentNode.title,
+        is_published: currentNode.is_published,
+        unit: currentNode.unit,
+      }
+      saveLesson(id, payload)
     }
     const newNodes = changeNodeAtPath({
       treeData: nodes,

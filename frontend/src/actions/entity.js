@@ -64,6 +64,15 @@ export function saveUnit(id, unit) {
   }
 }
 
+export function saveLesson(id, lesson) {
+  return function(dispatch) {
+    return dispatch({
+      type: 'SAVE_LESSON',
+      payload: axiosInstance.put(`/v1/lessons/${id}/`, lesson)
+    })
+  }
+}
+
 export function loadTracks() {
   return function(dispatch) {
     return dispatch({

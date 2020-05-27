@@ -36,6 +36,8 @@ const getLessons = (lessons) => {
     return {
       id: lesson.id,
       title: lesson.name,
+      is_published: lesson.is_published,
+      unit: lesson.unit,
       expanded: true,
       type: lesson.entity_type,
       children: getExercises(lesson.lesson_exercises)

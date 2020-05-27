@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux'
 import {
   saveTrack,
   saveUnit,
+  saveLesson,
 } from '../../actions/entity'
 
 import Tree from './Tree'
@@ -20,6 +21,7 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     saveTrack,
     saveUnit,
+    saveLesson,
   }, dispatch)
 }
 
