@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import SortableTree, { changeNodeAtPath } from 'react-sortable-tree'
 import FileExplorerTheme from 'react-sortable-tree-theme-minimal'
+import { useHistory } from 'react-router-dom'
 
 import EntityEditModal from '../form/EntityEditModal'
 
@@ -19,6 +20,7 @@ const Tree = ({
   entityId = '',
   pickHandler = () => {}
 }) => {
+  const history = useHistory()
   const [ nodes, setNodes ] = useState([])
   const [ showModal, setShowModal ] = useState(false)
   const [ currentPath, setCurrentPath ] = useState([])
@@ -75,6 +77,11 @@ const Tree = ({
   }
 
   const handleEditClick = (node, path) => {
+    const { type, id } = node
+    if (type && type === 'Exercise') {
+      history.push(`/exercise/${id}/`)
+      return
+    }
     setCurrentNode(node)
     setCurrentPath(path)
     handleShow()
