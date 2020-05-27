@@ -25,6 +25,7 @@ const Tree = ({
   const [ showModal, setShowModal ] = useState(false)
   const [ currentPath, setCurrentPath ] = useState([])
   const [ currentNode, setCurrentNode ] = useState({})
+  const [ isShowAlert, setIsShowAlert ] = useState(false)
 
   useEffect(() => {
     setNodes(dataToTree(tracks))
@@ -32,10 +33,12 @@ const Tree = ({
 
   const handleClose = () => {
     setShowModal(false)
+    setIsShowAlert(false)
   }
 
   const handleShow = () => {
     setShowModal(true)
+    setIsShowAlert(false)
   }
 
   const getNodeKey = ({ treeIndex }) => treeIndex
@@ -91,6 +94,11 @@ const Tree = ({
     let value = event.target.value
     if (fieldName === 'is_published') {
       value = event.target.checked
+      if (value === false) {
+        setIsShowAlert(true)
+      } else {
+        setIsShowAlert(false)
+      }
     }
     const newNode = { ...currentNode, [fieldName]: value }
     setCurrentNode(newNode)
@@ -128,6 +136,7 @@ const Tree = ({
         handleSave={handleSave}
         handleClose={handleClose}
         handleFieldChange={handleFieldChange}
+        isShowAlert={isShowAlert}
       />
       <SortableTree
         treeData={nodes}

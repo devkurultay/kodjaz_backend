@@ -3,13 +3,15 @@ import React from 'react'
 import Modal from 'react-bootstrap/Modal'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
+import Alert from 'react-bootstrap/Alert'
 
 const EntityEditModal = ({
   showModal,
   currentNode,
   handleSave,
   handleClose,
-  handleFieldChange
+  handleFieldChange,
+  isShowAlert
 }) => {
   return (
     <Modal show={showModal} onHide={handleClose}>
@@ -46,6 +48,11 @@ const EntityEditModal = ({
               label="Is the track published?"
             />
           </Form.Group>
+          {isShowAlert && (
+            <Alert variant="danger">
+              <div>Unpublishing this element may lead to unexpected consequences. Are you sure?</div>
+            </Alert>
+          )}
         </Form>
       </Modal.Body>
       <Modal.Footer>
