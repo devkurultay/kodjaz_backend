@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import SortableTree, { changeNodeAtPath } from 'react-sortable-tree'
+import SortableTree, { changeNodeAtPath, addNodeUnderParent } from 'react-sortable-tree'
 import FileExplorerTheme from 'react-sortable-tree-theme-minimal'
+import Button from 'react-bootstrap/Button'
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
 import { useHistory } from 'react-router-dom'
 
 import EntityEditModal from '../form/EntityEditModal'
@@ -15,6 +18,7 @@ const Tree = ({
   saveTrack,
   saveUnit,
   saveLesson,
+  createTrack,
   isSaveTrackPending,
   entityToPick = '',
   entityId = '',
@@ -43,6 +47,7 @@ const Tree = ({
 
   const getNodeKey = ({ treeIndex }) => treeIndex
 
+
   const handleSave = () => {
     const { type, id } = currentNode
     if (type && type === 'Track') {
@@ -52,7 +57,11 @@ const Tree = ({
         is_published: currentNode.is_published,
         programming_language: currentNode.programming_language
       }
-      saveTrack(id, payload)
+      if (id) {
+        saveTrack(id, payload)
+      } else {
+        createTrack(payload)
+      }
     } else if (type && type === 'Unit') {
       const payload = {
         name: currentNode.title,
@@ -77,6 +86,49 @@ const Tree = ({
     })
     setNodes(newNodes)
     handleClose()
+  }
+
+  const createNewNode = (node) => {
+    const nodesWithSubtitle = ['Track', 'Unit']
+    const newNode = {
+      type: node.type,
+      title: `New ${node.type}`,
+      is_published: false
+    }
+    if (nodesWithSubtitle.includes(node.type)) {
+      newNode['subtitle'] = ''
+    }
+    if (node.type === 'Track') {
+      newNode['programming_language'] = node.programming_language
+    }
+    return newNode
+  }
+
+  const handleAddNewTrack = () => {
+    const newNodes = addNodeUnderParent({
+      treeData: nodes,
+      parentKey: null,
+      expandParent: false,
+      getNodeKey,
+      newNode: createNewNode({
+        type: 'Track',
+        programming_language: ''
+      }),
+      addAsFirstChild: false
+    }).treeData
+    setNodes(newNodes)
+  }
+
+  const handleAddClick = (node, path) => {
+    const newNodes = addNodeUnderParent({
+      treeData: nodes,
+      parentKey: path[path.length],
+      expandParent: true,
+      getNodeKey,
+      newNode: createNewNode(node),
+      addAsFirstChild: false
+    }).treeData
+    setNodes(newNodes)
   }
 
   const handleEditClick = (node, path) => {
@@ -118,6 +170,9 @@ const Tree = ({
     return [
       <button onClick={() => handleEditClick(node, path)}>
         Edit
+      </button>,
+      <button onClick={() => handleAddClick(node, path)}>
+        Add
       </button>
     ]
   }
@@ -129,7 +184,7 @@ const Tree = ({
   }
 
   return (
-    <div className="tree">
+    <Container className="tree">
       <EntityEditModal
         showModal={showModal}
         currentNode={currentNode}
@@ -138,6 +193,14 @@ const Tree = ({
         handleFieldChange={handleFieldChange}
         isShowAlert={isShowAlert}
       />
+      <Row className="justify-content-md-center">
+        <Button
+          className="tree__add-track-btn"
+          onClick={handleAddNewTrack}
+          variant="outline-primary">
+          Add a new track
+        </Button>
+      </Row>
       <SortableTree
         treeData={nodes}
         onChange={setNodes}
@@ -146,7 +209,7 @@ const Tree = ({
 					buttons: getButtons(node, path)
         })}
       />
-    </div>
+    </Container>
   )
 }
 

@@ -39,13 +39,24 @@ const EntityEditModal = ({
               </Form.Group>
             : null
           }
+          {Object.keys(currentNode).includes('programming_language')
+            ? <Form.Group controlId="formProgrammingLang">
+                <Form.Label>Programming language</Form.Label>
+                <Form.Control
+                  type="input"
+                  value={currentNode?.programming_language}
+                  onChange={(e) => handleFieldChange(e, 'programming_language')}
+                />
+              </Form.Group>
+            : null
+          }
           <Form.Group controlId="formIsPublishedCheckbox">
             <Form.Check
               type="checkbox"
               id="is_published"
               checked={currentNode?.is_published}
               onChange={(e) => handleFieldChange(e, 'is_published')}
-              label="Is the track published?"
+              label="Is the entity published?"
             />
           </Form.Group>
           {isShowAlert && (
@@ -60,7 +71,7 @@ const EntityEditModal = ({
           Close
         </Button>
         <Button variant="primary" onClick={handleSave}>
-          Save Changes
+          {currentNode?.id ? "Save Changes" : `Create a new ${currentNode?.type}`}
         </Button>
       </Modal.Footer>
     </Modal>
