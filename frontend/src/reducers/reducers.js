@@ -192,6 +192,20 @@ function cabinet(state = initialState, action) {
         isSaveExercisePending: false,
         saveExerciseError: action.payload
       }
+    case 'CREATE_TRACK_PENDING':
+      return {
+        ...state,
+        isSaveTrackPending: true,
+      }
+    case 'CREATE_TRACK_FULFILLED':
+      return {
+        ...state,
+        isSaveTrackPending: false,
+        tracks: [
+          ...state.tracks,
+          action.payload.data
+        ]
+      }
     default:
       return state
   }

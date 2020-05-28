@@ -55,6 +55,15 @@ export function saveTrack(id, track) {
   }
 }
 
+export function createTrack(track) {
+  return function(dispatch) {
+    return dispatch({
+      type: 'CREATE_TRACK',
+      payload: axiosInstance.post(`/v1/tracks/`, track)
+    })
+  }
+}
+
 export function saveUnit(id, unit) {
   return function(dispatch) {
     return dispatch({
