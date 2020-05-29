@@ -83,6 +83,7 @@ export function createLesson(lesson) {
   }
 }
 
+<<<<<<< HEAD
 export function createExercise(exercise) {
   return function(dispatch) {
     return dispatch({
