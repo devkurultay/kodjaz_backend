@@ -20,6 +20,7 @@ const Tree = ({
   saveLesson,
   createTrack,
   createUnit,
+  createLesson,
   isSaveTrackPending,
   entityToPick = '',
   entityId = '',
@@ -80,7 +81,11 @@ const Tree = ({
         is_published: currentNode.is_published,
         unit: currentNode.unit,
       }
-      saveLesson(id, payload)
+      if (id) {
+        saveLesson(id, payload)
+      } else {
+        createLesson(payload)
+      }
     }
     const newNodes = changeNodeAtPath({
       treeData: nodes,
