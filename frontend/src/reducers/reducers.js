@@ -206,6 +206,31 @@ function cabinet(state = initialState, action) {
           action.payload.data
         ]
       }
+    case 'CREATE_UNIT_PENDING':
+      return {
+        ...state,
+        isSaveUnitPending: true,
+      }
+    case 'CREATE_UNIT_FULFILLED':
+      const createdUnit = action.payload.data
+      const updatedTracksWithNewUnit = state.tracks.reduce((acc, tr) => {
+        // Identify a track by the update unit's track id
+        if (tr.id === createdUnit.track) {
+          // Update the track's units list
+          tr.track_units.push(createdUnit)
+          // ... and put it to the new list of tracks
+          acc.push(tr)
+        } else {
+          // Put non-affected tracks intact
+          acc.push(tr)
+        }
+        return acc
+      }, [])
+      return {
+        ...state,
+        isSaveUnitPending: false,
+        tracks: updatedTracksWithNewUnit
+      }
     default:
       return state
   }
