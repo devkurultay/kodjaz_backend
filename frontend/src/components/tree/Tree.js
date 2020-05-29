@@ -49,7 +49,6 @@ const Tree = ({
 
   const getNodeKey = ({ treeIndex }) => treeIndex
 
-
   const handleSave = () => {
     const { type, id } = currentNode
     if (type && type === 'Track') {
@@ -125,10 +124,10 @@ const Tree = ({
       expandParent: false,
       getNodeKey,
       newNode: createNewNode({
-        type: 'Track',
+        childrenType: 'Track',
         programming_language: ''
       }),
-      addAsFirstChild: false
+      addAsFirstChild: true
     }).treeData
     setNodes(newNodes)
   }
