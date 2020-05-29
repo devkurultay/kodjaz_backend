@@ -27,7 +27,7 @@ const mapDispatchToProps = (dispatch) => {
     saveLesson,
     createTrack,
     createUnit,
-    createLesson
+    createLesson,
   }, dispatch)
 }
 
