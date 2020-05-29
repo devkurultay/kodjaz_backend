@@ -73,6 +73,15 @@ export function createUnit(unit) {
   }
 }
 
+export function createLesson(lesson) {
+  return function(dispatch) {
+    return dispatch({
+      type: 'CREATE_LESSON',
+      payload: axiosInstance.post(`/v1/lessons/`, lesson)
+    })
+  }
+}
+
 export function saveUnit(id, unit) {
   return function(dispatch) {
     return dispatch({

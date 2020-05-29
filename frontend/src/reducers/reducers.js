@@ -231,6 +231,35 @@ function cabinet(state = initialState, action) {
         isSaveUnitPending: false,
         tracks: updatedTracksWithNewUnit
       }
+    case 'CREATE_LESSON_PENDING':
+      return {
+        ...state,
+        isSaveLessonPending: true
+      }
+    case 'CREATE_LESSON_FULFILLED':
+      const createdLesson = action.payload.data
+      const updatedTracksWithNewLesson = state.tracks.reduce((tracks, tr, idx) => {
+        // Try to update each track's unit's lessons
+        const updUnits = tr.track_units.reduce((acc, un) => {
+          // Get the lesson's unit by id
+          if (un.id === createdLesson.unit) {
+            // Add the newly created lesson to the unit's lessons
+            un.unit_lessons.push(createdLesson)
+            acc.push(un)
+          } else {
+            acc.push(un)
+          }
+          return acc
+        }, [])
+        tr.track_units = updUnits
+        tracks.push(tr)
+        return tracks
+      }, [])
+      return {
+        ...state,
+        isSaveLessonPending: false,
+        tracks: updatedTracksWithNewLesson
+      }
     default:
       return state
   }
