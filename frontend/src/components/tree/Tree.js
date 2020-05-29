@@ -19,6 +19,7 @@ const Tree = ({
   saveUnit,
   saveLesson,
   createTrack,
+  createUnit,
   isSaveTrackPending,
   entityToPick = '',
   entityId = '',
@@ -47,7 +48,6 @@ const Tree = ({
 
   const getNodeKey = ({ treeIndex }) => treeIndex
 
-
   const handleSave = () => {
     const { type, id } = currentNode
     if (type && type === 'Track') {
@@ -69,7 +69,11 @@ const Tree = ({
         is_published: currentNode.is_published,
         track: currentNode.track,
       }
-      saveUnit(id, payload)
+      if (id) {
+        saveUnit(id, payload)
+      } else {
+        createUnit(payload)
+      }
     } else if (type && type === 'Lesson') {
       const payload = {
         name: currentNode.title,
@@ -91,15 +95,19 @@ const Tree = ({
   const createNewNode = (node) => {
     const nodesWithSubtitle = ['Track', 'Unit']
     const newNode = {
-      type: node.type,
-      title: `New ${node.type}`,
-      is_published: false
+      type: node.childrenType,
+      title: `New ${node.childrenType}`,
+      is_published: false,
     }
-    if (nodesWithSubtitle.includes(node.type)) {
+    if (nodesWithSubtitle.includes(node.childrenType)) {
       newNode['subtitle'] = ''
     }
-    if (node.type === 'Track') {
+    if (node.childrenType === 'Track') {
       newNode['programming_language'] = node.programming_language
+    }
+    if (node?.id && node?.type) {
+      const parentFieldName = node.type.toLowerCase()
+      newNode[parentFieldName] = node.id
     }
     return newNode
   }
@@ -111,10 +119,10 @@ const Tree = ({
       expandParent: false,
       getNodeKey,
       newNode: createNewNode({
-        type: 'Track',
+        childrenType: 'Track',
         programming_language: ''
       }),
-      addAsFirstChild: false
+      addAsFirstChild: true
     }).treeData
     setNodes(newNodes)
   }
@@ -122,11 +130,11 @@ const Tree = ({
   const handleAddClick = (node, path) => {
     const newNodes = addNodeUnderParent({
       treeData: nodes,
-      parentKey: path[path.length],
+      parentKey: path[path.length - 1],
       expandParent: true,
       getNodeKey,
       newNode: createNewNode(node),
-      addAsFirstChild: false
+      addAsFirstChild: true
     }).treeData
     setNodes(newNodes)
   }
@@ -167,14 +175,19 @@ const Tree = ({
   }
 
   const getEditBtn = (node, path) => {
-    return [
+    const btns = [
       <button onClick={() => handleEditClick(node, path)}>
-        Edit
-      </button>,
-      <button onClick={() => handleAddClick(node, path)}>
-        Add
+        {node?.id ? 'Edit' : 'Edit and create'}
       </button>
     ]
+    if (node.childrenType) {
+      btns.push(
+        <button onClick={() => handleAddClick(node, path)}>
+          Add {node.childrenType}
+        </button>
+      )
+    }
+    return btns
   }
 
   const getButtons = (node, path) => {

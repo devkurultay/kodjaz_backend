@@ -6,6 +6,7 @@ import {
   saveUnit,
   saveLesson,
   createTrack,
+  createUnit,
 } from '../../actions/entity'
 
 import Tree from './Tree'
@@ -24,6 +25,7 @@ const mapDispatchToProps = (dispatch) => {
     saveUnit,
     saveLesson,
     createTrack,
+    createUnit,
   }, dispatch)
 }
 
