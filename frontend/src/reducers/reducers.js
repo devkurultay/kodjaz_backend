@@ -269,7 +269,6 @@ function cabinet(state = initialState, action) {
     case 'CREATE_EXERCISE_PENDING':
       return {
         ...state,
-        newlyCreatedExerciseId: null,
         isSaveExercisePending: true
       }
     case 'CREATE_EXERCISE_FULFILLED':
