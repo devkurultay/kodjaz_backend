@@ -20,9 +20,10 @@ function failedToLoad(error) {
 }
 
 function failedToSaveExercise(error) {
+  const errors = error?.response?.data
   return {
     type: 'SAVE_EXERCISE_ERROR',
-    payload: error?.response?.data
+    payload: errors
   }
 }
 
@@ -79,6 +80,17 @@ export function createLesson(lesson) {
       type: 'CREATE_LESSON',
       payload: axiosInstance.post(`/v1/lessons/`, lesson)
     })
+  }
+}
+
+export function createExercise(exercise) {
+  return function(dispatch) {
+    return dispatch({
+      type: 'CREATE_EXERCISE',
+      payload: axiosInstance.post(`/v1/exercises/`, exercise)
+    }).catch(
+      (error) => dispatch(failedToSaveExercise(error))
+    )
   }
 }
 
