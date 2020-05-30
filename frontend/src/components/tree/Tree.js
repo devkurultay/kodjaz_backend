@@ -147,7 +147,11 @@ const Tree = ({
   const handleEditClick = (node, path) => {
     const { type, id } = node
     if (type && type === 'Exercise') {
-      history.push(`/exercise/${id}/`)
+      if (id) {
+        history.push(`/exercise/${id}/`)
+      } else {
+        history.push('/create-exercise/', { lessonId: node.lesson })
+      }
       return
     }
     setCurrentNode(node)
