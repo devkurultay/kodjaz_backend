@@ -444,7 +444,7 @@ const ExerciseForm = ({
       }
       <div className="exercise-form__alert-placeholder">
         {success
-          ? <Alert variant="success">Successfully saved!</Alert>
+          ? <Alert variant="success">Sent to server!</Alert>
           : null
         }
       </div>
