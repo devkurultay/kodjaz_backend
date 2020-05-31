@@ -216,12 +216,15 @@ const Tree = ({
         isShowAlert={isShowAlert}
       />
       <Row className="justify-content-md-center">
-        <Button
-          className="tree__add-track-btn"
-          onClick={handleAddNewTrack}
-          variant="outline-primary">
-          Add a new track
-        </Button>
+        {entityToPick
+          ? null
+          : <Button
+              className="tree__add-track-btn"
+              onClick={handleAddNewTrack}
+              variant="outline-primary">
+              Add a new track
+            </Button>
+        }
       </Row>
       <SortableTree
         treeData={nodes}
