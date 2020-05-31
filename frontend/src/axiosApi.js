@@ -19,7 +19,7 @@ axiosInstance.interceptors.response.use(
   response => response,
   error => {
     const errorResp = error.response
-    if (isTokenExpired(errorResp)) {
+    if (isTokenExpired(errorResp ?? {})) {
       return refreshTokenAndResendRequest(error)
     }
     const wrongCredentialsErrors = getWrongCredentialsErrorMessages(errorResp)
