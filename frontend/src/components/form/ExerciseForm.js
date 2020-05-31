@@ -27,7 +27,6 @@ const ExerciseForm = ({
   lessons,
   exercises,
   isSaveExercisePending,
-  newlyCreatedExerciseId,
   saveExerciseError,
   newlyCreatedExerciseId,
   loadExercises,
