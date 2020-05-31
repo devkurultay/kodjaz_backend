@@ -264,6 +264,7 @@ function cabinet(state = initialState, action) {
     case 'CREATE_EXERCISE_PENDING':
       return {
         ...state,
+        newlyCreatedExerciseId: null,
         isSaveExercisePending: true
       }
     case 'CREATE_EXERCISE_FULFILLED':
@@ -275,6 +276,11 @@ function cabinet(state = initialState, action) {
         exercises: [
           ...state.exercises, newEx
         ]
+      }
+    case 'RESET_NEWLY_CREATED_EXERCISE_ID':
+      return {
+        ...state,
+        newlyCreatedExerciseId: null
       }
     default:
       return state

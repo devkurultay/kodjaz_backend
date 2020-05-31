@@ -138,3 +138,9 @@ export function loadExercises() {
     })
   }
 }
+
+export function resetNewlyCreatedLessonId() {
+  return {
+    type: 'RESET_NEWLY_CREATED_EXERCISE_ID'
+  }
+}
