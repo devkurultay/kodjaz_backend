@@ -17,6 +17,7 @@ const mapStateToProps = (state) => {
     exercises: state.exercises,
     isSaveExercisePending: state.isSaveExercisePending,
     saveExerciseError: state.saveExerciseError,
+    newlyCreatedExerciseId: state.newlyCreatedExerciseId,
   }
 }
 

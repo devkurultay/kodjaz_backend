@@ -8,12 +8,13 @@ import axiosInstance from '../../axiosApi'
 import Home from './Home'
 import ExerciseForm from '../form/ExerciseFormContainer'
 
-const Cabinet = ({ loadTracks }) => {
+const Cabinet = ({ loadTracks, resetNewlyCreatedLessonId }) => {
   const history = useHistory()
   const location = useLocation()
   const [ isExpanded, setIsExpanded ] = useState(false)
   useEffect(() => {
     loadTracks()
+    resetNewlyCreatedLessonId()
   }, [])
   return (
     <>

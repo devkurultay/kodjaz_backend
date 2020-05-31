@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useParams, useLocation } from "react-router-dom"
+import { useParams, useLocation, withRouter } from "react-router-dom"
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
@@ -27,12 +27,13 @@ const ExerciseForm = ({
   lessons,
   exercises,
   isSaveExercisePending,
-  newlyCreatedExerciseId,
   saveExerciseError,
+  newlyCreatedExerciseId,
   loadExercises,
   loadLessons,
   saveExercise,
-  createExercise
+  createExercise,
+  history
 }) => {
   const { exerciseId } = useParams()
   const currentExerciseId = exerciseId ?? newlyCreatedExerciseId
@@ -48,6 +49,8 @@ const ExerciseForm = ({
   const [ entityToPick, setEntityToPick ] = useState('')
   const [ entityToClear, setEntityToClear ] = useState('')
   const [ success, setSuccess ] = useState(false)
+
+  let isCancelled = false
 
   useEffect(() => {
     loadExercises()
@@ -66,22 +69,33 @@ const ExerciseForm = ({
   }
 
   useEffect(() => {
-    if (exercises.length && currentExerciseId) {
-      const currentExercise = getExerciseDataById(currentExerciseId)
-      const prev = getExerciseDataById(currentExercise?.previous_exercise)
-      const next = getExerciseDataById(currentExercise?.next_exercise)
-      setExerciseData(currentExercise)
-      setPrevExercise(prev)
-      setNextExercise(next)
-      setLessonById(currentExercise?.lesson, setLesson)
-    }
-    if (!saveExerciseError) {
-      setSuccess(false)
-    }
-    if (lessons.length && lessonId) {
-      setLessonById(lessonId, setLesson)
+    if (newlyCreatedExerciseId === null && !isCancelled) {
+      if (exercises.length && currentExerciseId) {
+        const currentExercise = getExerciseDataById(currentExerciseId)
+        const prev = getExerciseDataById(currentExercise?.previous_exercise)
+        const next = getExerciseDataById(currentExercise?.next_exercise)
+        setExerciseData(currentExercise)
+        setPrevExercise(prev)
+        setNextExercise(next)
+        setLessonById(currentExercise?.lesson, setLesson)
+        setSuccess(false)
+      }
+      if (!saveExerciseError) {
+        setSuccess(false)
+      }
+      if (lessons.length && lessonId) {
+        setLessonById(lessonId, setLesson)
+      }
     }
   }, [ exercises, lessons, saveExerciseError, lessonId, currentExerciseId ])
+
+  useEffect(() => {
+    if (newlyCreatedExerciseId) {
+      setSuccess(false)
+      isCancelled = true
+      history.push('/')
+    }
+  }, [newlyCreatedExerciseId])
 
   const handleFieldChange = (fieldName, value) => {
     setExerciseData({ ...exerciseData, [fieldName]: value })
@@ -132,7 +146,6 @@ const ExerciseForm = ({
       }
       createExercise(payload)
     }
-    setTimeout(() => setSuccess(false), 3000)
   }
 
   const handleModalShow = () => {
@@ -460,4 +473,4 @@ const ExerciseForm = ({
   )
 }
 
-export default ExerciseForm
+export default withRouter(ExerciseForm)
