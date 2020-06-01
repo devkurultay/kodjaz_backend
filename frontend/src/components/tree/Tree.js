@@ -185,15 +185,15 @@ const Tree = ({
 
   const getEditBtn = (node, path) => {
     const btns = [
-      <button onClick={() => handleEditClick(node, path)}>
+      <Button variant="light" onClick={() => handleEditClick(node, path)}>
         {node?.id ? 'Edit' : 'Edit and create'}
-      </button>
+      </Button>
     ]
     if (node.childrenType) {
       btns.push(
-        <button onClick={() => handleAddClick(node, path)}>
+        <Button variant="light" onClick={() => handleAddClick(node, path)}>
           Add {node.childrenType}
-        </button>
+        </Button>
       )
     }
     return btns
