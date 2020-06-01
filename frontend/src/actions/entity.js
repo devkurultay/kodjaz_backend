@@ -20,9 +20,10 @@ function failedToLoad(error) {
 }
 
 function failedToSaveExercise(error) {
+  const errors = error?.response?.data
   return {
     type: 'SAVE_EXERCISE_ERROR',
-    payload: error?.response?.data
+    payload: errors
   }
 }
 
@@ -55,6 +56,62 @@ export function saveTrack(id, track) {
   }
 }
 
+export function createTrack(track) {
+  return function(dispatch) {
+    return dispatch({
+      type: 'CREATE_TRACK',
+      payload: axiosInstance.post(`/v1/tracks/`, track)
+    })
+  }
+}
+
+export function createUnit(unit) {
+  return function(dispatch) {
+    return dispatch({
+      type: 'CREATE_UNIT',
+      payload: axiosInstance.post(`/v1/units/`, unit)
+    })
+  }
+}
+
+export function createLesson(lesson) {
+  return function(dispatch) {
+    return dispatch({
+      type: 'CREATE_LESSON',
+      payload: axiosInstance.post(`/v1/lessons/`, lesson)
+    })
+  }
+}
+
+export function createExercise(exercise) {
+  return function(dispatch) {
+    return dispatch({
+      type: 'CREATE_EXERCISE',
+      payload: axiosInstance.post(`/v1/exercises/`, exercise)
+    }).catch(
+      (error) => dispatch(failedToSaveExercise(error))
+    )
+  }
+}
+
+export function saveUnit(id, unit) {
+  return function(dispatch) {
+    return dispatch({
+      type: 'SAVE_UNIT',
+      payload: axiosInstance.put(`/v1/units/${id}/`, unit)
+    })
+  }
+}
+
+export function saveLesson(id, lesson) {
+  return function(dispatch) {
+    return dispatch({
+      type: 'SAVE_LESSON',
+      payload: axiosInstance.put(`/v1/lessons/${id}/`, lesson)
+    })
+  }
+}
+
 export function loadTracks() {
   return function(dispatch) {
     return dispatch({
@@ -79,5 +136,11 @@ export function loadExercises() {
       type: 'LOAD_EXERCISES',
       payload: axiosInstance.get('/v1/exercises/')
     })
+  }
+}
+
+export function resetNewlyCreatedLessonId() {
+  return {
+    type: 'RESET_NEWLY_CREATED_EXERCISE_ID'
   }
 }

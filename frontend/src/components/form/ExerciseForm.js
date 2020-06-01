@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useParams } from "react-router-dom"
+import { useParams, useLocation, withRouter } from "react-router-dom"
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
@@ -28,11 +28,16 @@ const ExerciseForm = ({
   exercises,
   isSaveExercisePending,
   saveExerciseError,
+  newlyCreatedExerciseId,
   loadExercises,
   loadLessons,
-  saveExercise
+  saveExercise,
+  createExercise,
+  history
 }) => {
-  const { id } = useParams()
+  const { exerciseId } = useParams()
+  const currentExerciseId = exerciseId ?? newlyCreatedExerciseId
+  const lessonId = useLocation()?.state?.lessonId
   const [ exerciseData, setExerciseData ] = useState({})
   const [ prevExercise, setPrevExercise ] = useState({})
   const [ nextExercise, setNextExercise ] = useState({})
@@ -44,6 +49,8 @@ const ExerciseForm = ({
   const [ entityToPick, setEntityToPick ] = useState('')
   const [ entityToClear, setEntityToClear ] = useState('')
   const [ success, setSuccess ] = useState(false)
+
+  let isCancelled = false
 
   useEffect(() => {
     loadExercises()
@@ -62,19 +69,33 @@ const ExerciseForm = ({
   }
 
   useEffect(() => {
-    if (exercises.length) {
-      const currentExercise = getExerciseDataById(id)
-      const prev = getExerciseDataById(currentExercise?.previous_exercise)
-      const next = getExerciseDataById(currentExercise?.next_exercise)
-      setExerciseData(currentExercise)
-      setPrevExercise(prev)
-      setNextExercise(next)
-      setLessonById(currentExercise?.lesson, setLesson)
+    if (newlyCreatedExerciseId === null && !isCancelled) {
+      if (exercises.length && currentExerciseId) {
+        const currentExercise = getExerciseDataById(currentExerciseId)
+        const prev = getExerciseDataById(currentExercise?.previous_exercise)
+        const next = getExerciseDataById(currentExercise?.next_exercise)
+        setExerciseData(currentExercise)
+        setPrevExercise(prev)
+        setNextExercise(next)
+        setLessonById(currentExercise?.lesson, setLesson)
+        setSuccess(false)
+      }
+      if (!saveExerciseError) {
+        setSuccess(false)
+      }
+      if (lessons.length && lessonId) {
+        setLessonById(lessonId, setLesson)
+      }
     }
-    if (!saveExerciseError) {
+  }, [ exercises, lessons, saveExerciseError, lessonId, currentExerciseId ])
+
+  useEffect(() => {
+    if (newlyCreatedExerciseId) {
       setSuccess(false)
+      isCancelled = true
+      history.push('/')
     }
-  }, [ exercises, lessons, saveExerciseError ])
+  }, [newlyCreatedExerciseId])
 
   const handleFieldChange = (fieldName, value) => {
     setExerciseData({ ...exerciseData, [fieldName]: value })
@@ -99,8 +120,8 @@ const ExerciseForm = ({
   }
 
   const handleExercisePick = (node) => {
-    const exerciseId = node.id
-    const exercise = getExerciseDataById(exerciseId)
+    const id = node.id
+    const exercise = getExerciseDataById(id)
     if (exerciseToPick === 'previous_exercise') {
       setPrevExercise(exercise)
     } else if (exerciseToPick === 'next_exercise') {
@@ -112,8 +133,19 @@ const ExerciseForm = ({
 
   const handleSave = () => {
     setSuccess(true)
-    saveExercise(id, exerciseData)
-    setTimeout(() => setSuccess(false), 3000)
+    // If there's an exerciseId taken from the URL
+    if (exerciseId) {
+      saveExercise(exerciseId, exerciseData)
+    } else {
+      const payload = {
+        ...exerciseData,
+        lesson: lessonId
+      }
+      if (!Object.keys(exerciseData).includes('is_published')) {
+        payload['is_published'] = false
+      }
+      createExercise(payload)
+    }
   }
 
   const handleModalShow = () => {
@@ -209,32 +241,44 @@ const ExerciseForm = ({
         proceedHandler={() => handleFieldClear(entityToClear)}
       />
 
-      <h4>Editing exercise #{ id }</h4>
+      <h4>{exerciseId ? `Editing exercise #${ exerciseId }` : `Creating a new exercise`}</h4>
       <hr />
       <Form>
         <Form.Group controlId="name">
           <Form.Label>Exercise name</Form.Label>
           <Form.Control
+            isInvalid={saveExerciseError?.name}
             type="text"
             placeholder="Exercise name"
             onChange={(e) => handleFieldChange('name', e.target.value)}
             value={exerciseData?.name || ''} />
+          <Form.Control.Feedback type="invalid">
+            {saveExerciseError?.name}
+          </Form.Control.Feedback>
         </Form.Group>
         <Form.Group controlId="lecture">
           <Form.Label>Lecture text</Form.Label>
           <Form.Control
+            isInvalid={saveExerciseError?.lecture}
             as="textarea"
             rows="3"
             onChange={(e) => handleFieldChange('lecture', e.target.value)}
             value={exerciseData?.lecture || ''} />
+          <Form.Control.Feedback type="invalid">
+            {saveExerciseError?.lecture}
+          </Form.Control.Feedback>
         </Form.Group>
         <Form.Group controlId="instruction">
           <Form.Label>Instruction text</Form.Label>
           <Form.Control
+            isInvalid={saveExerciseError?.instruction}
             as="textarea"
             rows="3"
             onChange={(e) => handleFieldChange('instruction', e.target.value)}
             value={exerciseData?.instruction || ''} />
+          <Form.Control.Feedback type="invalid">
+            {saveExerciseError?.instruction}
+          </Form.Control.Feedback>
         </Form.Group>
         <Form.Group controlId="hint">
           <Form.Label>Hint text</Form.Label>
@@ -343,6 +387,9 @@ const ExerciseForm = ({
               aria-describedby="lessonIcon"
               onFocus={(e) => handleEntityPick(e, 'Exercise', 'previous_exercise')}
               value={prevExercise?.name || ''} />
+            <Form.Control.Feedback type="invalid">
+              {saveExerciseError?.previous_exercise}
+            </Form.Control.Feedback>
           </InputGroup>
         </Form.Group>
         <Form.Group controlId="nextExercise">
@@ -369,13 +416,16 @@ const ExerciseForm = ({
               readOnly
               onFocus={(e) => handleEntityPick(e, 'Exercise', 'next_exercise')}
               value={nextExercise?.name || ''} />
+            <Form.Control.Feedback type="invalid">
+              {saveExerciseError?.next_exercise}
+            </Form.Control.Feedback>
           </InputGroup>
         </Form.Group>
         <Form.Group controlId="isPublishedCheckbox">
           <Form.Check
             type="checkbox"
             id="is_published"
-            checked={!!exerciseData?.is_published}
+            checked={!!exerciseData?.is_published || false}
             onChange={(e) => handleFieldChange('is_published', e.target.checked)}
             label="Is the exercise published?"
           />
@@ -383,10 +433,14 @@ const ExerciseForm = ({
         <Form.Group controlId="belongsToLesson">
           <Form.Label>Lesson the exercise belongs to</Form.Label>
           <Form.Control
+            isInvalid={saveExerciseError?.lesson}
             type="text"
             readOnly
             onFocus={(e) => handleEntityPick(e, 'Lesson')}
             value={lesson?.name || ''} />
+          <Form.Control.Feedback type="invalid">
+            {saveExerciseError?.lesson}
+          </Form.Control.Feedback>
         </Form.Group>
         <Form.Group controlId="fileTxt">
           <Form.Label>If this field has a content, file.txt tab will be shown</Form.Label>
@@ -403,7 +457,7 @@ const ExerciseForm = ({
       }
       <div className="exercise-form__alert-placeholder">
         {success
-          ? <Alert variant="success">Successfully saved!</Alert>
+          ? <Alert variant="success">Sent to server!</Alert>
           : null
         }
       </div>
@@ -419,4 +473,4 @@ const ExerciseForm = ({
   )
 }
 
-export default ExerciseForm
+export default withRouter(ExerciseForm)

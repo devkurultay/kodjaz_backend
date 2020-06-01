@@ -5,12 +5,12 @@ export const dataToTree = (data) => {
       title: track.name,
       subtitle: track.description,
       expanded: false,
-      type: track.entity_type,
-      // These are needed for saving
       name: track.name,
       description: track.description,
       is_published: track.is_published,
       programming_language: track.programming_language,
+      type: track.entity_type,
+      childrenType: 'Unit',
       children: getUnits(track.track_units)
     }
   })
@@ -22,8 +22,11 @@ const getUnits = (units) => {
       id: unit.id,
       title: unit.name,
       subtitle: unit.description,
+      is_published: unit.is_published,
+      track: unit.track,
       expanded: true,
       type: unit.entity_type,
+      childrenType: 'Lesson',
       children: getLessons(unit.unit_lessons)
     }
   })
@@ -34,9 +37,11 @@ const getLessons = (lessons) => {
     return {
       id: lesson.id,
       title: lesson.name,
-      subtitle: lesson.description,
+      is_published: lesson.is_published,
+      unit: lesson.unit,
       expanded: true,
       type: lesson.entity_type,
+      childrenType: 'Exercise',
       children: getExercises(lesson.lesson_exercises)
     }
   })
@@ -47,7 +52,8 @@ const getExercises = (exercises) => {
     return {
       id: exercise.id,
       title: exercise.name,
-      type: exercise.entity_type
+      type: exercise.entity_type,
+      childrenType: null,
     }
   })
 }

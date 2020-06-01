@@ -2,7 +2,12 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import {
-  saveTrack
+  saveTrack,
+  saveUnit,
+  saveLesson,
+  createTrack,
+  createUnit,
+  createLesson
 } from '../../actions/entity'
 
 import Tree from './Tree'
@@ -17,7 +22,12 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    saveTrack
+    saveTrack,
+    saveUnit,
+    saveLesson,
+    createTrack,
+    createUnit,
+    createLesson,
   }, dispatch)
 }
 

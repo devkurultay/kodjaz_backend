@@ -22,6 +22,8 @@ class PreviousExerciseSerializerField(serializers.Field):
 class ExerciseSerializer(serializers.ModelSerializer):
     entity_type = serializers.SerializerMethodField()
     previous_exercise = PreviousExerciseSerializerField(source='*', required=False)
+    default_code = serializers.CharField(trim_whitespace=False, required=False)
+    unit_test = serializers.CharField(trim_whitespace=False, required=False)
 
     class Meta:
         model = Exercise

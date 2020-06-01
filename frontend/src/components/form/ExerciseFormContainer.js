@@ -6,7 +6,8 @@ import ExerciseForm from './ExerciseForm'
 import {
   loadExercises,
   loadLessons,
-  saveExercise
+  saveExercise,
+  createExercise
 } from '../../actions/entity'
 
 const mapStateToProps = (state) => {
@@ -16,6 +17,7 @@ const mapStateToProps = (state) => {
     exercises: state.exercises,
     isSaveExercisePending: state.isSaveExercisePending,
     saveExerciseError: state.saveExerciseError,
+    newlyCreatedExerciseId: state.newlyCreatedExerciseId,
   }
 }
 
@@ -23,7 +25,8 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     loadExercises,
     loadLessons,
-    saveExercise
+    saveExercise,
+    createExercise
   }, dispatch)
 }
 
