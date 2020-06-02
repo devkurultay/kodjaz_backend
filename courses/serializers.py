@@ -32,7 +32,7 @@ class ExerciseSerializer(serializers.ModelSerializer):
             'input_should_contain', 'input_should_not_contain', 'input_error_text',
             'output_should_contain', 'output_should_not_contain', 'output_error_text',
             'unit_test', 'previous_exercise', 'next_exercise', 'is_published',
-            'lesson', 'text_file_content'
+            'lesson', 'unit_id', 'track_id', 'text_file_content'
         ]
     
     def get_entity_type(self, obj):
