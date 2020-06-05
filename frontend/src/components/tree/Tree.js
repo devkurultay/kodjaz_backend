@@ -150,6 +150,7 @@ const Tree = ({
       if (id) {
         history.push(`/exercise/${id}/`)
       } else {
+        // Redirect to exercise creation page (with lessonId in history state)
         history.push('/create-exercise/', { lessonId: node.lesson })
       }
       return

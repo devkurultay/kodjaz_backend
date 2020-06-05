@@ -451,7 +451,7 @@ const ExerciseForm = ({
             value={exerciseData?.text_file_content || ''} />
         </Form.Group>
       </Form>
-      {saveExerciseError.length
+      {saveExerciseError && saveExerciseError?.length
         ? saveExerciseError.map((msg, idx) => <Alert key={idx} variant="danger">{msg}</Alert>)
         : null
       }

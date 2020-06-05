@@ -1,3 +1,7 @@
+import {
+  addNewExerciseToTrack
+} from './helpers.js'
+
 const initialState = {
   isAuthenticated: null,
   loginError: [],
@@ -135,6 +139,11 @@ function cabinet(state = initialState, action) {
         isSaveUnitPending: false,
         tracks: updatedTracks
       }
+    case 'SAVE_LESSON_PENDING':
+      return {
+        ...state,
+        isSaveLessonPending: true
+      }
     case 'SAVE_LESSON_FULFILLED':
       const updatedLesson = action.payload.data
       const updatedTrs = state.tracks.reduce((tracks, tr, idx) => {
@@ -264,18 +273,19 @@ function cabinet(state = initialState, action) {
     case 'CREATE_EXERCISE_PENDING':
       return {
         ...state,
-        newlyCreatedExerciseId: null,
         isSaveExercisePending: true
       }
     case 'CREATE_EXERCISE_FULFILLED':
       const newEx = action.payload.data
+      const updatedTracksWithNewExercise = addNewExerciseToTrack(newEx, state.tracks)
       return {
         ...state,
         isSaveExercisePending: false,
         newlyCreatedExerciseId: newEx.id,
         exercises: [
           ...state.exercises, newEx
-        ]
+        ],
+        tracks: updatedTracksWithNewExercise
       }
     case 'RESET_NEWLY_CREATED_EXERCISE_ID':
       return {

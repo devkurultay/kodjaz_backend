@@ -124,6 +124,14 @@ class Exercise(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def unit_id(self):
+        return self.lesson.unit.id
+
+    @property
+    def track_id(self):
+        return self.lesson.unit.track.id
+
 
 class SubmissionCreationException(Exception):
     pass
