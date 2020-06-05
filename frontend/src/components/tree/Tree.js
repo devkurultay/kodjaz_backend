@@ -2,8 +2,12 @@ import React, { useEffect, useState } from 'react'
 import SortableTree, { changeNodeAtPath, addNodeUnderParent } from 'react-sortable-tree'
 import FileExplorerTheme from 'react-sortable-tree-theme-minimal'
 import Button from 'react-bootstrap/Button'
+import ButtonGroup from 'react-bootstrap/ButtonGroup'
 import Container from 'react-bootstrap/Container'
+import Form from 'react-bootstrap/Form'
+import InputGroup from 'react-bootstrap/InputGroup'
 import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 import { useHistory } from 'react-router-dom'
 
 import EntityEditModal from '../form/EntityEditModal'
@@ -32,6 +36,9 @@ const Tree = ({
   const [ currentPath, setCurrentPath ] = useState([])
   const [ currentNode, setCurrentNode ] = useState({})
   const [ isShowAlert, setIsShowAlert ] = useState(false)
+  const [ searchString, setSearchString ] = useState('')
+  const [ searchFocusIndex, setSearchFocusIndex ] = useState(0)
+  const [ searchFoundCount, setSearchFoundCount ] = useState(null)
 
   useEffect(() => {
     setNodes(dataToTree(tracks))
@@ -48,6 +55,31 @@ const Tree = ({
   }
 
   const getNodeKey = ({ treeIndex }) => treeIndex
+  const customSearchMethod = ({ node, searchQuery }) =>
+    searchQuery &&
+    node.title.toLowerCase().indexOf(searchQuery.toLowerCase()) > -1;
+
+  const selectPrevMatch = () => {
+    const value = searchFocusIndex !== null
+      ? (searchFoundCount + searchFocusIndex - 1) % searchFoundCount
+      : searchFoundCount - 1
+    setSearchFocusIndex(value)
+  }
+
+  const selectNextMatch = () => {
+    const value = searchFocusIndex !== null
+      ? (searchFocusIndex + 1) % searchFoundCount
+      : 0
+    setSearchFocusIndex(value)
+  }
+
+  const handleSearchFinish = (matches) => {
+    const focusIndex = matches.length > 0
+      ? searchFocusIndex % matches.length
+      : 0
+    setSearchFoundCount(matches.length)
+    setSearchFocusIndex(focusIndex)
+  }
 
   const handleSave = () => {
     const { type, id } = currentNode
@@ -227,6 +259,47 @@ const Tree = ({
             </Button>
         }
       </Row>
+      <Form.Row className="d-flex justify-content-center align-items-center mb-2">
+        <Col xs="auto">
+          <InputGroup>
+            <Form.Control
+              type="text"
+              placeholder="Search for nodes"
+              value={searchString}
+              onChange={(e) => setSearchString(e.target.value)}
+            />
+            <InputGroup.Append>
+              <InputGroup.Text
+                id="searchTextClear"
+                onClick={(e) => {
+                  setSearchString('')
+                  handleSearchFinish([])
+                }}
+              >
+                <i className="fa fa-fw fa-times" />
+              </InputGroup.Text>
+            </InputGroup.Append>
+          </InputGroup>
+        </Col>
+        <Col xs="auto">
+          <ButtonGroup>
+            <Button
+              onClick={selectPrevMatch}
+              variant="outline-success">Prev</Button>
+            <Button
+              onClick={selectNextMatch}
+              variant="outline-success">Next</Button>
+          </ButtonGroup>
+        </Col>
+        <Col xs="auto">
+          <span>
+            &nbsp;
+            {searchFoundCount > 0 ? searchFocusIndex + 1 : 0}
+            &nbsp;/&nbsp;
+            {searchFoundCount || 0}
+          </span>
+        </Col>
+      </Form.Row>
       <SortableTree
         treeData={nodes}
         onChange={setNodes}
@@ -234,6 +307,10 @@ const Tree = ({
         generateNodeProps={({ node, path }) => ({
 					buttons: getButtons(node, path)
         })}
+        searchMethod={customSearchMethod}
+        searchQuery={searchString}
+        searchFocusOffset={searchFocusIndex}
+        searchFinishCallback={handleSearchFinish}
       />
     </Container>
   )
