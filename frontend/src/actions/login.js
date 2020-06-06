@@ -7,9 +7,9 @@ async function getTokens () {
   return { refreshToken, accessToken }
 }
 
-async function setTokens (accessToken, refreshToken) {
-  await Cookies.set('access_token', accessToken)
-  await Cookies.set('refresh_token', refreshToken)
+function setTokens (accessToken, refreshToken) {
+  Cookies.set('access_token', accessToken)
+  Cookies.set('refresh_token', refreshToken)
 }
 
 async function performLogin(username, password) {
@@ -19,7 +19,7 @@ async function performLogin(username, password) {
   })
   const newAccessToken = response?.data?.access
   const newRefreshToken = response?.data?.refresh
-  await setTokens(newAccessToken, newRefreshToken)
+  setTokens(newAccessToken, newRefreshToken)
   axiosInstance.defaults.headers.Authorization = 'JWT ' + newAccessToken
   return response
 }
@@ -67,5 +67,16 @@ export function checkIsAuth() {
       (response) => dispatch(loginUser()),
       (error) => dispatch(failToLogIn())
     )
+  }
+}
+
+export function logout() {
+  const refreshToken = Cookies.get('refresh_token')
+  setTokens('', '')
+  return function(dispatch) {
+    return dispatch({
+      type: 'LOGOUT',
+      payload: axiosInstance.post(`/logout/`, { 'refresh': refreshToken })
+    })
   }
 }

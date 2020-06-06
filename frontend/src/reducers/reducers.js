@@ -35,6 +35,11 @@ function cabinet(state = initialState, action) {
         isAuthenticated: false,
         loginError: action.payload
       }
+    case 'LOGOUT_FULFILLED':
+      return {
+        ...state,
+        isAuthenticated: false
+      }
     case 'LOAD_EXERCISE':
       return {
         ...state,

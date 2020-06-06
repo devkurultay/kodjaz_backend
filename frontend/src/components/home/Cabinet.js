@@ -8,7 +8,7 @@ import axiosInstance from '../../axiosApi'
 import Home from './Home'
 import ExerciseForm from '../form/ExerciseFormContainer'
 
-const Cabinet = ({ loadTracks, resetNewlyCreatedLessonId }) => {
+const Cabinet = ({ logout, loadTracks, resetNewlyCreatedLessonId }) => {
   const history = useHistory()
   const location = useLocation()
   const [ isExpanded, setIsExpanded ] = useState(false)
@@ -25,6 +25,9 @@ const Cabinet = ({ loadTracks, resetNewlyCreatedLessonId }) => {
           if (location.pathname !== selected) {
             history.push(selected)
           }
+          if (selected === '/logout') {
+            logout()
+          }
         }}
       >
         <SideNav.Toggle />
@@ -35,6 +38,14 @@ const Cabinet = ({ loadTracks, resetNewlyCreatedLessonId }) => {
             </NavIcon>
             <NavText>
               Home
+            </NavText>
+          </NavItem>
+          <NavItem eventKey="/logout">
+            <NavIcon>
+              <i className="fa fa-fw fa-power-off" style={{ fontSize: '1.75em' }} />
+            </NavIcon>
+            <NavText>
+              Logout
             </NavText>
           </NavItem>
         </SideNav.Nav>
