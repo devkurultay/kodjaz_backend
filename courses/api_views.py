@@ -13,22 +13,22 @@ from courses.models import Exercise
 from courses.permissions import IsAdminMixin
 
 
-class TrackViewSet(ModelViewSet, IsAdminMixin):
+class TrackViewSet(IsAdminMixin, ModelViewSet):
     queryset = Track.objects.all()
     serializer_class = TrackSerializer
 
 
-class UnitViewSet(ModelViewSet, IsAdminMixin):
+class UnitViewSet(IsAdminMixin, ModelViewSet):
     queryset = Unit.objects.all()
     serializer_class = UnitSerializer
 
 
-class LessonViewSet(ModelViewSet, IsAdminMixin):
+class LessonViewSet(IsAdminMixin, ModelViewSet):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
 
 
-class ExerciseViewSet(ModelViewSet, IsAdminMixin):
+class ExerciseViewSet(IsAdminMixin, ModelViewSet):
     queryset = Exercise.objects.all()
     serializer_class = ExerciseSerializer
 
