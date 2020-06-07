@@ -4,10 +4,10 @@
     "pk": 1,
     "fields": {
         "name": "Python",
-        "description": "Python \u0442\u0438\u043b\u0438\u043d\u0435 \u043a\u0438\u0440\u0438\u0448\u04af\u04af.",
+        "description": "\u0411\u0430\u0448\u0442\u0430\u0433\u0430\u043d\u0433\u0430 \u043e\u04a3\u043e\u0439 \u0442\u0438\u043b",
         "is_published": true,
         "date_time_created": "2020-02-15T17:12:36.963Z",
-        "date_time_modified": "2020-05-19T04:53:02.735Z",
+        "date_time_modified": "2020-06-02T17:36:54.143Z",
         "programming_language": "Python"
     }
 },
@@ -36,15 +36,63 @@
     }
 },
 {
+    "model": "courses.track",
+    "pk": 4,
+    "fields": {
+        "name": "Rust",
+        "description": "Systems prog lang",
+        "is_published": false,
+        "date_time_created": "2020-05-28T04:28:26.848Z",
+        "date_time_modified": "2020-05-28T04:28:26.848Z",
+        "programming_language": "Rust"
+    }
+},
+{
+    "model": "courses.track",
+    "pk": 5,
+    "fields": {
+        "name": "Ruby",
+        "description": "Easy lang",
+        "is_published": false,
+        "date_time_created": "2020-05-28T04:33:43.742Z",
+        "date_time_modified": "2020-05-28T04:33:43.742Z",
+        "programming_language": "Ruby"
+    }
+},
+{
+    "model": "courses.track",
+    "pk": 6,
+    "fields": {
+        "name": "Go \u0442\u0438\u043b\u0438",
+        "description": "\u0416\u04e9\u043d\u04e9\u043a\u04e9\u0439 \u0431\u0438\u0440\u043e\u043a \u043a\u04af\u0447\u0442\u04af\u04af \u0442\u0438\u043b",
+        "is_published": false,
+        "date_time_created": "2020-05-29T04:31:03.768Z",
+        "date_time_modified": "2020-05-29T04:31:03.769Z",
+        "programming_language": "Go"
+    }
+},
+{
+    "model": "courses.track",
+    "pk": 7,
+    "fields": {
+        "name": "PHP \u0442\u0438\u043b\u0438",
+        "description": "\u0414\u04af\u0439\u043d\u04e9\u0434\u04e9 \u044d\u04a3 \u043a\u0435\u04a3\u0438\u0440\u0438 \u043a\u043e\u043b\u0434\u043e\u043d\u0443\u043b\u0433\u0430\u043d \u0442\u0438\u043b",
+        "is_published": false,
+        "date_time_created": "2020-06-01T04:36:11.542Z",
+        "date_time_modified": "2020-06-01T04:36:11.542Z",
+        "programming_language": "PHP"
+    }
+},
+{
     "model": "courses.unit",
     "pk": 1,
     "fields": {
         "name": "\u041f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0430\u043b\u043e\u043e \u043d\u0435\u0433\u0438\u0437\u0434\u0435\u0440\u0438",
-        "description": "\u04e8\u0437\u0433\u04e9\u0440\u043c\u04e9\u043b\u04e9\u0440, \u0442\u0438\u0437\u043c\u0435\u043a\u0442\u0435\u0440, \u043a\u043e\u0440\u0442\u0435\u0436\u0434\u0435\u0440, \u0441\u04e9\u0437\u0434\u04af\u043a\u0442\u04e9\u0440",
+        "description": "\u04e8\u0437\u0433\u04e9\u0440\u043c\u04e9\u043b\u04e9\u0440, \u0442\u0438\u0437\u043c\u0435\u043a\u0442\u0435\u0440, \u043a\u043e\u0440\u0442\u0435\u0436\u0434\u0435\u0440, \u0441\u04e9\u0437\u0434\u04af\u043a\u0442\u04e9\u0440.",
         "is_published": true,
         "track": 1,
         "date_time_created": "2020-02-15T17:15:18.213Z",
-        "date_time_modified": "2020-02-15T17:15:18.213Z"
+        "date_time_modified": "2020-06-07T09:58:14.998Z"
     }
 },
 {
@@ -96,15 +144,75 @@
     }
 },
 {
+    "model": "courses.unit",
+    "pk": 6,
+    "fields": {
+        "name": "\u0421\u0438\u043d\u0442\u0430\u043a\u0441\u0438\u0441\u0438",
+        "description": "\u0442\u0430\u0430\u043d\u044b\u0448\u0443\u0443",
+        "is_published": false,
+        "track": 4,
+        "date_time_created": "2020-05-29T04:26:15.531Z",
+        "date_time_modified": "2020-05-29T04:26:15.531Z"
+    }
+},
+{
+    "model": "courses.unit",
+    "pk": 7,
+    "fields": {
+        "name": "Struct",
+        "description": "\u0421\u0442\u0440\u0443\u043a\u0442\u0443\u0440\u0430\u043b\u0430\u0440 \u043c\u0435\u043d\u0435\u043d \u0438\u0448\u0442\u04e9\u04e9",
+        "is_published": false,
+        "track": 4,
+        "date_time_created": "2020-05-29T04:27:32.556Z",
+        "date_time_modified": "2020-05-29T04:27:32.556Z"
+    }
+},
+{
+    "model": "courses.unit",
+    "pk": 8,
+    "fields": {
+        "name": "Go \u0441\u0438\u043d\u0442\u0430\u043a\u0441\u0438\u0441\u0438",
+        "description": "Go \u043a\u0430\u043d\u0442\u0438\u043f \u0436\u0430\u0437\u044b\u043b\u0430\u0442",
+        "is_published": false,
+        "track": 6,
+        "date_time_created": "2020-05-29T04:31:57.238Z",
+        "date_time_modified": "2020-05-29T04:31:57.238Z"
+    }
+},
+{
+    "model": "courses.unit",
+    "pk": 9,
+    "fields": {
+        "name": "Ruby \u0442\u0438\u043b\u0438\u043d\u0438\u043d \u043d\u0435\u0433\u0438\u0437\u0434\u0435\u0440\u0438",
+        "description": "\u041d\u0435\u0433\u0438\u0437\u0434\u0435\u0440\u0438 \u043c\u0435\u043d\u0435\u043d \u0442\u0430\u0430\u043d\u044b\u0448\u0443\u0443",
+        "is_published": false,
+        "track": 5,
+        "date_time_created": "2020-05-31T15:31:18.473Z",
+        "date_time_modified": "2020-05-31T15:31:18.473Z"
+    }
+},
+{
+    "model": "courses.unit",
+    "pk": 10,
+    "fields": {
+        "name": "PHP \u043d\u0435\u0433\u0438\u0437\u0434\u0435\u0440\u0438",
+        "description": "\u0421\u0438\u043d\u0442\u0430\u043a\u0441\u0438\u0441, \u043d\u0435\u0433\u0438\u0437\u0433\u0438 \u0442\u0438\u043f\u0442\u0435\u0440",
+        "is_published": false,
+        "track": 7,
+        "date_time_created": "2020-06-01T04:36:37.176Z",
+        "date_time_modified": "2020-06-01T04:36:37.177Z"
+    }
+},
+{
     "model": "courses.lesson",
     "pk": 1,
     "fields": {
-        "name": "\u041a\u043e\u0434 \u0436\u0430\u0437\u0443\u0443\u0433\u0430 \u043a\u0438\u0440\u0438\u0448\u04af\u04af",
+        "name": "\u041a\u043e\u0434 \u0436\u0430\u0437\u0443\u0443\u0433\u0430 \u043a\u0438\u0440\u0438\u0448\u04af\u04af75",
         "is_published": true,
         "unit": 1,
         "badge": null,
         "date_time_created": "2020-02-15T17:23:34.132Z",
-        "date_time_modified": "2020-02-15T17:23:34.132Z"
+        "date_time_modified": "2020-05-27T04:10:18.854Z"
     }
 },
 {
@@ -132,6 +240,54 @@
     }
 },
 {
+    "model": "courses.lesson",
+    "pk": 4,
+    "fields": {
+        "name": "\u0410\u043b\u0433\u0430\u0447\u043a\u044b \u043a\u0430\u0434\u0430\u043c\u0434\u0430\u0440",
+        "is_published": false,
+        "unit": 6,
+        "badge": null,
+        "date_time_created": "2020-05-29T04:43:52.948Z",
+        "date_time_modified": "2020-05-29T04:43:52.948Z"
+    }
+},
+{
+    "model": "courses.lesson",
+    "pk": 5,
+    "fields": {
+        "name": "Gopher'\u043b\u0438\u043a\u043a\u0435 \u043a\u0438\u0440\u0438\u0448\u04af\u04af",
+        "is_published": false,
+        "unit": 8,
+        "badge": null,
+        "date_time_created": "2020-05-31T15:27:01.303Z",
+        "date_time_modified": "2020-05-31T15:27:01.303Z"
+    }
+},
+{
+    "model": "courses.lesson",
+    "pk": 6,
+    "fields": {
+        "name": "Ruby \u0441\u0438\u043d\u0442\u0430\u043a\u0441\u0438\u0441\u0438",
+        "is_published": false,
+        "unit": 9,
+        "badge": null,
+        "date_time_created": "2020-05-31T15:31:37.310Z",
+        "date_time_modified": "2020-05-31T15:31:37.310Z"
+    }
+},
+{
+    "model": "courses.lesson",
+    "pk": 7,
+    "fields": {
+        "name": "\u041d\u0435\u0433\u0438\u0437\u0433\u0438 \u0442\u0438\u043f\u0442\u0435\u0440 \u0436\u0430\u043d\u0430 \u0441\u0442\u0440\u0443\u043a\u0442\u0443\u0440\u0430\u043b\u0430\u0440",
+        "is_published": false,
+        "unit": 10,
+        "badge": null,
+        "date_time_created": "2020-06-01T04:37:03.273Z",
+        "date_time_modified": "2020-06-01T04:37:03.273Z"
+    }
+},
+{
     "model": "courses.exercise",
     "pk": 1,
     "fields": {
@@ -139,7 +295,7 @@
         "lecture": "\u0410\u043b\u0433\u0430\u0447\u043a\u044b \u043a\u043e\u0434 \u0436\u0430\u0437\u0433\u0430\u043d\u0434\u0430, \u0441\u0430\u043b\u0442 \u043a\u0430\u0442\u0430\u0440\u044b \"Hello world\" \u0434\u0435\u0433\u0435\u043d \u0441\u04af\u0439\u043b\u04e9\u043c\u0434\u04af \u0447\u044b\u0433\u0430\u0440\u044b\u0448\u0430\u0442.",
         "instruction": "\u0420\u0435\u0434\u0430\u043a\u0442\u043e\u0440\u0434\u043e \u0436\u0430\u0437\u044b\u043b\u0433\u0430\u043d \u043a\u043e\u0434\u0434\u0443 \u0430\u0442\u043a\u0430\u0440\u0443\u0443\u0433\u0430 \u0436\u04e9\u043d\u04e9\u0442\u04af\u04a3\u04af\u0437. \u0411\u0430\u0441\u0430, print \u0434\u0435\u0433\u0435\u043d \u0441\u04e9\u0437 \u043a\u044b\u0440\u0433\u044b\u0437 \u0442\u0438\u043b\u0438\u043d\u0434\u0435 \u043a\u0430\u043d\u0434\u0430\u0439 \u0431\u043e\u043b\u043e\u0442, \u0431\u0438\u043b\u0435\u0441\u0438\u04a3\u0435\u0440\u0431\u0438?",
         "hint": "\u0410\u0442\u043a\u0430\u0440\u0443\u0443 \u0431\u0430\u0441\u043a\u044b\u0447\u044b\u043d \u0431\u0430\u0441\u044b\u043f \u043a\u043e\u044e\u04a3\u0443\u0437.",
-        "default_code": "print(\"Hello world\")",
+        "default_code": "print(\"Hello world\")\n\n",
         "duration": 5,
         "input_should_contain": "print,Hello,world",
         "input_should_not_contain": "",
@@ -153,7 +309,7 @@
         "is_published": true,
         "lesson": 1,
         "date_time_created": "2020-02-15T17:28:42.187Z",
-        "date_time_modified": "2020-05-21T05:04:12.790Z",
+        "date_time_modified": "2020-06-01T03:46:48.354Z",
         "text_file_content": ""
     }
 },
@@ -179,7 +335,7 @@
         "is_published": true,
         "lesson": 1,
         "date_time_created": "2020-05-02T15:22:51.876Z",
-        "date_time_modified": "2020-05-02T18:36:43.878Z",
+        "date_time_modified": "2020-05-25T12:46:08.899Z",
         "text_file_content": ""
     }
 },
@@ -205,7 +361,7 @@
         "is_published": true,
         "lesson": 1,
         "date_time_created": "2020-05-02T18:36:33.752Z",
-        "date_time_modified": "2020-05-03T04:15:23.721Z",
+        "date_time_modified": "2020-05-25T12:58:55.726Z",
         "text_file_content": ""
     }
 },
@@ -214,7 +370,7 @@
     "pk": 4,
     "fields": {
         "name": "\u04e8\u0437\u0433\u04e9\u0440\u043c\u04e9\u043b\u04e9\u0440",
-        "lecture": "\u04e8\u0437\u0433\u04e9\u0440\u043c\u04e9 (variable, \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u0430\u044f) -- \u0431\u0443\u043b \u043a\u0435\u0440\u0435\u043a\u0442\u04af\u04af \u0434\u0430\u0439\u044b\u043d\u0434\u0430\u0440\u0434\u044b \u0443\u0431\u0430\u043a\u0442\u044b\u043b\u0443\u0443 \u043a\u0430\u0440\u043c\u0430\u043f \u0442\u0443\u0440\u0443\u0443\u0447\u0443 \"\u0447\u04e9\u043d\u0442\u04e9\u043a\u0447\u04e9\". \u0430\u043d\u044b \u0431\u0438\u0437 \u043b\u0430\u0442\u044b\u043d \u0442\u0430\u043c\u0433\u0430\u043b\u0430\u0440\u044b \u043c\u0435\u043d\u0435\u043d \u043a\u0430\u0434\u0438\u043c\u043a\u0438 \u0441\u04e9\u0437 \u043a\u0430\u0442\u0430\u0440\u044b \u0436\u0430\u0437\u0430\u0431\u044b\u0437, \u0434\u0430\u0439\u044b\u043d\u0434\u0430\u0440\u044b\u043d \u0431\u0430\u0440\u0430\u0431\u0430\u0440 \u0431\u0435\u043b\u0433\u0438\u0441\u0438\u043d\u0435\u043d \u043a\u0438\u0439\u0438\u043d \u0431\u0435\u0440\u0435\u0431\u0438\u0437. \u041c\u0438\u0441\u0430\u043b\u044b,\r\nname = \"\u041c\u0443\u0440\u0430\u0442\"\r\nage = 37\r\nprint(name)\r\nprint(age)",
+        "lecture": "\u04e8\u0437\u0433\u04e9\u0440\u043c\u04e9 (variable, \u043f\u0435\u0440\u0435\u043c\u0435\u043d\u043d\u0430\u044f) -- \u0431\u0443\u043b \u043a\u0435\u0440\u0435\u043a\u0442\u04af\u04af \u0434\u0430\u0439\u044b\u043d\u0434\u0430\u0440\u0434\u044b \u0443\u0431\u0430\u043a\u0442\u044b\u043b\u0443\u0443 \u043a\u0430\u0440\u043c\u0430\u043f \u0442\u0443\u0440\u0443\u0443\u0447\u0443 \"\u0447\u04e9\u043d\u0442\u04e9\u043a\u0447\u04e9\". \u0430\u043d\u044b \u0431\u0438\u0437 \u043b\u0430\u0442\u044b\u043d \u0442\u0430\u043c\u0433\u0430\u043b\u0430\u0440\u044b \u043c\u0435\u043d\u0435\u043d \u043a\u0430\u0434\u0438\u043c\u043a\u0438 \u0441\u04e9\u0437 \u043a\u0430\u0442\u0430\u0440\u044b \u0436\u0430\u0437\u0430\u0431\u044b\u0437, \u0434\u0430\u0439\u044b\u043d\u0434\u0430\u0440\u044b\u043d \u0431\u0430\u0440\u0430\u0431\u0430\u0440 \u0431\u0435\u043b\u0433\u0438\u0441\u0438\u043d\u0435\u043d \u043a\u0438\u0439\u0438\u043d \u0431\u0435\u0440\u0435\u0431\u0438\u0437. \u041c\u0438\u0441\u0430\u043b\u044b,\nname = \"\u041c\u0443\u0440\u0430\u0442\"\nage = 36\nprint(name)\nprint(age)",
         "instruction": "\u0420\u0435\u0434\u0430\u043a\u0442\u043e\u0440\u0433\u043e 2 \u04e9\u0437\u0433\u04e9\u0440\u043c\u04e9 \u0436\u0430\u0437\u044b\u04a3\u044b\u0437. \u041e\u0448\u043e\u043b \u044d\u043a\u0438 \u04e9\u0437\u0433\u04e9\u0440\u043c\u04e9\u043d\u04af\u043d \u0441\u0443\u043c\u043c\u0430\u0441\u044b summa \u04e9\u0437\u0433\u04e9\u0440\u043c\u04e9\u0441\u04af\u043d\u04e9 \u0431\u0435\u0440\u0438\u043b\u0441\u0438\u043d (\u0441\u044b\u0437\u044b\u043a\u0447\u0430\u043b\u0430\u0440\u0434\u044b\u043d \u043e\u0440\u0434\u0443\u043d\u0430 \u0442\u04af\u0437\u0433\u04e9\u043d \u04e9\u0437\u0433\u04e9\u0440\u043c\u04e9\u043b\u04e9\u0440\u04af\u04a3\u04af\u0437\u0434\u04af \u0436\u0430\u0437\u044b\u043f \u043a\u043e\u044e\u04a3\u0443\u0437). \u0410\u043d\u0434\u0430\u043d \u0441\u043e\u04a3 print() \u0444\u0443\u043d\u043a\u0446\u0438\u044f\u0441\u044b\u043d\u044b\u043d \u0436\u0430\u0440\u0434\u0430\u043c\u044b \u043c\u0435\u043d\u0435\u043d \u043a\u043e\u043d\u0441\u043e\u043b\u0433\u043e \u0447\u044b\u0433\u0430\u0440\u044b\u043b\u0441\u044b\u043d.\r\n\u0422\u0430\u043a\u0430\u043b\u044b\u043f \u043a\u0430\u043b\u0441\u0430\u04a3\u044b\u0437 \u044d\u0447 \u043a\u04af\u043d\u04e9\u04e9\u04a3\u04af\u0437 \u0436\u043e\u043a. \u041c\u0435\u043d \u0442\u0435\u043a\u0441\u0442\u0442\u0438 \u0442\u04af\u0448\u04af\u043d\u04af\u043a\u0441\u04af\u0437 \u0436\u0430\u0437\u0441\u0430\u043c \u043a\u0435\u0440\u0435\u043a. \u041a\u044b\u0439\u044b\u0442\u043c\u0430\u0433\u0430 \u0431\u0430\u0448 \u0431\u0430\u0433\u044b\u043f \u043a\u04e9\u0440\u04af\u04a3\u04af\u0437.",
         "hint": "bir = 123\r\neki = 456\r\nsumma = bir + eki\r\nprint(summa)",
         "default_code": "summa = _ + _\r\nprint(summa)",
@@ -231,7 +387,7 @@
         "is_published": true,
         "lesson": 1,
         "date_time_created": "2020-05-03T04:15:08.058Z",
-        "date_time_modified": "2020-05-03T04:20:32.248Z",
+        "date_time_modified": "2020-05-25T12:58:55.718Z",
         "text_file_content": ""
     }
 },
@@ -257,7 +413,7 @@
         "is_published": true,
         "lesson": 2,
         "date_time_created": "2020-05-03T04:27:47.343Z",
-        "date_time_modified": "2020-05-04T04:52:46.076Z",
+        "date_time_modified": "2020-05-23T16:45:07.065Z",
         "text_file_content": ""
     }
 },
@@ -284,6 +440,214 @@
         "lesson": 3,
         "date_time_created": "2020-05-03T15:54:48.993Z",
         "date_time_modified": "2020-05-03T15:54:48.993Z",
+        "text_file_content": ""
+    }
+},
+{
+    "model": "courses.exercise",
+    "pk": 7,
+    "fields": {
+        "name": "Hello, Rust!",
+        "lecture": "\u0421\u0430\u043b\u0442\u0442\u044b\u043a \u0443\u0447\u0443\u0440\u0430\u0448\u0443\u0443",
+        "instruction": "\u0420\u0435\u0434\u0430\u043a\u0442\u043e\u0440\u0434\u043e\u0433\u0443 \u043a\u043e\u0434\u0434\u0443 \u0430\u0442\u043a\u0430\u0440\u0443\u0443\u0433\u0430 \u0436\u0438\u0431\u0435\u0440\u0438\u04a3\u0438\u0437.",
+        "hint": null,
+        "default_code": "fn main() {\n    // Statements here are executed when the compiled binary is called\n\n    // Print text to the console\n    println!(\"Hello World!\");\n}",
+        "duration": 0,
+        "input_should_contain": "",
+        "input_should_not_contain": "",
+        "input_error_text": "",
+        "output_should_contain": "",
+        "output_should_not_contain": "",
+        "output_error_text": "",
+        "unit_test": "",
+        "next_exercise": null,
+        "karma": 1,
+        "is_published": false,
+        "lesson": 4,
+        "date_time_created": "2020-05-30T07:05:49.562Z",
+        "date_time_modified": "2020-05-30T07:05:49.562Z",
+        "text_file_content": ""
+    }
+},
+{
+    "model": "courses.exercise",
+    "pk": 8,
+    "fields": {
+        "name": "\u041a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0439\u043b\u0435\u0440",
+        "lecture": "Regular comments which are ignored by the compiler:\n        // Line comments which go to the end of the line.\n        /* Block comments which go to the closing delimiter. */\n    Doc comments which are parsed into HTML library documentation:\n        /// Generate library docs for the following item.\n        //! Generate library docs for the enclosing item.",
+        "instruction": "\u044b\u0432\u0430\u043c\u044b\u0432\u0430",
+        "hint": null,
+        "default_code": "",
+        "duration": 0,
+        "input_should_contain": "",
+        "input_should_not_contain": "",
+        "input_error_text": "",
+        "output_should_contain": "",
+        "output_should_not_contain": "",
+        "output_error_text": "",
+        "unit_test": "",
+        "next_exercise": null,
+        "karma": 1,
+        "is_published": false,
+        "lesson": 4,
+        "date_time_created": "2020-05-30T07:09:35.378Z",
+        "date_time_modified": "2020-05-30T07:09:35.378Z",
+        "text_file_content": ""
+    }
+},
+{
+    "model": "courses.exercise",
+    "pk": 9,
+    "fields": {
+        "name": "Hello, Go!",
+        "lecture": "\u0410\u0434\u0430\u0442\u0442\u0430\u0433\u044b\u0434\u0430\u0439 \u044d\u043b\u0435, \u0431\u0443\u043b \u0442\u0438\u043b\u0434\u0435 \u0434\u0430\u0433\u044b \u0443\u0447\u0443\u0440\u0430\u0448\u0443\u0443 \u043c\u0435\u043d\u0435\u043d \u0431\u0430\u0448\u0442\u0430\u0439\u0431\u044b\u0437 :)",
+        "instruction": "\u0420\u0435\u0434\u0430\u043a\u0442\u043e\u0440\u0434\u043e\u0433\u0443 \u043a\u043e\u0434\u0434\u0443 \u0430\u0442\u043a\u0430\u0440\u0443\u0443\u0433\u0430 \u0436\u04e9\u043d\u04e9\u0442\u04af\u04a3\u04af\u0437.",
+        "hint": null,
+        "default_code": "import \"fmt\"\n\nfunc main() {\n  fmt.Println(\"Hello World!\")\n}",
+        "duration": 0,
+        "input_should_contain": "",
+        "input_should_not_contain": "",
+        "input_error_text": "",
+        "output_should_contain": "",
+        "output_should_not_contain": "",
+        "output_error_text": "",
+        "unit_test": "",
+        "next_exercise": null,
+        "karma": 1,
+        "is_published": false,
+        "lesson": 5,
+        "date_time_created": "2020-05-31T15:29:27.558Z",
+        "date_time_modified": "2020-05-31T15:29:27.558Z",
+        "text_file_content": ""
+    }
+},
+{
+    "model": "courses.exercise",
+    "pk": 10,
+    "fields": {
+        "name": "Hello, Ruby!",
+        "lecture": "\u0420\u0443\u0431\u0438 \u043c\u0435\u043d\u0435\u043d \u0441\u0430\u043b\u0430\u043c\u0434\u0430\u0448\u0430\u043b\u044b!",
+        "instruction": "\u0420\u0435\u0434\u0430\u043a\u0442\u043e\u0440\u0434\u043e\u0433\u0443 \u043a\u043e\u0434\u0434\u0443 \u0430\u0442\u043a\u0430\u0440\u0443\u0443\u0433\u0430 \u0436\u04e9\u043d\u04e9\u0442\u04af\u04a3\u04af\u0437.",
+        "hint": null,
+        "default_code": "puts 'Hello, world!'",
+        "duration": 0,
+        "input_should_contain": "",
+        "input_should_not_contain": "",
+        "input_error_text": "",
+        "output_should_contain": "",
+        "output_should_not_contain": "",
+        "output_error_text": "",
+        "unit_test": "",
+        "next_exercise": null,
+        "karma": 1,
+        "is_published": false,
+        "lesson": 6,
+        "date_time_created": "2020-05-31T15:33:11.424Z",
+        "date_time_modified": "2020-05-31T15:33:11.424Z",
+        "text_file_content": ""
+    }
+},
+{
+    "model": "courses.exercise",
+    "pk": 11,
+    "fields": {
+        "name": "\u041a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0439\u043b\u0435\u0440",
+        "lecture": "\u041a\u044d\u044d\u0434\u0435 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0430\u0434\u0430 \u0431\u0438\u0437 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0438\u0441\u0442\u0442\u0435\u0440 \u04af\u0447\u04af\u043d \u043a\u0430\u043d\u0434\u0430\u0439\u0434\u044b\u0440 \u0431\u0438\u0440 \u043a\u043e\u0448\u0443\u043c\u0447\u0430 \u043c\u0430\u0430\u043b\u044b\u043c\u0430\u0442 \u043a\u0430\u043b\u0442\u044b\u0440\u0433\u044b\u0431\u044b\u0437 \u043a\u0435\u043b\u0435\u0442. \u041e\u0448\u043e\u043d\u0434\u043e \u0431\u0438\u0437 \u043a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0439 \u043a\u043e\u043b\u0434\u043e\u043d\u043e\u0431\u0443\u0437.",
+        "instruction": "\u0420\u0435\u0434\u0430\u043a\u0442\u043e\u0440\u0434\u043e\u0433\u0443 \u043a\u043e\u0434\u0433\u043e \u043a\u04e9\u04a3\u04af\u043b \u0431\u0443\u0440\u0443\u04a3\u0443\u0437. # \u0441\u0438\u043c\u0432\u043e\u043b\u0443\u043d\u0430 \u043a\u04e9\u04a3\u04af\u043b \u0431\u0443\u0440\u0443\u04a3\u0443\u0437\u00a0-- \u0430\u043b \u043a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0439\u0434\u0438\u043d \u0431\u0430\u0448\u0442\u0430\u043b\u044b\u0448\u044b\u043d \u0431\u0438\u043b\u0434\u0438\u0440\u0435\u0442.",
+        "hint": null,
+        "default_code": "# My first Ruby program",
+        "duration": 0,
+        "input_should_contain": "",
+        "input_should_not_contain": "",
+        "input_error_text": "",
+        "output_should_contain": "",
+        "output_should_not_contain": "",
+        "output_error_text": "",
+        "unit_test": "",
+        "next_exercise": null,
+        "karma": 1,
+        "is_published": false,
+        "lesson": 6,
+        "date_time_created": "2020-05-31T15:41:52.328Z",
+        "date_time_modified": "2020-05-31T15:41:52.328Z",
+        "text_file_content": ""
+    }
+},
+{
+    "model": "courses.exercise",
+    "pk": 12,
+    "fields": {
+        "name": "\u0421\u0430\u043d\u0434\u0430\u0440",
+        "lecture": "\u0420\u0443\u0431\u0438 \u0442\u0438\u043b\u0438\u043d\u0434\u0435 \u0441\u0430\u043d\u0434\u0430\u0440 Integer \u0434\u0435\u043f \u0430\u0442\u0430\u043b\u044b\u0448\u0430\u0442.",
+        "instruction": "\u0420\u0435\u0434\u0430\u043a\u0442\u043e\u0440\u0434\u043e\u0433\u0443 \u043a\u043e\u0434\u0434\u0443 \u043a\u0430\u0440\u0430\u043f \u0447\u044b\u0433\u044b\u04a3\u044b\u0437.",
+        "hint": null,
+        "default_code": "",
+        "duration": 0,
+        "input_should_contain": "",
+        "input_should_not_contain": "",
+        "input_error_text": "",
+        "output_should_contain": "",
+        "output_should_not_contain": "",
+        "output_error_text": "",
+        "unit_test": "",
+        "next_exercise": null,
+        "karma": 1,
+        "is_published": false,
+        "lesson": 6,
+        "date_time_created": "2020-05-31T16:02:47.759Z",
+        "date_time_modified": "2020-05-31T16:02:47.759Z",
+        "text_file_content": ""
+    }
+},
+{
+    "model": "courses.exercise",
+    "pk": 13,
+    "fields": {
+        "name": "Go \u0442\u0438\u043b\u0438\u043d\u0434\u0435\u0433\u0438 \u043a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0439\u043b\u0435\u0440",
+        "lecture": "\u0411\u0443\u043b \u0442\u0438\u043b\u0434\u0435 \u043a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0439 \u043c\u044b\u043d\u0434\u0430\u0439\u0447\u0430 \u0436\u0430\u0437\u044b\u043b\u0430\u0442:\n// \u0411\u0443\u043b \u043a\u04e9\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0439.\n\u0420\u0435\u0434\u0430\u043a\u0442\u043e\u0440\u0434\u043e\u0433\u0443 \u043a\u043e\u0434\u0434\u0443 \u043a\u0430\u0440\u0430\u043f \u0442\u04af\u0448\u04af\u043d\u0433\u04e9\u043d\u0433\u04e9 \u0430\u0440\u0430\u043a\u0435\u0442 \u043a\u044b\u043b\u044b\u04a3\u044b\u0437.",
+        "instruction": "\u0410\u0440 \u0431\u0438\u0440 \u0441\u0430\u043f\u0442\u044b\u043d \u04af\u0441\u0442\u04af\u043d\u04e9 \u043a\u043e\u043c\u043c\u0435\u043d\u0442\u0430\u0440\u0438\u0439 \u0436\u0430\u0437\u044b\u04a3\u044b\u0437.",
+        "hint": null,
+        "default_code": "package main\n\nimport \"fmt\"\n\nfunc main() {\n\n    fmt.Println(\"go\" + \"lang\")\n\n    fmt.Println(\"1+1 =\", 1+1)\n    fmt.Println(\"7.0/3.0 =\", 7.0/3.0)\n\n    fmt.Println(true && false)\n    fmt.Println(true || false)\n    fmt.Println(!true)\n}",
+        "duration": 0,
+        "input_should_contain": "",
+        "input_should_not_contain": "",
+        "input_error_text": "",
+        "output_should_contain": "",
+        "output_should_not_contain": "",
+        "output_error_text": "",
+        "unit_test": "",
+        "next_exercise": null,
+        "karma": 1,
+        "is_published": false,
+        "lesson": 5,
+        "date_time_created": "2020-05-31T16:11:37.682Z",
+        "date_time_modified": "2020-05-31T16:11:37.682Z",
+        "text_file_content": ""
+    }
+},
+{
+    "model": "courses.exercise",
+    "pk": 49,
+    "fields": {
+        "name": "Hello, PHP!",
+        "lecture": "Some text here",
+        "instruction": "Some text",
+        "hint": null,
+        "default_code": "",
+        "duration": 0,
+        "input_should_contain": "",
+        "input_should_not_contain": "",
+        "input_error_text": "",
+        "output_should_contain": "",
+        "output_should_not_contain": "",
+        "output_error_text": "",
+        "unit_test": "",
+        "next_exercise": null,
+        "karma": 1,
+        "is_published": false,
+        "lesson": 7,
+        "date_time_created": "2020-06-02T19:08:03.248Z",
+        "date_time_modified": "2020-06-02T19:08:03.248Z",
         "text_file_content": ""
     }
 },

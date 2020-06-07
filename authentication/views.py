@@ -1,3 +1,5 @@
+from django.contrib.auth import logout
+
 from rest_framework import permissions, status
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
@@ -13,4 +15,5 @@ class LogoutView(GenericAPIView):
         sz = self.get_serializer(data=request.data)
         sz.is_valid(raise_exception=True)
         sz.save()
+        logout(request)
         return Response(status=status.HTTP_204_NO_CONTENT)

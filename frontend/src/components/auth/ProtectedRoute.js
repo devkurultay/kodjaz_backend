@@ -2,9 +2,10 @@ import React, { useEffect } from 'react'
 import Cookies from 'js-cookie'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { Route, Redirect } from "react-router-dom"
+import { Route } from "react-router-dom"
 import axiosInstance from '../../axiosApi'
 import { checkIsAuth } from '../../actions/login'
+import AbsoluteRedirect from '../common/AbsoluteRedirect'
 
 const ProtectedRoute = ({ component: Component, isAuthenticated, checkIsAuth, ...rest }) => {
   const { location } = rest
@@ -23,11 +24,12 @@ const ProtectedRoute = ({ component: Component, isAuthenticated, checkIsAuth, ..
     // TODO(murat): Show beautiful loading spinner
     return <div>Loading</div>
   }
+  const PATH_TO_REDIRECT_TO = '/accounts/login/?next=/cabinet/'
   return (
     <Route {...rest} render={(props) => (
       isAuthenticated
         ? <Component {...props} />
-        : <Redirect to={{ pathname: '/login', state: { from: props.location }}} />   
+        : <AbsoluteRedirect to={PATH_TO_REDIRECT_TO} />   
     )} />
   )
 }
