@@ -25,9 +25,6 @@ const Cabinet = ({ logout, loadTracks, resetNewlyCreatedLessonId }) => {
           if (location.pathname !== selected) {
             history.push(selected)
           }
-          if (selected === '/logout') {
-            logout()
-          }
         }}
       >
         <SideNav.Toggle />
@@ -40,7 +37,7 @@ const Cabinet = ({ logout, loadTracks, resetNewlyCreatedLessonId }) => {
               Home
             </NavText>
           </NavItem>
-          <NavItem eventKey="/logout">
+          <NavItem eventKey="logout" onClick={() => logout()}>
             <NavIcon>
               <i className="fa fa-fw fa-power-off" style={{ fontSize: '1.75em' }} />
             </NavIcon>
