@@ -226,9 +226,9 @@ AUTH_PASSWORD_VALIDATORS = [
 AUTH_USER_MODEL = 'users.User'
 
 # Spirit
-LOGIN_URL = 'spirit:user:auth:login'
-LOGIN_REDIRECT_URL = 'spirit:user:update'
-LOGOUT_REDIRECT_URL = 'spirit:index'
+#LOGIN_URL = 'spirit:user:auth:login'
+#LOGIN_REDIRECT_URL = 'spirit:user:update'
+#LOGOUT_REDIRECT_URL = 'spirit:index'
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/

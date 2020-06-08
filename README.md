@@ -12,11 +12,14 @@
 6. Install Python dependencies: `pip install -r requirements/requirements_dev.txt`
 7. Open 2 terminal tabs/windows (whatever you prefer)
 8. In the 1st terminal (in the project directory) activate the virtual environment (in case it's not activated) and install migrations: `./manage.py migrate`
-9. Create a superuser: `./manage.py createsuperuser` (fill in all the fields)
-10. In the same terminal load the fixtures (dummy data): `./manage.py loaddata fixtures/courses.json`
-11. In the same terminal run the Django server: `./manage.py runserver`
-12. In the 2nd terminal issue the following command (which will run a watcher.js whose job is to rebuild the project each time it detects some changes under the frontend/src folder): `npm start`
-13. Now you can open your favorite editor and start writing your awesome code!
+9. Create migrations (mostly for Spirit installation): ./manage.py makemigrations
+10. Migrate: ./manage.py migrate
+11. Itiate Spirit installation: ./manage.py spiritinstall
+12. Create a superuser: `./manage.py createsuperuser` (fill in all the fields)
+13. In the same terminal load the fixtures (dummy data): `./manage.py loaddata fixtures/courses.json`
+14. In the same terminal run the Django server: `./manage.py runserver`
+15. In the 2nd terminal issue the following command (which will run a watcher.js whose job is to rebuild the project each time it detects some changes under the frontend/src folder): `npm start`
+16. Now you can open your favorite editor and start writing your awesome code!
 
 Happy coding!
 
