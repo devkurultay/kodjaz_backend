@@ -72,7 +72,6 @@ export function checkIsAuth() {
 
 export function logout() {
   const refreshToken = Cookies.get('refresh_token')
-  setTokens('', '')
   return function(dispatch) {
     return dispatch({
       type: 'LOGOUT',

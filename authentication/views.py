@@ -16,4 +16,7 @@ class LogoutView(GenericAPIView):
         sz.is_valid(raise_exception=True)
         sz.save()
         logout(request)
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        response = Response(status=status.HTTP_204_NO_CONTENT)
+        response.set_cookie('refresh_token', '')
+        response.set_cookie('access_token', '')
+        return response
