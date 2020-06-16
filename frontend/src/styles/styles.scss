@@ -43,12 +43,14 @@ a{
 
 .rstcustom__collapseButton {
   &:before {
+    position:absolute;
     content: "-";
   }
 }
 
 .rstcustom__expandButton {
   &:before {
+    position:absolute;
     content:"+";
   }
 }
