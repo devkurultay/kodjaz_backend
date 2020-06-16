@@ -1,9 +1,11 @@
 **Assumptions**
+
 1. I assume that you have added your ssh-keys to your github account: `https://github.com/settings/keys`. In case you don't know how to do it, refer to this page: `https://help.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh`
 2. Node.js v10.20.1 (I prefer nvm as a version manager -- you can install multiple versions using it.). However, this version requirement is subject to change.
 3. Python v3.6. or above
 
 **Installation**
+
 1. Clone the project using ssh url: `git@github.com:jumasheff/codomodo.git`
 2. Go to the project directory: `cd codomodo`
 3. Install JavaScript dependencies: `npm install`
@@ -24,6 +26,7 @@
 Happy coding!
 
 **Quirks**
+
 Make sure you have a branch off of a fresh master.
 If you already had the project installed, you may have issues caused by Spirit (forum) installation. Here are the steps for solving the issues:
 1. Install Python dependencies: `pip install -r requirements/requirements_dev.txt`
@@ -34,6 +37,7 @@ If you already had the project installed, you may have issues caused by Spirit (
 6. If you haven't yet, load the fixtures (dummy data): `./manage.py loaddata fixtures/courses.json`
 
 **How we git**
+
 Each task should be done within its own branch. For this, we keep our local master clean and synced. Let's walk throug an example. Imagine you are given a task related to creating a new page for editing an exercise. Your steps should be as follows:
 1. Make sure you are on the `master` branch. When you issue the following command there should be an asterisk before the name of the branch `* master`: `git branch`
 2. Make sure the branch is clean. After issue the following command you should see the text as follows: `git status`
