@@ -14,7 +14,7 @@
 8. In the 1st terminal (in the project directory) activate the virtual environment (in case it's not activated) and install migrations: `./manage.py migrate`
 9. Create migrations (mostly for Spirit installation): ./manage.py makemigrations
 10. Migrate: ./manage.py migrate
-11. Itiate Spirit installation: ./manage.py spiritinstall
+11. Initiate Spirit installation: ./manage.py spiritinstall
 12. Create a superuser: `./manage.py createsuperuser` (fill in all the fields)
 13. In the same terminal load the fixtures (dummy data): `./manage.py loaddata fixtures/courses.json`
 14. In the same terminal run the Django server: `./manage.py runserver`
@@ -23,8 +23,17 @@
 
 Happy coding!
 
-**How we git**
+**Quirks**
+Make sure you have a branch off of a fresh master.
+If you already had the project installed, you may have issues caused by Spirit (forum) installation. Here are the steps for solving the issues:
+1. Install Python dependencies: `pip install -r requirements/requirements_dev.txt`
+2. Migrate: ./manage.py migrate 
+3. Initiate Spirit installation: ./manage.py spiritinstall
+4. Migrate once again: ./manage.py migrate 
+5. If you haven't yet, create a superuser: `./manage.py createsuperuser` (fill in all the fields)
+6. If you haven't yet, load the fixtures (dummy data): `./manage.py loaddata fixtures/courses.json`
 
+**How we git**
 Each task should be done within its own branch. For this, we keep our local master clean and synced. Let's walk throug an example. Imagine you are given a task related to creating a new page for editing an exercise. Your steps should be as follows:
 1. Make sure you are on the `master` branch. When you issue the following command there should be an asterisk before the name of the branch `* master`: `git branch`
 2. Make sure the branch is clean. After issue the following command you should see the text as follows: `git status`
