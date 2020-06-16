@@ -38,7 +38,7 @@ class LessonsListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(LessonsListView, self).get_context_data(**kwargs)
         context['lessons_duration'] = self.get_queryset().aggregate(
-            Sum('lesson_exercise__duration'))['lesson_exercise__duration__sum']
+            Sum('lesson_exercises__duration'))['lesson_exercises__duration__sum']
         return context
 
 
