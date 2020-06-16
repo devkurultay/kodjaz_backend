@@ -40,3 +40,15 @@ a{
   background: #db3d44;
   transition: min-width 0.2s;
 }
+
+.rstcustom__collapseButton {
+  &:before {
+    content: "-";
+  }
+}
+
+.rstcustom__expandButton {
+  &:before {
+    content:"+";
+  }
+}
