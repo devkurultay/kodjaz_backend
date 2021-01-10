@@ -61,3 +61,28 @@ nothing to commit, working tree clean
 9. Make sure that after rebasing the code still works.
 10. If everything looks good, merge your branch to master.
 11. Whoot!
+
+
+### Creating a user via JWT
+
+JWT payload should have this data:
+```json
+{
+  "first_name": "Murat",
+  "last_name": "Jumash",
+  "username": "muratjumash",
+  "email": "murat.some.email@gmail.com",
+  "password": "$2y$10$s8yTdfhfYePKL7DoR4JZ0efYyPNHTPXak61UfaIpHdUM/GNoEIMlC"
+}
+```
+
+Please, refer to this page to get info about JWT: https://jwt.io
+
+We set up bcrypt with 10 round in order to be able to accept users created in Laravel.
+
+That is, a user's data (which was created in any Laravel website) can be encrypted into a JWT using the secret key specified here, will be `created` in this website. That means, they will be able to use their credentials.
+
+For that to happen, a friendly website should use our JWT_SECRET to pass their user data to our site:
+```
+https://codomodo.com/?token=jwt_token_with_payload
+```
