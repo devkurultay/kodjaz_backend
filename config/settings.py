@@ -224,6 +224,17 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# We will create Laravel users in our DB. They are passed via JWT, which
+# are created using the JWT_SECRET key
+PASSWORD_HASHERS = [
+    'authentication.hashers.CustomBCryptSHA256PasswordHasher',
+    'django.contrib.auth.hashers.BCryptPasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    'django.contrib.auth.hashers.Argon2PasswordHasher',
+]
+
+
 AUTH_USER_MODEL = 'users.User'
 
 # Spirit
