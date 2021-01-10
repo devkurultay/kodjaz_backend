@@ -303,3 +303,7 @@ LOGGING = {
         },
     }
 }
+
+# For logging in a JWT user. localhost:8000/?token=jwt-token
+# We decrypt the passed jwt-token with this secret key
+JWT_SECRET = 'some-secret-key'

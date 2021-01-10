@@ -1,15 +1,43 @@
+import jwt
 import json
 
 from django.conf import settings
 from django.db.models import Sum
 from django.http import JsonResponse
+from django.contrib.auth import login
+from django.contrib.auth import get_user_model
 from django.views.generic import CreateView, TemplateView
 from django.views.generic.list import ListView
 
 from . models import Track, Unit, Lesson, Exercise, Submission, SubmissionCreationException
 
+User = get_user_model()
 
-class TracksListView(ListView):
+
+class LoginJWTUserMixin:
+    def get(self, request, *args, **kwargs):
+        token = request.GET.get('token')
+        print('token', token)
+        if token:
+            user_data = jwt.decode(token,
+                                   settings.JWT_SECRET,
+                                   'HS256')
+            first_name = user_data.get('first_name')
+            last_name = user_data.get('last_name')
+            email = user_data.get('email')
+            name = '{} {}'.format(first_name, last_name)
+            password = user_data.get('password')
+            print('first_name, last_name, email', first_name, last_name, email)
+            #user = User.objects.get_or_create(
+            #    first_name=first_name,
+            #    last_name=last_name,
+            #    name=name, email=email,
+            #    password=password)
+            #login(request, user)
+        return super().get(self, request, *args, **kwargs)
+
+
+class TracksListView(LoginJWTUserMixin, ListView):
     template_name = 'courses/tracks_list.html'
     model = Track
 
