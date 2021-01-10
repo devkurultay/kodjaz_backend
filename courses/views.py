@@ -15,9 +15,15 @@ User = get_user_model()
 
 
 class LoginJWTUserMixin:
+    """
+    This mixin is used to create or log in a user
+    which was passed via a JWT token.
+    JWT should be created a secret key which is created using
+    our secret key (see settings.JWT_SECRET)
+    In this particular case we are creating/logging in a Laravel user.
+    """
     def get(self, request, *args, **kwargs):
         token = request.GET.get('token')
-        print('token', token)
         if token:
             user_data = jwt.decode(token,
                                    settings.JWT_SECRET,
@@ -25,15 +31,21 @@ class LoginJWTUserMixin:
             first_name = user_data.get('first_name')
             last_name = user_data.get('last_name')
             email = user_data.get('email')
+            username = user_data.get('username')
             name = '{} {}'.format(first_name, last_name)
-            password = user_data.get('password')
-            print('first_name, last_name, email', first_name, last_name, email)
-            #user = User.objects.get_or_create(
-            #    first_name=first_name,
-            #    last_name=last_name,
-            #    name=name, email=email,
-            #    password=password)
-            #login(request, user)
+            password = 'bcrypt$' + user_data.get('password')
+            if email is not None and password is not None:
+                user, _ = User.objects.get_or_create(
+                    username=username,
+                    first_name=first_name,
+                    last_name=last_name,
+                    name=name, email=email,
+                    password=password)
+                login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            else:
+                # TODO(murat): Send info to the JWT sender that the token
+                # didn't have all the required data
+                pass
         return super().get(self, request, *args, **kwargs)
 
 
