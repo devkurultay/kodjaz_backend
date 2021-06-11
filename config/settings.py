@@ -82,6 +82,7 @@ INSTALLED_APPS_OTHERS = [
     'courses.apps.CoursesConfig',
     'frontend.apps.FrontendConfig',
     'allauth.socialaccount.providers.google',
+    'crispy_forms',
 ]
 
 INSTALLED_APPS = INSTALLED_APPS_BASE + INSTALLED_APPS_SPIRIT + INSTALLED_APPS_OTHERS
