@@ -1,7 +1,7 @@
 **Assumptions**
 
 1. I assume that you have added your ssh-keys to your github account: `https://github.com/settings/keys`. In case you don't know how to do it, refer to this page: `https://help.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh`
-2. Node.js v10.20.1 (I prefer nvm as a version manager -- you can install multiple versions using it.). However, this version requirement is subject to change.
+2. Node.js v14.16.0 (I prefer nvm as a version manager -- you can install multiple versions using it.). However, this version requirement is subject to change.
 3. Python v3.6. or above
 
 **Installation**
