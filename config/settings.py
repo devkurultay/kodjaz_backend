@@ -21,12 +21,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'd4go0csf8_!!st_@i^%qr8j4@9wv^2lux1a(+tbgdbn+=4sfsq'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG')
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOSTS')]
 
 # Spirit's INSTALLED_APPS
 INSTALLED_APPS_SPIRIT = [
@@ -317,4 +317,4 @@ LOGGING = {
 
 # For logging in a JWT user. localhost:8000/?token=jwt-token
 # We decrypt the passed jwt-token with this secret key
-JWT_SECRET = 'some-secret-key'
+JWT_SECRET = os.environ.get('JWT_SECRET')
