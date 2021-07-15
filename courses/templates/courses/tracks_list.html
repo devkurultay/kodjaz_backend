@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans 'Tracks' %}{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+      <h1>{% trans 'Tracks' %}</h1>
+      <div class="row">
+        <ul class="list-group list-group-flush w-100">
+          {% for track in object_list %}
+            <li class="list-group-item list-group-item-action w-100">
+              <span><strong>{{ track.name }}</strong></span>
+              <a class="w-100" href="{% url 'courses:units_list' track.id %}">
+                <div class="list-group-item-heading">{{ track.description }}</div>
+                <div class="list-group-item-heading">{% trans 'Number of units:' %} {{ track.units_count }}</div>
+                <div class="list-group-item-heading">{% trans 'Number of lessons:' %} {{ track.lessons_count }}</div>
+                <div class="list-group-item-heading">{% trans 'Lessons overall duration:' %} {{ track.unit_lessons_duration }}</div>
+              </a>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+{% endblock content %}

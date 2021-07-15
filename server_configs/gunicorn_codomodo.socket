@@ -1,0 +1,8 @@
+[Unit]
+Description=gunicorn socket for codomodo project
+
+[Socket]
+ListenStream=/run/gunicorn/codomodo_socket
+
+[Install]
+WantedBy=sockets.target

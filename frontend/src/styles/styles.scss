@@ -1,0 +1,56 @@
+
+@import "/_colors.scss";
+body {
+  color: $body-text;
+  background-color: #fafafa;
+}
+h1,h2,h3,h4,h5,h6{
+  color: $heading-text;
+}
+h1{
+  font-size: 34px;
+}
+
+a{
+  color: $link-color;
+}
+.welcome{
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+.bg-demo {
+  background: url('../components/category-component/sun.png');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-color: whitesmoke;
+  width: 250px;
+  height: 250px;
+}
+
+.main-content {
+  margin-left: 64px;
+}
+.margin-left-240 {
+  margin-left: 240px;
+}
+
+.sidenav {
+  position: fixed;
+  min-width: 64px;
+  background: #db3d44;
+  transition: min-width 0.2s;
+}
+
+.rstcustom__collapseButton {
+  &:before {
+    position:absolute;
+    content: "-";
+  }
+}
+
+.rstcustom__expandButton {
+  &:before {
+    position:absolute;
+    content:"+";
+  }
+}

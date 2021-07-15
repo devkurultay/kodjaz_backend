@@ -1,0 +1,8 @@
+django-allauth==0.41.0
+djangorestframework==3.11.0
+djangorestframework-simplejwt==4.4.0
+bcrypt==3.2.0
+# django-spirit==0.8.0 # Uncomment this, apply the correct version and remove the line below when a new version is released.
+-e git+https://github.com/nitely/Spirit.git@master#egg=django-spirit
+django-crispy-forms==1.11.2
+django-dotenv==1.4.2

@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load static %}
+{% block title %}{% trans 'Exercise' %}{% endblock %}
+
+{% block content %}
+{# Success modal start #}
+<div id="successModal" class="modal bd-success-modal-sm" tabindex="-1" role="dialog" aria-labelledby="successModal"
+     aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="container-fluid bd-success-modal-row">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    {% if object.next_exercise.id %}
+                        <p>{% trans 'You did it! Now go to the next exercise: ' %}
+                        <a href="{% url 'courses:exercise' object.next_exercise.id %}">
+                            {{ object.next_exercise.name }}
+                        </a></p>
+                    {% else %}
+                        <p>{% trans 'Congratulations! You have passed all the available exercises in this course!' %}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{# Success modal end #}
+{# Fail modal start #}
+<div id="failModal" class="modal bd-fail-modal-sm" tabindex="-1" role="dialog" aria-labelledby="failModal"
+     aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="container-fluid bd-fail-modal-row">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <p>{% trans 'It seems something went wrong with your code. Look at the errors below:' %}</p>
+                    <p>{{ input_error_text }}</p>
+                    <p>{{ output_error_text }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{# Fail modal end #}
+{# Server error modal start #}
+<div id="serverErrorModal" class="modal bd-server-error-modal-sm" tabindex="-1" role="dialog"
+     aria-labelledby="serverErrorModal" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="container-fluid bd-server-error-modal-sm-row">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    {% trans "We did something wrong on our server. Please, try again later or contact admin" %}<br/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{# Server error modal end #}
+<div class="container-fluid">
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    <div class="row">
+        <div class="col-sm-3">
+            <h2>{{ object.name }}</h2>
+
+            <div class="instructions-divider padding-5px">{% trans 'Useful information' %}</div>
+            <div class="padding-top-bottom-5px">{{ lecture|linebreaks }}</div>
+            <div class="instructions-divider padding-5px">{% trans 'Instructions' %}</div>
+            <div class="padding-top-bottom-5px">{{ instruction|linebreaks }}</div>
+            <div class="instructions-divider padding-5px cursor" id="hintToggle">{% trans 'Need help? Click here.' %}</div>
+            <div class="padding-top-bottom-5px hidden" id="hint">
+                {% if hint|length > 0 %}
+                    {{ hint|linebreaks }}
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-sm-5">
+          <ul class="nav nav-tabs mt-1" id="editorsTab" role="tablist">
+            <li class="nav-item">
+              <a class="nav-link active" id="code-tab" data-toggle="tab" href="#code" role="tab" aria-controls="code" aria-selected="false">
+                {% if programming_language == 'Python' %}
+                  code.py
+                {% elif programming_language == 'JavaScript' %}
+                  code.js
+                {% elif programming_language == 'TypeScript' %}
+                  code.ts
+                {% endif %}
+              </a>
+            </li>
+            {% if text_file_content %}
+            <li class="nav-item">
+              <a class="nav-link" id="file-tab" data-toggle="tab" href="#file" role="tab" aria-controls="file" aria-selected="false">
+                file.txt
+              </a>
+            </li>
+            {% endif %}
+          </ul>
+          <div class="tab-content editor-wrapper" id="editorsTabContent">
+            <pre
+              class="editor tab-pane fade show active"
+              id="code"
+              role="tabpanel"
+              aria-labelledby="code-tab">{{ default_code }}</pre>
+            <pre
+              class="editor tab-pane fade"
+              id="file"
+              role="tabpanel"
+              aria-labelledby="file-tab">{{ text_file_content }}</pre>
+              <textarea id="file.txt" style="display: none;"></textarea> 
+          </div>
+          <div class="row padding-top-5px">
+            <div class="col-sm-4 padding-bottom-5px">
+              <button id="run" type="button" class="btn btn-primary">{% trans 'Run and Check' %}</button>
+            </div>
+            {% if not request.user.is_authenticated %}
+            <div class="col-sm-6 col-sm-offset-1 padding-0">
+                <div class="alert alert-warning padding-9px margin-bottom-0 text-xs-center" role="alert">
+                    {# Add trans with a context to make it easy to translate #}
+                    <a href="{% url 'account_login' %}" class="alert-link">
+                        {% trans "Sign in" context "Sign in to save your progress" %}
+                    </a> {% trans 'to save your progress' %}
+                </div>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="padding-top-1em output-console">
+                <div class="card card-fixed-height">
+                    <div class="card-body">
+                        <div class="card-text">
+                            <pre class="output-pre" id="{{ outputElementId }}"></pre>
+                        </div>
+                    </div>
+                </div>
+                <div id="turtle-canvas"></div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <textarea readonly id="code_checker" style="display: none;">{{ unit_test }}</textarea>
+    </div>
+</div>
+{% endblock content %}
+
+{% block specific_javascript %}
+
+<script src="{% static 'js/skulpt/skulpt.min.js' %}"></script>
+<script src="{% static 'js/skulpt/skulpt-stdlib.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.11/ace.min.js" integrity="sha256-qCCcAHv/Z0u7K344shsZKUF2NR+59ooA3XWRj0LPGIQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.11/mode-python.min.js" integrity="sha256-dgu7+RV2rby44bxsuQuo2Rm+pG0JXtShrFWStI0DrC4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.11/mode-javascript.min.js" integrity="sha256-cN39Ofb0/L/HOBScgDuoNefcVF4+MKdAsxXR3g/xyZw=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.11/theme-vibrant_ink.min.js" integrity="sha256-IQ2CFOsaAexyrA3QCiqwFxfqVrl8+x0sXtv2mZqoQgo=" crossorigin="anonymous"></script>
+{% if programming_language == 'JavaScript' %}
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+{% elif programming_language == 'TypeScript' %}
+  <script src="{% static 'js/typescriptServices.js' %}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.11/mode-typescript.min.js" integrity="sha256-+SkRqydbTRTCFyyYwSqfcE3PGTWrrY3UplUDh4aYGUk=" crossorigin="anonymous"></script>
+{% endif %}
+<script type="text/javascript">
+  {% autoescape off %}
+  var payload = {
+    inputShouldContain: '{{ input_should_contain }}'.split(","),
+    inputShouldNotContain: '{{ input_should_not_contain }}'.split(","),
+    outputShouldContain: '{{ output_should_contain }}'.split(","),
+    outputShouldNotContain: '{{ output_should_not_contain }}'.split(","),
+    path: '{% url 'courses:create_submission' %}',
+    csrfToken: '{{ csrf_token }}',
+    objectId: {{ object.id }},
+    outputElementId: "{{ outputElementId }}",
+    notLoggedInMessage: "{% trans 'Your progress not saved.' %}",
+    programmingLanguage: "{{ programming_language }}",
+    worker: "{% static 'js/worker.js' %}"
+  }
+  {% endautoescape %}
+</script>
+{% endblock specific_javascript %}

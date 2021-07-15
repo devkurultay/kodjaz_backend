@@ -1,0 +1,137 @@
+/* These styles are generated from project.scss. */
+
+.alert-debug {
+  color: black;
+  background-color: white;
+  border-color: #d6e9c6;
+}
+
+.alert-error {
+  color: #b94a48;
+  background-color: #f2dede;
+  border-color: #eed3d7;
+}
+
+.alert-warning {
+  font-size: 0.7em;
+}
+
+/* This is a fix for the bootstrap4 alpha release */
+@media (max-width: 47.9em) {
+  .navbar-nav .nav-item {
+    float: none;
+    width: 100%;
+    display: inline-block;
+  }
+
+  .navbar-nav .nav-item + .nav-item {
+    margin-left: 0;
+  }
+
+  .nav.navbar-nav.pull-xs-right {
+    float: none !important;
+  }
+}
+
+/* Display django-debug-toolbar.
+   See https://github.com/django-debug-toolbar/django-debug-toolbar/issues/742
+   and https://github.com/pydanny/cookiecutter-django/issues/317
+*/
+[hidden][style="display: block;"] {
+  display: block !important;
+}
+
+.padding-top-1em {
+  padding-top: 1em;
+}
+
+.card-fixed-height {
+  min-height: 30vh;
+  max-height: 30vh;
+  overflow-y: auto;
+}
+
+#turtle-canvas {
+  margin-top: -17vh;
+}
+
+.padding-top-5px {
+  padding-top: 5px
+}
+
+.padding-top-bottom-5px {
+  padding: 5px 0;
+}
+
+.padding-bottom-5px {
+  padding-bottom: 5px;
+}
+
+.padding-5px {
+  padding: 5px;
+}
+
+.padding-9px {
+  padding: 9px;
+}
+
+.padding-0 {
+  padding: 0;
+}
+
+.margin-left-5px {
+  margin-left: 5px;
+}
+
+.margin-bottom-0 {
+  margin-bottom: 0;
+}
+
+.output-pre {
+  white-space: pre-wrap; /* Since CSS 2.1 */
+  white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+  white-space: -pre-wrap; /* Opera 4-6 */
+  white-space: -o-pre-wrap; /* Opera 7 */
+  word-wrap: break-word; /* Internet Explorer 5.5+ */
+}
+
+.instructions-divider {
+  background: #373A3C;
+  color: white;
+}
+
+#failModal, #successModal, #serverErrorModal {
+  top: 40vh;
+}
+
+.hidden {
+  display: none
+}
+
+.cursor {
+  cursor: pointer
+}
+
+.editor-wrapper {
+  position: relative;
+  height: 50vh;
+}
+
+.editor {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+/* From tablets to desktop displays */
+@media (min-width: 992px) {
+  .output-console {
+    margin-top: 30px;
+  }
+  .editor-wrapper {
+    height: 75vh;
+  }
+}
+
