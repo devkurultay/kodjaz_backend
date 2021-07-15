@@ -6,7 +6,8 @@
 
 **Installation**
 
-1. Clone the project using ssh url: `git@github.com:jumasheff/codomodo.git`
+0. Clone the project using ssh url: `git@github.com:jumasheff/codomodo.git`
+1. Create .env file from the provided template: `cp env_template .env`
 2. Go to the project directory: `cd codomodo`
 3. Install JavaScript dependencies: `npm install`
 4. Create a virtual environment called `env`: `python3 -m venv env`

@@ -1,0 +1,7 @@
+SECRET_KEY=very_secret
+ALLOWED_HOSTS='*'
+DEBUG=True
+JWT_SECRET=some-very-secret-key
+DB_NAME=db_name
+DB_USER=db_username
+DB_PASSWORD=db_password
