@@ -8,8 +8,8 @@ from .models import User
 class UserDetailView(LoginRequiredMixin, DetailView):
     model = User
     # These next two lines tell the view to index lookups by username
-    slug_field = 'username'
-    slug_url_kwarg = 'username'
+    slug_field = 'id'
+    slug_url_kwarg = 'id'
 
 
 class UserRedirectView(LoginRequiredMixin, RedirectView):
@@ -30,15 +30,15 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
     # send the user back to their own page after a successful update
     def get_success_url(self):
         return reverse('users:detail',
-                       kwargs={'username': self.request.user.username})
+                       kwargs={'id': self.request.user.id})
 
     def get_object(self):
         # Only get the User record for the user making the request
-        return User.objects.get(username=self.request.user.username)
+        return User.objects.get(id=self.request.user.id)
 
 
 class UserListView(LoginRequiredMixin, ListView):
     model = User
     # These next two lines tell the view to index lookups by username
-    slug_field = 'username'
-    slug_url_kwarg = 'username'
+    slug_field = 'id'
+    slug_url_kwarg = 'id'

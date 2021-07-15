@@ -82,6 +82,7 @@ INSTALLED_APPS_OTHERS = [
     'courses.apps.CoursesConfig',
     'frontend.apps.FrontendConfig',
     'allauth.socialaccount.providers.google',
+    'crispy_forms',
 ]
 
 INSTALLED_APPS = INSTALLED_APPS_BASE + INSTALLED_APPS_SPIRIT + INSTALLED_APPS_OTHERS
@@ -187,7 +188,6 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
     # Spirit
-    'spirit.user.auth.backends.UsernameAuthBackend',
     'spirit.user.auth.backends.EmailAuthBackend',
 )
 
