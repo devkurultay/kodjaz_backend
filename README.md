@@ -28,6 +28,7 @@ Happy coding!
 
 **Quirks**
 
+If you are having issues with `cffi`, try to upgrade pip (make sure env is activated): `pip install --upgrade pip`
 Make sure you have a branch off of a fresh master.
 If you already had the project installed, you may have issues caused by Spirit (forum) installation. Here are the steps for solving the issues:
 1. Install Python dependencies: `pip install -r requirements/requirements_dev.txt`
