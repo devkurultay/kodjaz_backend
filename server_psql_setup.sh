@@ -1,7 +1,7 @@
 #!/bin/bash
 source .env
 ssh -tt $SERVER_USERNAME@$SERVER_IP << END
-  sudo apt install python3-dev libpq-dev postgresql postgresql-contrib --yes
+  sudo apt install python3-dev libpq-dev postgresql postgresql-contrib python3-psycopg2 --yes
   sudo -u postgres psql
   CREATE DATABASE $DB_NAME;
   CREATE USER $DB_USER WITH PASSWORD '$DB_PASSWORD';
