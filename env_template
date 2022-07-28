@@ -5,3 +5,6 @@ JWT_SECRET=some-very-secret-key
 DB_NAME=db_name
 DB_USER=db_username
 DB_PASSWORD=db_password
+SERVER_IP=0.0.0.0
+SERVER_USERNAME=codomodo
+PROJECT_FOLDER_ON_SERVER=codomodo
