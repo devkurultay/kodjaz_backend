@@ -3,7 +3,7 @@
 source env/bin/activate
 python manage.py collectstatic --noinput
 # Bundle up an archive file
-tar -cf codomodo.tar authentication/ config/ courses/ frontend/ server_configs/ staticfiles/ requirements/ users/ manage.py robots.txt .env
+tar -cf codomodo.tar authentication/ config/ courses/ fixtures/ frontend/ staticfiles/ requirements/ users/ manage.py robots.txt .env
 # Load variables form .env file
 source .env
 # Upload bundled archive
