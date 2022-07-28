@@ -6,3 +6,4 @@ bcrypt==3.2.0
 -e git+https://github.com/nitely/Spirit.git@master#egg=django-spirit
 django-crispy-forms==1.11.2
 django-dotenv==1.4.2
+psycopg2-binary==2.9.3
