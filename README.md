@@ -1,7 +1,7 @@
 **Assumptions**
 
 1. I assume that you have added your ssh-keys to your github account: `https://github.com/settings/keys`. In case you don't know how to do it, refer to this page: `https://help.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh`
-2. Node.js v14.16.0 (I prefer nvm as a version manager -- you can install multiple versions using it.). However, this version requirement is subject to change.
+2. Node.js v16.17.1 (I prefer nvm as a version manager -- you can install multiple versions using it.). However, this version requirement is subject to change.
 3. Python v3.6. or above
 
 **Installation**
@@ -9,7 +9,7 @@
 0. Clone the project using ssh url: `git@github.com:jumasheff/codomodo.git`
 1. Create .env file from the provided template: `cp env_template .env`
 2. Go to the project directory: `cd codomodo`
-3. Install JavaScript dependencies: `npm install`
+3. Install JavaScript dependencies (we have some old packages here, that's why we need to include that extra argument): `npm install --legacy-peer-deps`
 4. Create a virtual environment called `env`: `python3 -m venv env`
 5. Activate the virtual environment: `source env/bin/activate`
 6. Upgrade pip: `pip install --upgrade pip`
