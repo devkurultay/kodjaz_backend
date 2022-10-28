@@ -28,38 +28,6 @@ DEBUG = os.environ.get('DEBUG')
 
 ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOSTS')]
 
-# Spirit's INSTALLED_APPS
-INSTALLED_APPS_SPIRIT = [
-    'spirit.core',
-    'spirit.admin',
-    'spirit.search',
-
-    'spirit.user',
-    'spirit.user.admin',
-    'spirit.user.auth',
-
-    'spirit.category',
-    'spirit.category.admin',
-
-    'spirit.topic',
-    'spirit.topic.admin',
-    'spirit.topic.favorite',
-    'spirit.topic.moderate',
-    'spirit.topic.notification',
-    'spirit.topic.private',
-    'spirit.topic.unread',
-
-    'spirit.comment',
-    'spirit.comment.bookmark',
-    'spirit.comment.flag',
-    'spirit.comment.flag.admin',
-    'spirit.comment.history',
-    'spirit.comment.like',
-    'spirit.comment.poll',
-
-    'djconfig',
-    'haystack',
-]
 
 INSTALLED_APPS_BASE = [
     'django.contrib.admin',
@@ -85,7 +53,7 @@ INSTALLED_APPS_OTHERS = [
     'crispy_forms',
 ]
 
-INSTALLED_APPS = INSTALLED_APPS_BASE + INSTALLED_APPS_SPIRIT + INSTALLED_APPS_OTHERS
+INSTALLED_APPS = INSTALLED_APPS_BASE + INSTALLED_APPS_OTHERS
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
@@ -120,14 +88,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # Spirit
-    # 'spirit.core.middleware.XForwardedForMiddleware',
-    'spirit.user.middleware.TimezoneMiddleware',
-    'spirit.user.middleware.LastIPMiddleware',
-    'spirit.user.middleware.LastSeenMiddleware',
-    'spirit.user.middleware.ActiveUserMiddleware',
-    'spirit.core.middleware.PrivateForumMiddleware',
-    'djconfig.middleware.DjConfigMiddleware',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -157,17 +117,17 @@ TEMPLATES = [
 ]
 
 # Spirit
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-        'LOCATION': 'spirit_cache',
-    },
-    'st_rate_limit': {
-        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-        'LOCATION': 'spirit_rl_cache',
-        'TIMEOUT': None
-    }
-}
+# CACHES = {
+#     'default': {
+#         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+#         'LOCATION': 'spirit_cache',
+#     },
+#     'st_rate_limit': {
+#         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+#         'LOCATION': 'spirit_rl_cache',
+#         'TIMEOUT': None
+#     }
+# }
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
@@ -188,16 +148,16 @@ AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
     # Spirit
-    'spirit.user.auth.backends.EmailAuthBackend',
+    # 'spirit.user.auth.backends.EmailAuthBackend',
 )
 
 # Spirit
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
-        'PATH': os.path.join(BASE_DIR, 'st_search'),
-    },
-}
+# HAYSTACK_CONNECTIONS = {
+#     'default': {
+#         'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+#         'PATH': os.path.join(BASE_DIR, 'st_search'),
+#     },
+# }
 
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
