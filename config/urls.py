@@ -23,6 +23,5 @@ urlpatterns = [
     path('users/', include('users.urls', namespace='users')),
     path('accounts/', include('allauth.urls')),
     path('admin/', admin.site.urls),
-    path('forum/', include('spirit.urls')),
     path('cabinet/', include('frontend.urls', namespace='frontend')),
 ]
