@@ -1,15 +1,16 @@
 from django.contrib.auth import logout
 
 from rest_framework import permissions, status
-from rest_framework.generics import GenericAPIView
+from rest_framework.generics import GenericAPIView, CreateAPIView
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
-from .serializers import RefreshTokenSerializer
- 
+from .serializers import RefreshTokenSerializer, UserCreateSerializer
+
 
 class LogoutView(GenericAPIView):
     serializer_class = RefreshTokenSerializer
-    permission_classes = (permissions.IsAuthenticated, )
+    permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, request, *args):
         sz = self.get_serializer(data=request.data)
@@ -20,3 +21,8 @@ class LogoutView(GenericAPIView):
         response.set_cookie('refresh_token', '')
         response.set_cookie('access_token', '')
         return response
+
+
+class CreateUserAPIView(CreateAPIView):
+    permission_classes = (AllowAny,)
+    serializer_class = UserCreateSerializer
