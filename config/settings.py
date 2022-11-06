@@ -51,6 +51,7 @@ INSTALLED_APPS_OTHERS = [
     'frontend.apps.FrontendConfig',
     'allauth.socialaccount.providers.google',
     'crispy_forms',
+    'drf_yasg',
 ]
 
 INSTALLED_APPS = INSTALLED_APPS_BASE + INSTALLED_APPS_OTHERS
