@@ -116,18 +116,6 @@ TEMPLATES = [
     },
 ]
 
-# Spirit
-# CACHES = {
-#     'default': {
-#         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-#         'LOCATION': 'spirit_cache',
-#     },
-#     'st_rate_limit': {
-#         'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
-#         'LOCATION': 'spirit_rl_cache',
-#         'TIMEOUT': None
-#     }
-# }
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
@@ -147,17 +135,7 @@ SITE_ID = 1
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
-    # Spirit
-    # 'spirit.user.auth.backends.EmailAuthBackend',
 )
-
-# Spirit
-# HAYSTACK_CONNECTIONS = {
-#     'default': {
-#         'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
-#         'PATH': os.path.join(BASE_DIR, 'st_search'),
-#     },
-# }
 
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
@@ -197,10 +175,7 @@ PASSWORD_HASHERS = [
 
 AUTH_USER_MODEL = 'users.User'
 
-# Spirit
-#LOGIN_URL = 'spirit:user:auth:login'
-#LOGIN_REDIRECT_URL = 'spirit:user:update'
-#LOGOUT_REDIRECT_URL = 'spirit:index'
+
 ST_SITE_URL = '/forum/'
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
@@ -275,6 +250,6 @@ LOGGING = {
     }
 }
 
-# For logging in a JWT user. localhost:8000/?token=jwt-token
+# For logging in a JWT user. localhost:8000/?token=jwt-tokenpyt
 # We decrypt the passed jwt-token with this secret key
 JWT_SECRET = os.environ.get('JWT_SECRET')
