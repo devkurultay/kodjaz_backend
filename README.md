@@ -6,9 +6,9 @@
 
 **Installation**
 
-0. Clone the project using ssh url: `git@github.com:jumasheff/codomodo.git`
+0. Clone the project using ssh url: `git@github.com:devkurultay/kodjaz_backend.git`
 1. Create .env file from the provided template: `cp env_template .env`
-2. Go to the project directory: `cd codomodo`
+2. Go to the project directory: `cd kodjaz_backend`
 3. Install JavaScript dependencies (we have some old packages here, that's why we need to include that extra argument): `npm install --legacy-peer-deps`
 4. Create a virtual environment called `env`: `python3 -m venv env`
 5. Activate the virtual environment: `source env/bin/activate`
@@ -85,5 +85,15 @@ That is, a user's data (which was created in any Laravel website) can be encrypt
 
 For that to happen, a friendly website should use our JWT_SECRET to pass their user data to our site:
 ```
-https://codomodo.com/?token=jwt_token_with_payload
+https://kodjaz.com/?token=jwt_token_with_payload
 ```
+
+**Rules**
+
+[Contribution guidelines for this project](CONTRIBUTING.md)
+
+
+[Code of conduct](CODE_OF_CONDUCT.md)
+
+
+[MIT licence text](LICENSE)
