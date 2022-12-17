@@ -1,5 +1,5 @@
 from django.urls import path
-from django.conf.urls import url
+from django.urls import re_path
 
 from .views import index
 
@@ -7,5 +7,5 @@ app_name = 'frontend'
 
 urlpatterns = [
     path('', index),  # for the empty url
-    url(r'^.*/$', index)  # for all other urls
+    re_path(r'^.*/$', index)  # for all other urls
 ]
