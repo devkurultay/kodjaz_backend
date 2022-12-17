@@ -3,15 +3,15 @@
 source env/bin/activate
 python manage.py collectstatic --noinput
 # Bundle up an archive file
-tar -cf codomodo.tar authentication/ config/ courses/ fixtures/ frontend/ staticfiles/ requirements/ users/ manage.py robots.txt .env
+tar -cf kodjaz.tar authentication/ config/ courses/ fixtures/ frontend/ staticfiles/ requirements/ users/ manage.py robots.txt .env
 # Load variables form .env file
 source .env
 # Upload bundled archive
-scp codomodo.tar $SERVER_USERNAME@$SERVER_IP:$PROJECT_FOLDER_ON_SERVER/
-rm codomodo.tar
+scp kodjaz.tar $SERVER_USERNAME@$SERVER_IP:$PROJECT_FOLDER_ON_SERVER/
+rm kodjaz.tar
 ssh -tt $SERVER_USERNAME@$SERVER_IP << END
     cd $PROJECT_FOLDER_ON_SERVER/
-    tar -xf codomodo.tar
+    tar -xf kodjaz.tar
 
     sed -i 's/DEBUG=True/DEBUG=False/' .env
 
