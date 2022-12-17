@@ -1,8 +1,8 @@
 [Unit]
-Description=gunicorn socket for codomodo project
+Description=gunicorn socket for kodjaz project
 
 [Socket]
-ListenStream=/run/gunicorn/codomodo_socket
+ListenStream=/run/gunicorn/kodjaz_socket
 
 [Install]
 WantedBy=sockets.target
