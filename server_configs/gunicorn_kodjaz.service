@@ -5,19 +5,19 @@ After=network.target
 
 [Service]
 PermissionsStartOnly=True
-User=kodjaz
+User=username
 Group=www-data
 RuntimeDirectory=gunicorn
 RuntimeDirectoryMode=0775
-PIDFile=/run/gunicorn/pid
-WorkingDirectory=/home/kodjaz/backend
-ExecStart=/home/kodjaz/backend/env/bin/gunicorn \
-          --access-logfile /home/kodjaz/backend/logs/access.log \
-          --error-logfile /home/kodjaz/backend/logs/error.log \
-          --pid /run/gunicorn/pid   \
+PIDFile=/run/gunicorn/example_pid
+WorkingDirectory=/home/username/backend_folder
+ExecStart=/home/username/backend_folder/env/bin/gunicorn \
+          --access-logfile /home/username/backend_folder/logs/access.log \
+          --error-logfile /home/username/backend_folder/logs/error.log \
+          --pid /run/gunicorn/example_pid   \
           --env DJANGO_SETTINGS_MODULE=config.settings_prod \
           --workers 3 \
-          --bind unix:/run/gunicorn/kodjaz_socket config.wsgi:application
+          --bind unix:/run/gunicorn/example_sock config.wsgi:application
 ExecReload=/bin/kill -s HUP $MAINPID
 ExecStop=/bin/kill -s TERM $MAINPID
 PrivateTmp=true
