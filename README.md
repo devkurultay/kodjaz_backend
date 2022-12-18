@@ -1,7 +1,7 @@
 **Assumptions**
 
 1. I assume that you have added your ssh-keys to your github account: `https://github.com/settings/keys`. In case you don't know how to do it, refer to this page: `https://help.github.com/en/github/authenticating-to-github/connecting-to-github-with-ssh`
-2. Node.js v16.17.1 (I prefer nvm as a version manager -- you can install multiple versions using it.). However, this version requirement is subject to change.
+2. Node.js v16.17.1 (I prefer [NVM](https://github.com/nvm-sh/nvm) as a version manager -- you can install multiple versions using it.). However, this version requirement is subject to change.
 3. Python v3.6. or above
 
 **Installation**
@@ -16,12 +16,11 @@
 7. Install Python dependencies: `pip install -r requirements/requirements_dev.txt`
 8. Open two terminal tabs/windows (whatever you prefer)
 9. In the 1st terminal (in the project directory) activate the virtual environment (in case it's not activated) and install migrations: `./manage.py migrate`
-10. Create a cache table for Spirit: `./manage.py createcachetable`
-11. Create a superuser: `./manage.py createsuperuser` (fill in all the fields)
-12. In the same terminal load the fixtures (dummy data): `./manage.py loaddata fixtures/courses.json`
-13. In the same terminal run the Django server: `./manage.py runserver`
-14. In the 2nd terminal issue the following command (which will run a watcher.js whose job is to rebuild the project each time it detects some changes under the frontend/src folder): `npm start`
-15. Now you can open your favorite editor and start writing your awesome code!
+10. Create a superuser: `./manage.py createsuperuser` (fill in all the fields)
+11. In the same terminal load the fixtures (dummy data): `./manage.py loaddata fixtures/courses.json`
+12. In the same terminal run the Django server: `./manage.py runserver`
+13. In the 2nd terminal issue the following command (which will run a watcher.js whose job is to rebuild the project each time it detects some changes under the frontend/src folder): `npm start`
+14. Now you can open your favorite editor and start writing your awesome code!
 
 Happy coding!
 
@@ -29,13 +28,6 @@ Happy coding!
 
 If you are having issues with `cffi`, try to upgrade pip (make sure env is activated): `pip install --upgrade pip`
 Make sure you have a branch off of a fresh master.
-If you already had the project installed, you may have issues caused by Spirit (forum) installation. Here are the steps for solving the issues:
-1. Install Python dependencies: `pip install -r requirements/requirements_dev.txt`
-2. Migrate: ./manage.py migrate 
-3. Initiate Spirit installation: ./manage.py spiritinstall
-4. Migrate once again: ./manage.py migrate 
-5. If you haven't yet, create a superuser: `./manage.py createsuperuser` (fill in all the fields)
-6. If you haven't yet, load the fixtures (dummy data): `./manage.py loaddata fixtures/courses.json`
 
 **How we git**
 
@@ -61,7 +53,7 @@ nothing to commit, working tree clean
 8. Push the resolved code to your remote branch: `git push -f origin create-exercise-editing-page`. See `-f`? It means `force`, that is, you should force-push to your branch, because your local one's git history is different than the remote one.
 9. Make sure that after rebasing the code still works.
 10. If everything looks good, merge your branch to master.
-11. Whoot!
+11. Woot!
 
 
 ### Creating a user via JWT
@@ -85,7 +77,7 @@ That is, a user's data (which was created in any Laravel website) can be encrypt
 
 For that to happen, a friendly website should use our JWT_SECRET to pass their user data to our site:
 ```
-https://kodjaz.com/?token=jwt_token_with_payload
+https://example.com/?token=jwt_token_with_payload
 ```
 
 **Rules**
