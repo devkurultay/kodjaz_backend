@@ -2,7 +2,7 @@
 Description=gunicorn socket for kodjaz project
 
 [Socket]
-ListenStream=/run/gunicorn/kodjaz_socket
+ListenStream=/run/gunicorn/example_sock
 
 [Install]
 WantedBy=sockets.target
