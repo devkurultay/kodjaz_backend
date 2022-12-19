@@ -1,7 +1,7 @@
 from rest_framework.test import APITestCase
 from rest_framework.test import APIRequestFactory
 
-from .factories import UserFactory
+from authentication.tests.factories.user import UserFactory
 
 
 class ApiViewsTests(APITestCase):
