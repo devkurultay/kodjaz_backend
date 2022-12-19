@@ -1,2 +1,5 @@
 -r requirements_prod.txt
 ipython==8.4.0
+# For testing
+factory-boy==3.2.1
+pytest-django==4.5.2
