@@ -1,5 +1,5 @@
 name: test_django
-on: [pull_request, push] # activates the workflow when there is a push or pull request in the repo
+on: [push] # activates the workflow when there is a push or pull request in the repo
 jobs:
   kodjaz:
     runs-on: ubuntu-latest # operating system your code will run on
@@ -7,7 +7,9 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
+          python-version: '3.10.7'
           cache: 'pip'
+          cache-dependency-path: '**/requirements_dev.txt'
       - name: Install dependencies
         run: pip install -r requirements/requirements_dev.txt # install all our dependencies for the project
-      - run: pytest --envfiles .env
+      - run: pytest --envfile .env
