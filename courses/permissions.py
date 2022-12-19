@@ -1,5 +1,7 @@
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import BasePermission
+from rest_framework.permissions import SAFE_METHODS
 
 
-class IsAdminMixin():
-    permission_classes = [IsAdminUser]
+class ReadOnly(BasePermission):
+    def has_permission(self, request, view):
+        return request.method in SAFE_METHODS

@@ -1,7 +1,8 @@
 from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet
+
 from rest_framework.serializers import ValidationError
 
+from courses.mixins import ReadOnlyOrAdminModelViewSetMixin
 from courses.serializers import TrackSerializer
 from courses.serializers import UnitSerializer
 from courses.serializers import LessonSerializer
@@ -10,25 +11,24 @@ from courses.models import Track
 from courses.models import Unit
 from courses.models import Lesson
 from courses.models import Exercise
-from courses.permissions import IsAdminMixin
 
 
-class TrackViewSet(IsAdminMixin, ModelViewSet):
+class TrackViewSet(ReadOnlyOrAdminModelViewSetMixin):
     queryset = Track.objects.all()
     serializer_class = TrackSerializer
 
 
-class UnitViewSet(IsAdminMixin, ModelViewSet):
+class UnitViewSet(ReadOnlyOrAdminModelViewSetMixin):
     queryset = Unit.objects.all()
     serializer_class = UnitSerializer
 
 
-class LessonViewSet(IsAdminMixin, ModelViewSet):
+class LessonViewSet(ReadOnlyOrAdminModelViewSetMixin):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
 
 
-class ExerciseViewSet(IsAdminMixin, ModelViewSet):
+class ExerciseViewSet(ReadOnlyOrAdminModelViewSetMixin):
     queryset = Exercise.objects.all()
     serializer_class = ExerciseSerializer
 
