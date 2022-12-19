@@ -5,4 +5,4 @@ from courses.permissions import ReadOnly
 
 
 class ReadOnlyOrAdminModelViewSetMixin(ModelViewSet):
-    permissions = [ReadOnly|IsAdminUser]
+    permission_classes = [ReadOnly|IsAdminUser]
