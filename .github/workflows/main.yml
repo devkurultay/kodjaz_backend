@@ -1,10 +1,9 @@
 name: test_django
-on: [push] # activates the workflow when there is a push or pull request in the repo
+on: [push]
 jobs:
   kodjaz:
-    runs-on: ubuntu-latest # operating system your code will run on
+    runs-on: ubuntu-latest
     steps:
-      # - uses: falti/dotenv-action@v1.0.2
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
