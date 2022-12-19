@@ -4,7 +4,9 @@ jobs:
   kodjaz:
     runs-on: ubuntu-latest # operating system your code will run on
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          cache: 'pip'  
       - run: pip install -r requirements/requirements_dev.txt # install all our dependencies for the project
-      - run: pytest . # run pytest test
+      - run: pytest .
