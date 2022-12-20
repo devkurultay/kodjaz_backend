@@ -12,4 +12,6 @@ jobs:
           cache-dependency-path: '**/requirements_dev.txt'
       - name: Install dependencies
         run: pip install -r requirements/requirements_dev.txt # install all our dependencies for the project
-      - run: pytest .
+      - name: Create a dummy env fille
+        run: cp env_template .env
+      - run: python manage.py test

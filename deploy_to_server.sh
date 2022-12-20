@@ -11,6 +11,11 @@ ssh -tt $SERVER_USERNAME@$SERVER_IP << END
     if [ ! -d /home/$SERVER_USERNAME/$PROJECT_FOLDER_ON_SERVER ]; then
         mkdir /home/$SERVER_USERNAME/$PROJECT_FOLDER_ON_SERVER;
     fi
+    if [ ! -d /home/$SERVER_USERNAME/$PROJECT_FOLDER_ON_SERVER/logs ]; then
+        mkdir /home/$SERVER_USERNAME/$PROJECT_FOLDER_ON_SERVER/logs;
+        touch /home/$SERVER_USERNAME/$PROJECT_FOLDER_ON_SERVER/logs/access.log;
+        touch /home/$SERVER_USERNAME/$PROJECT_FOLDER_ON_SERVER/logs/error.log;
+    fi
     exit
 END
 
