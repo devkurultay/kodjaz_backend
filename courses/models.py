@@ -186,6 +186,7 @@ class Submission(models.Model):
                 obj.output_error_text = exercise.output_error_text
                 obj.unit_test = exercise.unit_test
             obj.karma = exercise.karma if passed else 0
+            # TODO(murat): Read this data from the previous submissions
             obj.failed_attempts += 0 if passed else 1
             obj.save()
         except Exception:
