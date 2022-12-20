@@ -4,6 +4,7 @@ from courses.models import Lesson
 from courses.models import Exercise
 from courses.models import Track
 from courses.models import Unit
+from courses.models import Submission
 
 
 class TrackFactory(factory.django.DjangoModelFactory):
@@ -39,7 +40,7 @@ class ExerciseFactory(factory.django.DjangoModelFactory):
         model = Exercise
 
     name = factory.Faker('name')
-    lecture = factory.Faker('lecture')
+    lecture = factory.Faker('name')
     instruction = "Print out hello world"
     default_code = "print('hello world')"
     input_should_contain = "Some test for input inclusion"
@@ -51,3 +52,12 @@ class ExerciseFactory(factory.django.DjangoModelFactory):
     unit_test = "Some code goes here"
     is_published = False
     lesson = factory.SubFactory('fixtures.factories.courses.LessonFactory')
+
+
+class SubmissionFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Submission
+    
+    user = factory.SubFactory('fixtures.factories.user.UserFactory')
+    exercise = factory.SubFactory('fixtures.factories.courses.ExerciseFactory')
+    submitted_code = "Some code goes here"
