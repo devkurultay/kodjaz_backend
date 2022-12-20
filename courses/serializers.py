@@ -4,6 +4,7 @@ from courses.models import Track
 from courses.models import Unit
 from courses.models import Lesson
 from courses.models import Exercise
+from courses.models import Submission
 
 
 class PreviousExerciseSerializerField(serializers.Field):
@@ -37,6 +38,12 @@ class ExerciseSerializer(serializers.ModelSerializer):
     
     def get_entity_type(self, obj):
         return Exercise.__name__
+
+
+class SubmissionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Submission
+        fields = ['id', 'submitted_code', 'exercise']
 
 
 class LessonSerializer(serializers.ModelSerializer):
