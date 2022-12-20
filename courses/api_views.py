@@ -15,6 +15,8 @@ from courses.models import Lesson
 from courses.models import Exercise
 from courses.models import Submission
 
+from courses.helpers import run_code
+
 
 class TrackViewSet(ReadOnlyOrAdminModelViewSetMixin):
     queryset = Track.objects.all()
@@ -65,5 +67,6 @@ class SubmissionViewSet(ModelViewSet):
     permission_classes = [IsSubmissionOwner]
 
     def perform_create(self, serializer):
-        # TODO(murat): call the helper here
+        result = run_code()
+        #TODO(murat): Write result to output
         serializer.save()
