@@ -5,16 +5,38 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Django: run",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/manage.py",
+            "args": [
+                "runserver"
+            ],
+            "django": true,
+            "justMyCode": true
+        },
+        {
             "name": "Django test",
             "type": "python",
             "request": "launch",
             "program": "${workspaceFolder}/manage.py",
             "args": [
-                "test",
-                "courses.tests.submission_tests"
+                "test"
             ],
             "django": true,
             "justMyCode": true
-        }
+        },
+        {
+            "name": "Django test courses",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/manage.py",
+            "args": [
+                "test",
+                "courses.tests"
+            ],
+            "django": true,
+            "justMyCode": true
+        },
     ]
 }
