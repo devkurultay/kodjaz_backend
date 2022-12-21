@@ -43,7 +43,7 @@ class ExerciseSerializer(serializers.ModelSerializer):
 class SubmissionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Submission
-        fields = ['id', 'submitted_code', 'exercise']
+        fields = ['id', 'submitted_code', 'exercise', 'output']
 
 
 class LessonSerializer(serializers.ModelSerializer):

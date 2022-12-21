@@ -67,6 +67,9 @@ class SubmissionViewSet(ModelViewSet):
     permission_classes = [IsSubmissionOwner]
 
     def perform_create(self, serializer):
-        result = run_code()
-        #TODO(murat): Write result to output
-        serializer.save()
+        data = serializer.validated_data
+        exercise = data.get('exercise')
+        submitted_code = data.get('submitted_code', '')
+        programming_language = exercise.lesson.unit.track.programming_language
+        result = run_code(submitted_code, programming_language)
+        serializer.save(output=result, user=self.request.user)
