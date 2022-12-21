@@ -151,6 +151,11 @@ class SumissionTests(APITestCase):
         return super().setUp()
     
     def test_submission_permissions(self):
+        url = f'/api/v1/submissions/{self.orig_submission.id}/'
+        data = {'submitted_code': 'print("Hi!")'}
+        response = self.client.patch(url, data)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
         second_user = UserFactory()
         refresh = RefreshToken.for_user(second_user)
         self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {refresh.access_token}')
