@@ -14,7 +14,7 @@ class TrackFactory(factory.django.DjangoModelFactory):
     name = factory.Faker('name')
     description = factory.Faker('name')
     is_published = False
-    programming_language = factory.Faker('name')
+    programming_language = 'Python'
 
 
 class UnitFactory(factory.django.DjangoModelFactory):
