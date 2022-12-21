@@ -6,6 +6,7 @@ from courses.api_views import TrackViewSet
 from courses.api_views import UnitViewSet
 from courses.api_views import LessonViewSet
 from courses.api_views import ExerciseViewSet
+from courses.api_views import SubmissionViewSet
 
 
 app_name = 'courses'
@@ -15,6 +16,7 @@ router.register(r'api/v1/tracks', TrackViewSet)
 router.register(r'api/v1/units', UnitViewSet)
 router.register(r'api/v1/lessons', LessonViewSet)
 router.register(r'api/v1/exercises', ExerciseViewSet)
+router.register(r'api/v1/submissions', SubmissionViewSet)
 
 urlpatterns = [
     path('', views.TracksListView.as_view(), name='tracks_list'),

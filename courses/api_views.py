@@ -1,16 +1,21 @@
 from rest_framework.response import Response
-
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.serializers import ValidationError
 
 from courses.mixins import ReadOnlyOrAdminModelViewSetMixin
+from courses.permissions import IsSubmissionOwner
 from courses.serializers import TrackSerializer
 from courses.serializers import UnitSerializer
 from courses.serializers import LessonSerializer
 from courses.serializers import ExerciseSerializer
+from courses.serializers import SubmissionSerializer
 from courses.models import Track
 from courses.models import Unit
 from courses.models import Lesson
 from courses.models import Exercise
+from courses.models import Submission
+
+from courses.helpers import run_code
 
 
 class TrackViewSet(ReadOnlyOrAdminModelViewSetMixin):
@@ -54,3 +59,20 @@ class ExerciseViewSet(ReadOnlyOrAdminModelViewSetMixin):
         if prev is not None:
             prev.next_exercise = instance
             prev.save()
+
+
+class SubmissionViewSet(ModelViewSet):
+    queryset = Submission.objects.all()
+    serializer_class = SubmissionSerializer
+    permission_classes = [IsSubmissionOwner]
+
+    def perform_create(self, serializer):
+        data = serializer.validated_data
+        exercise = data.get('exercise')
+        submitted_code = data.get('submitted_code', '')
+        programming_language = exercise.lesson.unit.track.programming_language
+        try:
+            result = run_code(submitted_code, programming_language)
+            serializer.save(output=result, user=self.request.user)
+        except ValueError as e:
+            raise ValidationError({"detail": e})
