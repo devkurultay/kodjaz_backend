@@ -71,5 +71,8 @@ class SubmissionViewSet(ModelViewSet):
         exercise = data.get('exercise')
         submitted_code = data.get('submitted_code', '')
         programming_language = exercise.lesson.unit.track.programming_language
-        result = run_code(submitted_code, programming_language)
-        serializer.save(output=result, user=self.request.user)
+        try:
+            result = run_code(submitted_code, programming_language)
+            serializer.save(output=result, user=self.request.user)
+        except ValueError as e:
+            raise ValidationError({"detail": e})
