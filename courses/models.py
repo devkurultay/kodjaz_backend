@@ -141,28 +141,11 @@ class Submission(models.Model):
     user = models.ForeignKey(User, related_name='user_submission', on_delete=models.CASCADE)
     exercise = models.ForeignKey(Exercise, related_name='exercise_submission', on_delete=models.CASCADE)
     submitted_code = models.TextField(_('Submitted code'), blank=True)
-    lecture = models.TextField(_('Lecture Text'), blank=True, null=True)
-    instruction = models.TextField(_('Instruction Text'), blank=True, null=True)
-    hint = models.TextField(_('Hint on how to solve the task'), blank=True, null=True)
-    input_should_contain = models.CharField(
-        _('List of input control keywords copied from exercise (positive assertion)'), blank=True, null=True, max_length=255)
-    input_should_not_contain = models.CharField(
-        _('List of control keywords copied from exercise (negative assertion)'), blank=True, null=True, max_length=255)
-    input_error_text = models.CharField(
-        _("Error text shown when expected input was not found in the written code"), blank=True, null=True, max_length=255)
-    output_should_contain = models.CharField(
-        _('List of output control keywords copied from the exercise (positive assertion)'), blank=True, null=True, max_length=255)
-    output_should_not_contain = models.CharField(
-        _('List of output control keywords copied from the exercise (negative assertion)'), blank=True, null=True, max_length=255)
-    output_error_text = models.CharField(
-        _("Error text shown when expected output doesn't show up"), blank=True, null=True, max_length=255)
-    unit_test = models.TextField(_('Code for testing with unit tests from original exercise'), blank=True, null=True)
     karma = models.PositiveSmallIntegerField(_('Gained points'), default=0)
     failed_attempts = models.PositiveIntegerField(_('Amount of attempts user failed to pass the exercise'),
                                                   blank=True, default=0)
     date_time_created = models.DateTimeField(_('Submission Date and Time'), auto_now_add=True, editable=False)
     date_time_modified = models.DateTimeField(_('Submission Modification Date and Time'), auto_now=True)
-    text_file_content = models.TextField(_('file.txt tab content'), blank=True)
 
     def __str__(self):
         return '{0} submission'.format(self.user)
@@ -170,23 +153,10 @@ class Submission(models.Model):
     @classmethod
     def create_from_exercise(cls, user, exercise, submitted_code, text_file_content, passed):
         try:
-            obj, created = cls.objects.get_or_create(user=user, exercise=exercise)
+            obj, _ = cls.objects.get_or_create(user=user, exercise=exercise)
             obj.submitted_code = submitted_code
             obj.text_file_content = text_file_content
-            if created:
-                obj.name = exercise.name
-                obj.lecture = exercise.lecture
-                obj.instruction = exercise.instruction
-                obj.hint = exercise.hint
-                obj.input_should_contain = exercise.input_should_contain
-                obj.input_should_not_contain = exercise.input_should_not_contain
-                obj.input_error_text = exercise.input_error_text
-                obj.output_should_contain = exercise.output_should_contain
-                obj.output_should_not_contain = exercise.output_should_not_contain
-                obj.output_error_text = exercise.output_error_text
-                obj.unit_test = exercise.unit_test
             obj.karma = exercise.karma if passed else 0
-            # TODO(murat): Read this data from the previous submissions
             obj.failed_attempts += 0 if passed else 1
             obj.save()
         except Exception:
