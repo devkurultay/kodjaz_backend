@@ -141,6 +141,7 @@ class Submission(models.Model):
     user = models.ForeignKey(User, related_name='user_submission', on_delete=models.CASCADE)
     exercise = models.ForeignKey(Exercise, related_name='exercise_submission', on_delete=models.CASCADE)
     submitted_code = models.TextField(_('Submitted code'), blank=True)
+    output = models.TextField(_('Result'), blank=True)
     karma = models.PositiveSmallIntegerField(_('Gained points'), default=0)
     failed_attempts = models.PositiveIntegerField(_('Amount of attempts user failed to pass the exercise'),
                                                   blank=True, default=0)
