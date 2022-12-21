@@ -1,8 +1,10 @@
+from unittest.mock import patch
 from rest_framework import status
 from rest_framework.test import APITestCase
 from rest_framework.test import APIClient
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from fixtures.factories.courses import ExerciseFactory
 from fixtures.factories.courses import LessonFactory
 from fixtures.factories.courses import SubmissionFactory
 from fixtures.factories.courses import TrackFactory
@@ -173,3 +175,21 @@ class SumissionTests(APITestCase):
         self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {refresh.access_token}')
         response = self.client.patch(url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+    
+    @patch('courses.api_views.run_code')
+    def test_can_submit_code(self, mock_run_code):
+        mock_run_code.return_value = 'output'
+        url = f'/api/v1/submissions/'
+        exercise = ExerciseFactory()
+        user = UserFactory()
+        refresh = RefreshToken.for_user(user)
+        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {refresh.access_token}')
+        programming_language = exercise.lesson.unit.track.programming_language
+        code = "print('hi!')"
+        payload = {
+            'submitted_code': code,
+            'exercise': exercise.id
+        }
+        result = self.client.post(url, payload)
+        self.assertEqual(result.status_code, status.HTTP_201_CREATED)
+        mock_run_code.assert_called_once_with(code, programming_language)
