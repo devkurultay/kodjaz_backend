@@ -1,4 +1,7 @@
+import json
+import requests
 
+from django.conf import settings
 
 def run_code(submitted_code, programming_language):
     msg = '{}: should not be empty'
@@ -6,5 +9,11 @@ def run_code(submitted_code, programming_language):
         raise ValueError(msg.format('sumitted_code'))
     if not programming_language:
         raise ValueError(msg.format('programming_language'))
-    # TODO(murat): populate with actual AWS Lambda function invocation code
+
+    if programming_language.lower() == 'python':
+        url = settings.AWS_PYTHON_EXEC_LAMBDA_URL
+        #TODO(murat): Append unit test code to the submission code
+        payload = json.dumps({'answer': submitted_code})
+        res = requests.post(url, payload)
+        return res.json()
     return 'output'

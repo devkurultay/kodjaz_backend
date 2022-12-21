@@ -252,3 +252,5 @@ LOGGING = {
 # For logging in a JWT user. localhost:8000/?token=jwt-tokenpyt
 # We decrypt the passed jwt-token with this secret key
 JWT_SECRET = os.environ.get('JWT_SECRET')
+
+AWS_PYTHON_EXEC_LAMBDA_URL = os.environ.get('AWS_PYTHON_EXEC_LAMBDA_URL', '')
