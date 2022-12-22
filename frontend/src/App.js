@@ -5,15 +5,13 @@ import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
 import promise from 'redux-promise-middleware'
 import { BrowserRouter } from "react-router-dom"
-
+import Routes from './Routes'
 import cabinet from './reducers/reducers'
 
 const store = createStore(
   cabinet,
   applyMiddleware(thunk, promise)
 )
-
-import Routes from './Routes'
 
 const routerConfig = {
   basename: '/cabinet',
