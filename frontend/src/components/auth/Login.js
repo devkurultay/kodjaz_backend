@@ -10,7 +10,7 @@ import axiosInstance from '../../axiosApi'
 class Login extends Component {
   constructor(props) {
     super(props)
-    this.state = {username: "", password: ""}
+    this.state = {email: "", password: ""}
 
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -24,7 +24,7 @@ class Login extends Component {
   async handleSubmit(event) {
     event.preventDefault();
     try {
-      this.props.login(this.state.username, this.state.password)
+      this.props.login(this.state.email, this.state.password)
       return
     } catch (error) {
       throw error
@@ -38,7 +38,7 @@ class Login extends Component {
   render() {
     if (this.props.isAuthenticated) {
       // TODO: get `from` path and redirec there
-      return <Redirect to={{ pathname: '/' }} />
+      // return <Redirect to={{ pathname: '/' }} />
     }
     return (
       <div>
@@ -46,8 +46,8 @@ class Login extends Component {
         { this.props.loginError.length > 0 ? this.renderError() : null }
         <form onSubmit={this.handleSubmit}>
           <label>
-            Username:
-            <input name="username" type="text" value={this.state.username} onChange={this.handleChange}/>
+            Email:
+            <input name="email" type="email" value={this.state.email} onChange={this.handleChange}/>
           </label>
           <label>
             Password:
