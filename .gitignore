@@ -87,5 +87,3 @@ staticfiles
 static/frontend/
 
 db.sqlite3
-
-frontend/templates/frontend/index.html
