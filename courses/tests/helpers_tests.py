@@ -23,5 +23,7 @@ class HelpersTests(APITestCase):
         code = 'print("Hi!")'
         run_code(code, lang)
         url = settings.AWS_PYTHON_EXEC_LAMBDA_URL
-        expected_payload = json.dumps({'answer': code})
-        mock_request_post.assert_called_once_with(url, expected_payload)
+        headers = {'x-api-key': settings.AWS_API_GATEWAY_API_KEY}
+        expected_payload = {'answer': code}
+        mock_request_post.assert_called_once_with(
+            url, json=expected_payload, headers=headers)
