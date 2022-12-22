@@ -3,8 +3,6 @@ from datetime import timedelta
 from pathlib import Path
 
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent
 
 # Quick-start development settings - unsuitable for production
@@ -33,6 +31,7 @@ INSTALLED_APPS_OTHERS = [
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
     'authentication.apps.AuthenticationConfig',
+    'corsheaders',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -75,11 +74,17 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000',
+    'https://kodjaz.com',
 ]
 
 ROOT_URLCONF = 'config.urls'
