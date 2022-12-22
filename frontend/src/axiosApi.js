@@ -92,7 +92,7 @@ const refreshTokenAndResendRequest = async (error) => {
     if(!isFetchingAccessTokenInProgress) {
       isFetchingAccessTokenInProgress = true
       const response = await axios.post(
-        'token/refresh/',
+        baseURL + 'token/refresh/',
         { refresh: refreshToken }
       )
       if (response && !response.data) {
@@ -101,7 +101,7 @@ const refreshTokenAndResendRequest = async (error) => {
       const newAccessToken = response?.data?.access
       const newRefreshToken = response?.data?.refresh
       await setTokensToCookies(newAccessToken, newRefreshToken)
-      axiosInstance.defaults.headers.Authorization = 'JWT ' + newAccessToken
+      axiosInstance.defaults.headers.Authorization = 'Token ' + newAccessToken
       isFetchingAccessTokenInProgress = false
       triggerSubscribers(newAccessToken)
     }
