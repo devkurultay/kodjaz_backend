@@ -301,6 +301,7 @@ const Tree = ({
         </Col>
       </Form.Row>
       <SortableTree
+        isVirtualized={false}
         treeData={nodes}
         onChange={setNodes}
         theme={FileExplorerTheme}

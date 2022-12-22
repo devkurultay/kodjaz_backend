@@ -24,7 +24,7 @@ const ProtectedRoute = ({ component: Component, isAuthenticated, checkIsAuth, ..
     // TODO(murat): Show beautiful loading spinner
     return <div>Loading</div>
   }
-  const PATH_TO_REDIRECT_TO = '/accounts/login/?next=/cabinet/'
+  const PATH_TO_REDIRECT_TO = '/login/?next=/'
   return (
     <Route {...rest} render={(props) => (
       isAuthenticated
