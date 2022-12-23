@@ -127,7 +127,7 @@ class ExerciseTemplateView(TemplateView):
         if not self.request.user.is_authenticated:
             return obj
         try:
-            return Submission.objects.get(exercise__id=obj.id, user=self.request.user)
+            return Submission.objects.filter(exercise__id=obj.id, user=self.request.user).last()
         except Submission.DoesNotExist:
             return obj
 
@@ -159,7 +159,8 @@ class CreateSubmissionView(CreateView):
                 text_file_content=text_file_content,
                 passed=passed)
             return JsonResponse({'saved': True})
-        except SubmissionCreationException:
+        except SubmissionCreationException as e:
+            print('======', e)
             return JsonResponse({'saved': False})
 
     @staticmethod

@@ -154,11 +154,11 @@ class Submission(models.Model):
     @classmethod
     def create_from_exercise(cls, user, exercise, submitted_code, text_file_content, passed):
         try:
-            obj, _ = cls.objects.get_or_create(user=user, exercise=exercise)
+            obj = cls.objects.create(user=user, exercise=exercise)
             obj.submitted_code = submitted_code
             obj.text_file_content = text_file_content
             obj.karma = exercise.karma if passed else 0
             obj.failed_attempts += 0 if passed else 1
             obj.save()
-        except Exception:
-            raise SubmissionCreationException
+        except Exception as e:
+            raise SubmissionCreationException(e)
