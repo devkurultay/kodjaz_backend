@@ -1,7 +1,7 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
 
-const baseURL = 'http://localhost:8000/api/'
+const baseURL = process.env.REACT_APP_BASE_URL || 'https://backend.kodjaz.com/api/'
 const cabinetURL = '/cabinet/'
 const v1URL = '/v1/'
 
