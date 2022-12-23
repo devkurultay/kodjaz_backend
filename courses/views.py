@@ -105,19 +105,19 @@ class ExerciseTemplateView(TemplateView):
         current_object = self._get_current_obj(obj)
         new_context = {
             'object': obj,
-            'lecture': current_object.lecture,
-            'instruction': current_object.instruction,
-            'hint': current_object.hint,
+            'lecture': current_object.exercise.lecture,
+            'instruction': current_object.exercise.instruction,
+            'hint': current_object.exercise.hint,
             'default_code': self._get_default_code(current_object),
-            'unit_test': current_object.unit_test,
-            'input_should_contain': current_object.input_should_contain,
-            'input_should_not_contain': current_object.input_should_not_contain,
-            'input_error_text': current_object.input_error_text,
-            'output_should_contain': current_object.output_should_contain,
-            'output_should_not_contain': current_object.output_should_not_contain,
-            'output_error_text': current_object.output_error_text,
+            'unit_test': current_object.exercise.unit_test,
+            'input_should_contain': current_object.exercise.input_should_contain,
+            'input_should_not_contain': current_object.exercise.input_should_not_contain,
+            'input_error_text': current_object.exercise.input_error_text,
+            'output_should_contain': current_object.exercise.output_should_contain,
+            'output_should_not_contain': current_object.exercise.output_should_not_contain,
+            'output_error_text': current_object.exercise.output_error_text,
             'outputElementId': settings.OUTPUT_CONTAINER_ID_IN_EXERCISES_TEMPLATE,
-            'text_file_content': current_object.text_file_content,
+            'text_file_content': current_object.exercise.text_file_content,
             'programming_language': obj.lesson.unit.track.programming_language
         }
         context.update(new_context)
