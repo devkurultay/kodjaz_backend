@@ -101,42 +101,42 @@ class ExerciseTemplateView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(ExerciseTemplateView, self).get_context_data(**kwargs)
-        obj = Exercise.objects.get(id=kwargs['pk'])
-        current_object = self._get_current_obj(obj)
+        exercise = Exercise.objects.get(id=kwargs['pk'])
+        submission = self._get_submission(exercise)
+        default_code = self._get_default_code(submission, exercise) or exercise.default_code
         new_context = {
-            'object': obj,
-            'lecture': current_object.exercise.lecture,
-            'instruction': current_object.exercise.instruction,
-            'hint': current_object.exercise.hint,
-            'default_code': self._get_default_code(current_object),
-            'unit_test': current_object.exercise.unit_test,
-            'input_should_contain': current_object.exercise.input_should_contain,
-            'input_should_not_contain': current_object.exercise.input_should_not_contain,
-            'input_error_text': current_object.exercise.input_error_text,
-            'output_should_contain': current_object.exercise.output_should_contain,
-            'output_should_not_contain': current_object.exercise.output_should_not_contain,
-            'output_error_text': current_object.exercise.output_error_text,
+            'object': exercise,
+            'lecture': exercise.lecture,
+            'instruction': exercise.instruction,
+            'hint': exercise.hint,
+            'default_code': default_code,
+            'unit_test': exercise.unit_test,
+            'input_should_contain': exercise.input_should_contain,
+            'input_should_not_contain': exercise.input_should_not_contain,
+            'input_error_text': exercise.input_error_text,
+            'output_should_contain': exercise.output_should_contain,
+            'output_should_not_contain': exercise.output_should_not_contain,
+            'output_error_text': exercise.output_error_text,
             'outputElementId': settings.OUTPUT_CONTAINER_ID_IN_EXERCISES_TEMPLATE,
-            'text_file_content': current_object.exercise.text_file_content,
-            'programming_language': obj.lesson.unit.track.programming_language
+            'text_file_content': exercise.text_file_content,
+            'programming_language': exercise.lesson.unit.track.programming_language
         }
         context.update(new_context)
         return context
 
-    def _get_current_obj(self, obj):
+    def _get_submission(self, obj):
         if not self.request.user.is_authenticated:
-            return obj
+            return None
         try:
             return Submission.objects.filter(exercise__id=obj.id, user=self.request.user).last()
         except Submission.DoesNotExist:
-            return obj
+            return None
 
     @staticmethod
-    def _get_default_code(current_object):
-        try:
-            return current_object.default_code
-        except AttributeError:
-            return current_object.submitted_code
+    def _get_default_code(submission, exercise):
+        if submission:
+            return submission.submitted_code
+        return exercise.default_code
 
 
 class CreateSubmissionView(CreateView):
