@@ -91,8 +91,10 @@ class ExerciseListView(ListView):
         return qs.filter(lesson__id=self.kwargs['lesson_id'], is_published=True)
 
     def get_context_data(self, **kwargs):
+        lesson = Lesson.objects.get(id=self.kwargs['lesson_id'])
         context = super(ExerciseListView, self).get_context_data(**kwargs)
-        context['lesson_duration'] = self.get_queryset().aggregate(Sum('duration'))['duration__sum']
+        context['lesson_duration'] = self.get_queryset().aggregate(Sum('duration'))['duration__sum'] or '0'
+        context['lesson'] = lesson
         return context
 
 
