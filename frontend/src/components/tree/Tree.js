@@ -180,10 +180,10 @@ const Tree = ({
     const { type, id } = node
     if (type && type === 'Exercise') {
       if (id) {
-        history.push(`/exercise/${id}/`)
+        history.replace(`/exercise/${id}/`)
       } else {
         // Redirect to exercise creation page (with lessonId in history state)
-        history.push('/create-exercise/', { lessonId: node.lesson })
+        history.replace(`/create-exercise/`, { lessonId: node.lesson })
       }
       return
     }

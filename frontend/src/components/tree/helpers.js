@@ -53,7 +53,7 @@ const getExercises = (exercises) => {
   return exercises.map(exercise => {
     return {
       id: exercise.id,
-      title: exercise.name,
+      title: exercise.name.slice(0,12) + "...",
       type: exercise.entity_type,
       childrenType: null,
     }
