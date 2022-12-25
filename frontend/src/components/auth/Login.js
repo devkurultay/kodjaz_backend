@@ -37,8 +37,8 @@ class Login extends Component {
 
   render() {
     if (this.props.isAuthenticated) {
-      // TODO: get `from` path and redirec there
-      // return <Redirect to={{ pathname: '/' }} />
+      // TODO: get `from` path and redirect there
+      return <Redirect to={{ pathname: '/' }} />
     }
     return (
       <div>

@@ -17,7 +17,7 @@ class Signup extends Component{
     }
 
     handleSubmit(event) {
-        alert('An email and password were submitted: ' + this.state.email + " " + this.state.password);
+        // TODO(murat): implement this
         event.preventDefault();
     }
 
