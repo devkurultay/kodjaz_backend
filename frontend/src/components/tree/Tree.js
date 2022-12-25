@@ -14,7 +14,6 @@ import EntityEditModal from '../form/EntityEditModal'
 
 import './Tree.scss'
 
-import axiosInstance from '../../axiosApi'
 import { dataToTree } from './helpers.js'
 
 const Tree = ({
@@ -25,7 +24,6 @@ const Tree = ({
   createTrack,
   createUnit,
   createLesson,
-  isSaveTrackPending,
   entityToPick = '',
   entityId = '',
   pickHandler = () => {}

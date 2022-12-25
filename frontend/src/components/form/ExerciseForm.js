@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { useParams, useLocation, withRouter } from "react-router-dom"
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
@@ -23,7 +23,6 @@ import "ace-builds/src-noconflict/mode-python"
 import "ace-builds/src-noconflict/theme-github"
 
 const ExerciseForm = ({
-  tracks,
   lessons,
   exercises,
   isSaveExercisePending,
@@ -51,26 +50,28 @@ const ExerciseForm = ({
   const [ entityToClear, setEntityToClear ] = useState('')
   const [ success, setSuccess ] = useState(false)
 
-  let isCancelled = false
+  let isCancelled = useRef()
 
   useEffect(() => {
     loadExercises()
     loadLessons()
-  }, [])
+  }, [loadExercises, loadLessons])
 
-  const setLessonById = (id, cb) => {
+  const setLessonById = useCallback((id, cb) => {
     const currentLesson = lessons.filter(l => l.id === id)
     if (currentLesson) {
       cb(currentLesson?.[0])
     }
-  }
+  }, [lessons])
 
-  const getExerciseDataById = (idOfExerciseToFind) => {
+
+  const getExerciseDataById = useCallback((idOfExerciseToFind) => {
     return exercises.filter(exercise => Number(exercise.id) === Number(idOfExerciseToFind))?.[0]
-  }
+  }, [exercises])
 
   useEffect(() => {
-    if (newlyCreatedExerciseId === null && !isCancelled) {
+    const cancelled = isCancelled?.current?.value
+    if (newlyCreatedExerciseId === null && !cancelled) {
       if (exercises.length && currentExerciseId) {
         const currentExercise = getExerciseDataById(currentExerciseId)
         const prev = getExerciseDataById(currentExercise?.previous_exercise)
@@ -88,16 +89,21 @@ const ExerciseForm = ({
         setLessonById(lessonId, setLesson)
       }
     }
-  }, [ exercises, lessons, saveExerciseError, lessonId, currentExerciseId ])
+  }, [
+    exercises, lessons,
+    saveExerciseError, lessonId,
+    currentExerciseId, getExerciseDataById,
+    isCancelled, newlyCreatedExerciseId, setLessonById
+  ])
 
   useEffect(() => {
     if (newlyCreatedExerciseId) {
       setSuccess(false)
-      isCancelled = true
+      isCancelled.current.value = true
       resetNewlyCreatedLessonId()
       history.push('/')
     }
-  }, [newlyCreatedExerciseId])
+  }, [newlyCreatedExerciseId, isCancelled, history, resetNewlyCreatedLessonId])
 
   const handleFieldChange = (fieldName, value) => {
     setExerciseData({ ...exerciseData, [fieldName]: value })
@@ -199,10 +205,13 @@ const ExerciseForm = ({
     switch (field) {
       case 'lesson':
         setLesson({})
+        break
       case 'previous_exercise':
         setPrevExercise({})
+        break
       case 'next_exercise':
         setNextExercise({})
+        break
       default:
         return
     }

@@ -1,9 +1,7 @@
 import React, { useEffect } from 'react'
-import Cookies from 'js-cookie'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Route } from "react-router-dom"
-import axiosInstance from '../../axiosApi'
 import { checkIsAuth } from '../../actions/login'
 import AbsoluteRedirect from '../common/AbsoluteRedirect'
 
@@ -13,12 +11,12 @@ const ProtectedRoute = ({ component: Component, isAuthenticated, checkIsAuth, ..
   useEffect(() => {
     // Call on mount
     checkIsAuth()
-  }, [])
+  }, [checkIsAuth])
 
   useEffect(() => {
     // Call every time location changes
     checkIsAuth()
-  }, [ location ])
+  }, [ location, checkIsAuth ])
 
   if (isAuthenticated === null) {
     // TODO(murat): Show beautiful loading spinner

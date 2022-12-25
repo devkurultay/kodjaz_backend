@@ -1,11 +1,9 @@
 import React, { Component } from 'react'
-import Cookies from 'js-cookie'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { Redirect } from 'react-router-dom'
 import { login } from '../../actions/login'
 
-import axiosInstance from '../../axiosApi'
 
 class Login extends Component {
   constructor(props) {
