@@ -49,7 +49,7 @@ const Cabinet = ({ logout, loadTracks }) => {
       <main className={classnames("main-content mt-3 px-5", { "margin-left-240": isExpanded })}>
         <Route path="/" exact render={() => <Home />} />
         <Route path="/create-exercise/" render={() => <ExerciseForm />} />
-        <Route path="/exercise/:id/" render={() => <ExerciseForm />} />
+        <Route path="/exercise/:exerciseId/" render={() => <ExerciseForm />} />
       </main>
     </>
   )

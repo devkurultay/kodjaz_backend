@@ -35,9 +35,10 @@ const ExerciseForm = ({
   resetNewlyCreatedLessonId,
   history
 }) => {
+  const location = useLocation()
   const { exerciseId } = useParams()
   const currentExerciseId = exerciseId ?? newlyCreatedExerciseId
-  const lessonId = useLocation()?.state?.lessonId
+  const lessonId = location?.state?.lessonId
   const [ exerciseData, setExerciseData ] = useState({})
   const [ prevExercise, setPrevExercise ] = useState({})
   const [ nextExercise, setNextExercise ] = useState({})
@@ -99,6 +100,9 @@ const ExerciseForm = ({
   useEffect(() => {
     if (newlyCreatedExerciseId) {
       setSuccess(false)
+      if (!isCancelled.current) {
+        isCancelled.current = {}
+      }
       isCancelled.current.value = true
       resetNewlyCreatedLessonId()
       history.push('/')
