@@ -33,6 +33,7 @@ const ExerciseForm = ({
   loadLessons,
   saveExercise,
   createExercise,
+  resetNewlyCreatedLessonId,
   history
 }) => {
   const { exerciseId } = useParams()
@@ -93,6 +94,7 @@ const ExerciseForm = ({
     if (newlyCreatedExerciseId) {
       setSuccess(false)
       isCancelled = true
+      resetNewlyCreatedLessonId()
       history.push('/')
     }
   }, [newlyCreatedExerciseId])

@@ -6,14 +6,13 @@ import classnames from 'classnames'
 import Home from './Home'
 import ExerciseForm from '../form/ExerciseFormContainer'
 
-const Cabinet = ({ logout, loadTracks, resetNewlyCreatedLessonId }) => {
+const Cabinet = ({ logout, loadTracks }) => {
   const history = useHistory()
   const location = useLocation()
   const [ isExpanded, setIsExpanded ] = useState(false)
   useEffect(() => {
     loadTracks()
-    resetNewlyCreatedLessonId()
-  }, [loadTracks, resetNewlyCreatedLessonId])
+  }, [])
 
   return (
     <>
@@ -49,7 +48,7 @@ const Cabinet = ({ logout, loadTracks, resetNewlyCreatedLessonId }) => {
       <main className={classnames("main-content mt-3 px-5", { "margin-left-240": isExpanded })}>
         <Route path="/" exact render={() => <Home />} />
         <Route path="/create-exercise/" render={() => <ExerciseForm />} />
-        <Route path="/exercise/:exerciseId" render={() => <ExerciseForm />} />
+        <Route path="/exercise/:id/" render={() => <ExerciseForm />} />
       </main>
     </>
   )

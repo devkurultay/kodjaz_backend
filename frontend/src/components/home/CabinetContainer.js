@@ -2,8 +2,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 import {
-  loadTracks,
-  resetNewlyCreatedLessonId
+  loadTracks
 } from '../../actions/entity'
 import {
   logout
@@ -16,8 +15,7 @@ const mapStateToProps = (state) => ({})
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     logout,
-    loadTracks,
-    resetNewlyCreatedLessonId
+    loadTracks
   }, dispatch)
 }
 

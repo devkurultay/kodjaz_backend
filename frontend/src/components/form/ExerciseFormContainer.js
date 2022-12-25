@@ -7,7 +7,8 @@ import {
   loadExercises,
   loadLessons,
   saveExercise,
-  createExercise
+  createExercise,
+  resetNewlyCreatedLessonId
 } from '../../actions/entity'
 
 const mapStateToProps = (state) => {
@@ -26,7 +27,8 @@ const mapDispatchToProps = (dispatch) => {
     loadExercises,
     loadLessons,
     saveExercise,
-    createExercise
+    createExercise,
+    resetNewlyCreatedLessonId
   }, dispatch)
 }
 
