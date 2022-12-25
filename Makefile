@@ -10,7 +10,7 @@ install: venv
 	$(ACTIVATE) && pip install --upgrade pip && pip install -r requirements/requirements_dev.txt
 
 test:
-	$(ACTIVATE) && python manage.py test
+	$(ACTIVATE) && python manage.py test $(word 2,$(MAKECMDGOALS))
 
 migrate:
 	$(ACTIVATE) && python manage.py migrate
