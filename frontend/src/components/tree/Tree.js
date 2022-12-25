@@ -181,10 +181,10 @@ const Tree = ({
     if (type && type === 'Exercise') {
       if (id) {
         history.push(`/exercise/${id}/`)
-      } else {
-        // Redirect to exercise creation page (with lessonId in history state)
-        history.push('/create-exercise/', { lessonId: node.lesson })
+        return
       }
+      // Redirect to exercise creation page (with lessonId in history state)
+      history.push(`/create-exercise/`, { lessonId: node.lesson })
       return
     }
     setCurrentNode(node)
@@ -301,6 +301,7 @@ const Tree = ({
         </Col>
       </Form.Row>
       <SortableTree
+        isVirtualized={false}
         treeData={nodes}
         onChange={setNodes}
         theme={FileExplorerTheme}

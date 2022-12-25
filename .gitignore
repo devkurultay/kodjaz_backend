@@ -85,7 +85,6 @@ staticfiles
 
 # React build artifact
 static/frontend/
+build/
 
 db.sqlite3
-
-frontend/templates/frontend/index.html

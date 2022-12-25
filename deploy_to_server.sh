@@ -3,7 +3,7 @@
 source env/bin/activate
 python manage.py collectstatic --noinput
 # Bundle up an archive file
-tar -cf kodjaz.tar authentication/ config/ courses/ fixtures/ frontend/ staticfiles/ server_configs/ requirements/ users/ manage.py robots.txt .env
+tar -cf kodjaz.tar --exclude='frontend/node_modules/*' authentication/ config/ courses/ fixtures/ frontend/ staticfiles/ server_configs/ requirements/ users/ manage.py robots.txt .env
 # Load variables form .env file
 source .env
 # Upload bundled archive
@@ -44,7 +44,9 @@ ssh -tt $SERVER_USERNAME@$SERVER_IP << END
     pip install --upgrade pip
     pip install -r requirements/requirements_prod.txt
     echo "Applying migrations"
+    python manage.py collectstatic --noinput --settings=config.settings_prod
     python manage.py migrate --noinput --settings=config.settings_prod
+    echo $SERVER_PASS sudo -S systemctl reload gunicorn_kodjaz.service
     echo "Exiting"
     exit
 END

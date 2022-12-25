@@ -4,7 +4,6 @@ class Signup extends Component{
     constructor(props){
         super(props);
         this.state = {
-            username: "",
             password: "",
             email:""
         };
@@ -18,7 +17,7 @@ class Signup extends Component{
     }
 
     handleSubmit(event) {
-        alert('A username and password was submitted: ' + this.state.username + " " + this.state.password + " " + this.state.email);
+        // TODO(murat): implement this
         event.preventDefault();
     }
 
@@ -27,10 +26,6 @@ class Signup extends Component{
             <div>
                 Signup
                 <form onSubmit={this.handleSubmit}>
-                    <label>
-                        Username:
-                        <input name="username" type="text" value={this.state.username} onChange={this.handleChange}/>
-                    </label>
                     <label>
                         Email:
                         <input name="email" type="email" value={this.state.email} onChange={this.handleChange}/>

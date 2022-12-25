@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import SideNav, { Toggle, Nav, NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav'
+import SideNav, { NavItem, NavIcon, NavText } from '@trendmicro/react-sidenav'
 import { Route, useHistory, useLocation } from "react-router-dom"
 import classnames from 'classnames'
-
-import axiosInstance from '../../axiosApi'
 
 import Home from './Home'
 import ExerciseForm from '../form/ExerciseFormContainer'
@@ -15,7 +13,8 @@ const Cabinet = ({ logout, loadTracks, resetNewlyCreatedLessonId }) => {
   useEffect(() => {
     loadTracks()
     resetNewlyCreatedLessonId()
-  }, [])
+  }, [loadTracks, resetNewlyCreatedLessonId])
+
   return (
     <>
       <SideNav

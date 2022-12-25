@@ -11,8 +11,8 @@ def handler(event, context):
     # Execute code
     try:
         exec(code)
-    except:
-        return False
+    except Exception as e:
+        print(e)
     # Return stdout
     sys.stdout = sys.stdout
     return buffer.getvalue()

@@ -5,18 +5,18 @@
 
 {% block navbar %}
     <li class="nav-item">
-        <a class="nav-link" href="{% url 'courses:units_list' object_list.0.lesson.unit.track.id %}">
-            {{ object_list.0.lesson.unit.track.name }}
+        <a class="nav-link" href="{% url 'courses:units_list' lesson.unit.track.id %}">
+            {{ lesson.unit.track.name }}
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link" href="{% url 'courses:lessons_list' object_list.0.lesson.unit.id %}">
-            {{ object_list.0.lesson.unit.name }}
+        <a class="nav-link" href="{% url 'courses:lessons_list' lesson.unit.id %}">
+            {{ lesson.unit.name }}
         </a>
     </li>
     <li class="nav-item">
-        <a class="nav-link active" href="{% url 'courses:exercises_list' object_list.0.lesson.id %}">
-            {{ object_list.0.lesson.name }}
+        <a class="nav-link active" href="{% url 'courses:exercises_list' lesson.id %}">
+            {{ lesson.name }}
         </a>
     </li>
 {% endblock navbar %}

@@ -192,4 +192,6 @@ class SumissionTests(APITestCase):
         }
         result = self.client.post(url, payload)
         self.assertEqual(result.status_code, status.HTTP_201_CREATED)
-        mock_run_code.assert_called_once_with(code, programming_language)
+        mock_run_code.assert_called_once_with(
+            code + '\n' + exercise.unit_test,
+            programming_language)

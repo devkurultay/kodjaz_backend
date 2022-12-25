@@ -1,23 +1,23 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
 
-const baseURL = '/api/'
-const cabinetURL = '/cabinet/'
-const v1URL = '/v1/'
+const baseURL = process.env.REACT_APP_BASE_URL
 
 const axiosInstance = axios.create({
   baseURL: baseURL,
   timeout: 5000,
   headers: {
-    'Authorization': Cookies.get('access_token') ? "JWT " + Cookies.get('access_token') : null,
+    'Authorization': Cookies.get('access_token') ? "Token " + Cookies.get('access_token') : null,
     'Content-Type': 'application/json',
     'accept': 'application/json'
   }
 })
 
 axiosInstance.interceptors.response.use(
-  response => response,
-  error => {
+  response => {
+    return response
+  },
+  async error => {
     const errorResp = error.response
     if (isTokenExpired(errorResp ?? {})) {
       return refreshTokenAndResendRequest(error)
@@ -42,10 +42,10 @@ const getWrongCredentialsErrorMessages = (errorResp) => {
   if (status > 401) {
     return []
   }
-  const { username, password, detail } = data
+  const { email, password, detail } = data
   const errorMsg = []
   detail && errorMsg.push(detail)
-  username && errorMsg.push(`Username: ${username?.[0]}`)
+  email && errorMsg.push(`Email: ${email?.[0]}`)
   password && errorMsg.push(`Password: ${password?.[0]}`)
   return errorMsg
 }
@@ -83,14 +83,14 @@ const refreshTokenAndResendRequest = async (error) => {
     const { response: errorResponse } = error
     const resendOriginalRequest = new Promise(resolve => {
       addSubscriber(token => {
-        errorResponse.config.headers.Authorization = 'JWT ' + token
+        errorResponse.config.headers.Authorization = 'Token ' + token
         resolve(axios(errorResponse.config))
       })
     })
     if(!isFetchingAccessTokenInProgress) {
       isFetchingAccessTokenInProgress = true
       const response = await axios.post(
-        '/api/token/refresh/',
+        baseURL + 'token/refresh/',
         { refresh: refreshToken }
       )
       if (response && !response.data) {
@@ -99,7 +99,7 @@ const refreshTokenAndResendRequest = async (error) => {
       const newAccessToken = response?.data?.access
       const newRefreshToken = response?.data?.refresh
       await setTokensToCookies(newAccessToken, newRefreshToken)
-      axiosInstance.defaults.headers.Authorization = 'JWT ' + newAccessToken
+      axiosInstance.defaults.headers.Authorization = 'Token ' + newAccessToken
       isFetchingAccessTokenInProgress = false
       triggerSubscribers(newAccessToken)
     }

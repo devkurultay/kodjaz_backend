@@ -12,9 +12,9 @@ function setTokens (accessToken, refreshToken) {
   Cookies.set('refresh_token', refreshToken)
 }
 
-async function performLogin(username, password) {
-  const response = await axiosInstance.post('/token/obtain/', {
-    username: username,
+async function performLogin(email, password) {
+  const response = await axiosInstance.post('token/obtain/', {
+    email: email,
     password: password
   })
   const newAccessToken = response?.data?.access
@@ -52,9 +52,9 @@ function failToLogIn(error = []) {
   }
 }
 
-export function login(username, password) {
+export function login(email, password) {
   return function (dispatch) {
-    return performLogin(username, password).then(
+    return performLogin(email, password).then(
       (response) => dispatch(loginUser()),
       (error) => dispatch(failToLogIn(error))
     )
