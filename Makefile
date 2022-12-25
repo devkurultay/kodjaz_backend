@@ -28,15 +28,15 @@ buildreact-prod:
 	cd frontend && REACT_APP_BASE_URL=https://backend.kodjaz.com/api/ npm run build
 
 buildcoderunner:
-	cd code_runner && docker build -t $(AWS_ECR_PYTHON_REPO_NAME):v2 .
+	cd code_runner && docker build -t $(AWS_ECR_PYTHON_REPO_NAME):latest .
 
 .PHONY: pushdocker
 
 pushdocker:
 	cd code_runner/
 	aws ecr get-login-password --region $(AWS_REGION) | docker login --username AWS --password-stdin $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com
-	docker tag $(AWS_ECR_PYTHON_REPO_NAME):v2 $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/$(AWS_ECR_PYTHON_REPO_NAME):v2
-	docker push $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/$(AWS_ECR_PYTHON_REPO_NAME):v2
+	docker tag $(AWS_ECR_PYTHON_REPO_NAME):latest $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/$(AWS_ECR_PYTHON_REPO_NAME):latest
+	docker push $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/$(AWS_ECR_PYTHON_REPO_NAME):latest
 
 deploy: buildreact-prod
 	./deploy_to_server.sh
