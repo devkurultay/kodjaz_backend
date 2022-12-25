@@ -71,7 +71,7 @@ class SubmissionViewSet(ModelViewSet):
         exercise = data.get('exercise')
         submitted_code = data.get('submitted_code', '')
         programming_language = exercise.lesson.unit.track.programming_language
-        code = submitted_code + '\n' + exercise.unit_test if exercise.unit_test else ''
+        code = submitted_code + '\n' + (exercise.unit_test if exercise.unit_test else '')
         try:
             result = run_code(code, programming_language)
             serializer.save(output=result, user=self.request.user)
