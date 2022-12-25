@@ -3,6 +3,23 @@ import requests
 
 from django.conf import settings
 
+
+def is_input_correct(submitted_code, should_contain, should_not_contain):
+    if should_contain:
+        wanted_items = should_contain.split(',')
+        for item in wanted_items:
+            if item not in submitted_code:
+                return False
+
+    if should_not_contain:
+        unwanted_items = should_not_contain.split(',')
+        for item in unwanted_items:
+            if item in submitted_code:
+                return False
+
+    return True
+
+
 def run_code(submitted_code, programming_language):
     msg = '{}: should not be empty'
     if not submitted_code:
