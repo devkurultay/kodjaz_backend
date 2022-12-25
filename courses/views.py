@@ -162,7 +162,6 @@ class CreateSubmissionView(CreateView):
                 passed=passed)
             return JsonResponse({'saved': True})
         except SubmissionCreationException as e:
-            print('======', e)
             return JsonResponse({'saved': False})
 
     @staticmethod
