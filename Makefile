@@ -25,7 +25,7 @@ buildreact-dev:
 	cd frontend && REACT_APP_BASE_URL=http://localhost:8000/api/ npm run build
 
 buildreact-prod:
-	cd frontend && npm run build
+	cd frontend && REACT_APP_BASE_URL=https://backend.kodjaz.com/api/ npm run build
 
 buildcoderunner:
 	cd code_runner && docker build -t $(AWS_ECR_PYTHON_REPO_NAME):v2 .

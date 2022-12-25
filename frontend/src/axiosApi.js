@@ -1,9 +1,7 @@
 import axios from 'axios'
 import Cookies from 'js-cookie'
 
-const baseURL = process.env.REACT_APP_BASE_URL || 'https://backend.kodjaz.com/api/'
-const cabinetURL = '/cabinet/'
-const v1URL = '/v1/'
+const baseURL = process.env.REACT_APP_BASE_URL
 
 const axiosInstance = axios.create({
   baseURL: baseURL,
