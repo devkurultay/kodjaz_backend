@@ -41,9 +41,12 @@ class ExerciseSerializer(serializers.ModelSerializer):
 
 
 class SubmissionSerializer(serializers.ModelSerializer):
+    passed = serializers.BooleanField(read_only=True, required=False)
     class Meta:
         model = Submission
-        fields = ['id', 'submitted_code', 'exercise', 'output']
+        fields = [
+            'id', 'submitted_code', 'exercise', 'passed', 'console_output', 'error_message'
+        ]
 
 
 class LessonSerializer(serializers.ModelSerializer):

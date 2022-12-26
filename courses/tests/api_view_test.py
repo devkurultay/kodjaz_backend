@@ -176,22 +176,24 @@ class SumissionTests(APITestCase):
         response = self.client.patch(url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
     
-    @patch('courses.api_views.run_code')
+    @patch('courses.helpers.run_code')
     def test_can_submit_code(self, mock_run_code):
-        mock_run_code.return_value = 'output'
-        url = f'/api/v1/submissions/'
-        exercise = ExerciseFactory()
+        expected_output = 'hello'
+        mock_run_code.return_value = expected_output
+
         user = UserFactory()
         refresh = RefreshToken.for_user(user)
         self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {refresh.access_token}')
-        programming_language = exercise.lesson.unit.track.programming_language
-        code = "print('hi!')"
+
+        exercise = ExerciseFactory()
+        url = f'/api/v1/submissions/'
         payload = {
-            'submitted_code': code,
+            'submitted_code': "print('hello')",
             'exercise': exercise.id
         }
         result = self.client.post(url, payload)
         self.assertEqual(result.status_code, status.HTTP_201_CREATED)
-        mock_run_code.assert_called_once_with(
-            code + '\n' + exercise.unit_test,
-            programming_language)
+        output_dict = result.json()
+        self.assertTrue(output_dict['passed'])
+        self.assertEqual(output_dict['console_output'], expected_output)
+        self.assertEqual(output_dict['error_message'], '')

@@ -15,8 +15,8 @@ from courses.models import Lesson
 from courses.models import Exercise
 from courses.models import Submission
 
-from courses.helpers import run_code
-from courses.helpers import check_text_source
+from courses.helpers import build_input_object
+from courses.helpers import Checker
 
 
 class TrackViewSet(ReadOnlyOrAdminModelViewSetMixin):
@@ -71,22 +71,17 @@ class SubmissionViewSet(ModelViewSet):
         data = serializer.validated_data
         exercise = data.get('exercise')
         submitted_code = data.get('submitted_code', '')
-        programming_language = exercise.lesson.unit.track.programming_language
-        code = submitted_code + '\n' + (exercise.unit_test if exercise.unit_test else '')
         try:
-            is_input_check_correct, error_msg = check_text_source(
-                submitted_code,
-                exercise.input_should_contain,
-                exercise.input_should_not_contain,
-                exercise.input_error_text)
-            if not is_input_check_correct:
-                # if doesn't contain wanted items, return success: false and input_error_text
-                # if contains unwanted items, return success: false and output_error_text
-                # think about more granular error messages
-                serializer.save(output=error_msg, user=self.request.user)
-                return
-
-            result = run_code(code, programming_language)
-            serializer.save(output=result, user=self.request.user)
+            check_input = build_input_object(exercise, submitted_code)
+            checker = Checker(check_input)
+            check_result = checker.check()
+            is_success = check_result['success']
+            console_output = check_result['console_output']
+            error_message = check_result['error_msg']
+            serializer.save(
+                passed=is_success,
+                console_output=console_output,
+                error_message=error_message,
+                user=self.request.user)
         except ValueError as e:
             raise ValidationError({"detail": e})
