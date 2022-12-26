@@ -4,10 +4,13 @@ from unittest.mock import patch
 from unittest.mock import MagicMock
 from rest_framework.test import APITestCase
 from django.conf import settings
+from django.test import TestCase
 
+from courses.helpers import build_input_object
 from courses.helpers import run_code
-from courses.helpers import InputObject
+from courses.helpers import CheckInputObject
 from courses.helpers import Checker
+from fixtures.factories.courses import ExerciseFactory
 
 
 class HelpersTests(APITestCase):
@@ -35,7 +38,7 @@ class HelpersTests(APITestCase):
 class CheckerTests(APITestCase):
 
     def test_input_should_not_contain_error_msg_is_returned_when_input_has_no_required_item(self):
-        input_object = InputObject(
+        input_object = CheckInputObject(
             programming_language='Python',
             code="def sum(x,y):\n    print('hi')",
             unit_test="",
@@ -57,7 +60,7 @@ class CheckerTests(APITestCase):
             input_object.input_should_contain_error_msg.format('return') + '\n')
 
     def test_input_should_not_contain_error_msg_is_returned_when_input_has_illegal_items(self):
-        input_object = InputObject(
+        input_object = CheckInputObject(
             programming_language='Python',
             code="def sum(x,y):\n    print('hi')\nreturn x+y",
             unit_test="assert sum(3,3) == 6",
@@ -79,7 +82,7 @@ class CheckerTests(APITestCase):
             input_object.input_should_not_contain_error_msg.format('print'))
     
     def test_both_input_checks_dont_pass(self):
-        input_object = InputObject(
+        input_object = CheckInputObject(
             programming_language='Python',
             code="def sum(x,y):\n    print('hi')",
             unit_test="assert sum(3,3) == 6, 'Oops! Your function should return a value!'",
@@ -111,7 +114,7 @@ class CheckerTests(APITestCase):
         mock_response = MagicMock()
         mock_response.json.return_value = expected_output
         mock_request.return_value = mock_response
-        input_object = InputObject(
+        input_object = CheckInputObject(
             programming_language='Python',
             code="def sum(x,y):\n    return x+y",
             unit_test="sum(3,3)",
@@ -139,7 +142,7 @@ class CheckerTests(APITestCase):
         mock_response = MagicMock()
         mock_response.json.return_value = expected_output
         mock_request.return_value = mock_response
-        input_object = InputObject(
+        input_object = CheckInputObject(
             programming_language='Python',
             code="def sum(x,y):\n    print('hi')",
             unit_test="sum(3,3)",
@@ -165,7 +168,7 @@ class CheckerTests(APITestCase):
         mock_response = MagicMock()
         mock_response.json.return_value = expected_output
         mock_request.return_value = mock_response
-        input_object = InputObject(
+        input_object = CheckInputObject(
             programming_language='Python',
             code="def sum(x,y):\n    print('hi')",
             unit_test="sum(3,3)",
@@ -194,7 +197,7 @@ class CheckerTests(APITestCase):
         mock_response = MagicMock()
         mock_response.json.return_value = expected_output
         mock_request.return_value = mock_response
-        input_object = InputObject(
+        input_object = CheckInputObject(
             programming_language='Python',
             code="def sum(x,y):\n    print(3+3)",
             unit_test="sum(3,3)",
@@ -219,7 +222,7 @@ class CheckerTests(APITestCase):
         mock_response = MagicMock()
         mock_response.json.return_value = expected_output
         mock_request.return_value = mock_response
-        input_object = InputObject(
+        input_object = CheckInputObject(
             programming_language='Python',
             code="def sum(x,y):\n    print(3+3)",
             unit_test="sum(3,3)",
@@ -240,7 +243,7 @@ class CheckerTests(APITestCase):
     
     def test_raises_exception_when_unsupported_language_is_passed(self):
         not_supported_language = 'Python124'
-        input_object = InputObject(
+        input_object = CheckInputObject(
             programming_language=not_supported_language,
             code="def sum(x,y):\n    print(3+3)",
             unit_test="sum(3,3)",
@@ -256,3 +259,12 @@ class CheckerTests(APITestCase):
         checker = Checker(input_object)
         with self.assertRaisesMessage(NotImplementedError, f'{not_supported_language} is not supported'):
             checker.check()
+
+
+class CheckInputObjectBuilderTests(TestCase):
+
+    def test_build_input_object_creates_input_object(self):
+        submitted_code = "def sum(x,y):\n    print(3+3)"
+        exercise = ExerciseFactory()
+        res = build_input_object(exercise, submitted_code)
+        self.assertTrue(isinstance(res, CheckInputObject))

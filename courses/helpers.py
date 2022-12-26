@@ -2,6 +2,8 @@ import requests
 
 from django.conf import settings
 
+from courses.models import Exercise
+
 
 def run_code(submitted_code, programming_language):
     msg = '{}: should not be empty'
@@ -19,7 +21,7 @@ def run_code(submitted_code, programming_language):
     raise NotImplementedError(f'{programming_language} is not supported')
 
 
-class InputObject:
+class CheckInputObject:
     def __init__(
         self,
         programming_language,
@@ -45,6 +47,22 @@ class InputObject:
         self.output_should_contain_error_msg = output_should_contain_error_msg
         self.output_should_not_contain = output_should_not_contain
         self.output_should_not_contain_error_msg = output_should_not_contain_error_msg
+
+
+def build_input_object(exercise: Exercise, submitted_code: str) -> CheckInputObject:
+    return CheckInputObject(
+        programming_language=exercise.lesson.unit.track.programming_language,
+        code=submitted_code,
+        unit_test=exercise.unit_test,
+        input_should_contain=exercise.input_should_contain,
+        input_should_contain_error_msg=exercise.input_should_contain_error_msg,
+        input_should_not_contain=exercise.input_should_not_contain,
+        input_should_not_contain_error_msg=exercise.input_should_not_contain_error_msg,
+        output_should_contain=exercise.output_should_contain,
+        output_should_contain_error_msg=exercise.output_should_contain_error_msg,
+        output_should_not_contain=exercise.output_should_not_contain,
+        output_should_not_contain_error_msg=exercise.output_should_not_contain_error_msg
+    )
 
 
 class Checker:
