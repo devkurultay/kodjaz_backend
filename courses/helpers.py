@@ -1,23 +1,6 @@
-import json
 import requests
 
 from django.conf import settings
-
-
-def check_text_source(text_source, should_contain, should_not_contain, error_msg):
-    if should_contain:
-        wanted_items = should_contain.split(',')
-        for item in wanted_items:
-            if item not in text_source:
-                return False, error_msg
-
-    if should_not_contain:
-        unwanted_items = should_not_contain.split(',')
-        for item in unwanted_items:
-            if item in text_source:
-                return False, error_msg
-
-    return True, ''
 
 
 def run_code(submitted_code, programming_language):
