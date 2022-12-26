@@ -120,6 +120,7 @@ class Checker:
             output, self.out_should_not_contain, self.out_should_not_contain_error_msg)
     
     def _build_output(self, success, console_output, error_msg):
+        # TODO(murat): Return an OutputObject
         return {
             'success': success,
             'console_output': console_output,

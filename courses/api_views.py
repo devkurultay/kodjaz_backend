@@ -78,6 +78,7 @@ class SubmissionViewSet(ModelViewSet):
             is_success = check_result['success']
             console_output = check_result['console_output']
             error_message = check_result['error_msg']
+            # TODO(murat): test exceptions
             serializer.save(
                 passed=is_success,
                 console_output=console_output,
