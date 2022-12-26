@@ -16,6 +16,7 @@ from courses.models import Exercise
 from courses.models import Submission
 
 from courses.helpers import run_code
+from courses.helpers import check_text_source
 
 
 class TrackViewSet(ReadOnlyOrAdminModelViewSetMixin):
@@ -73,6 +74,18 @@ class SubmissionViewSet(ModelViewSet):
         programming_language = exercise.lesson.unit.track.programming_language
         code = submitted_code + '\n' + (exercise.unit_test if exercise.unit_test else '')
         try:
+            is_input_check_correct, error_msg = check_text_source(
+                submitted_code,
+                exercise.input_should_contain,
+                exercise.input_should_not_contain,
+                exercise.input_error_text)
+            if not is_input_check_correct:
+                # if doesn't contain wanted items, return success: false and input_error_text
+                # if contains unwanted items, return success: false and output_error_text
+                # think about more granular error messages
+                serializer.save(output=error_msg, user=self.request.user)
+                return
+
             result = run_code(code, programming_language)
             serializer.save(output=result, user=self.request.user)
         except ValueError as e:
