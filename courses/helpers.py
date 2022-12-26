@@ -30,7 +30,6 @@ def run_code(submitted_code, programming_language):
     if programming_language.lower() == 'python':
         url = settings.AWS_PYTHON_EXEC_LAMBDA_URL
         headers = {"x-api-key": settings.AWS_API_GATEWAY_API_KEY}
-        #TODO(murat): Append unit test code to the submission code
         payload = {'answer': submitted_code}
         res = requests.post(url, json=payload, headers=headers)
         return res.json()
@@ -127,18 +126,22 @@ class Checker:
         }
 
     def check(self):
-        is_input_ok, error_msg = self._check_input_contains()
-        if not is_input_ok:
-            return self._build_output(False, '', error_msg)
-        is_input_ok, error_msg = self._check_input_does_not_contain()
-        if not is_input_ok:
+        is_cont_ok, inp_cont_er_msg = self._check_input_contains()
+        is_not_cont_ok, inp_not_cont_er_msg = self._check_input_does_not_contain()
+        if not is_cont_ok or not is_not_cont_ok:
+            error_msg = ''
+            error_msg += inp_cont_er_msg + '\n' if not is_cont_ok else ''
+            error_msg += inp_not_cont_er_msg if not is_not_cont_ok else ''
             return self._build_output(False, '', error_msg)
 
         output = self._run_code()
-        is_output_ok, error_msg = self._output_contains(output)
-        if not is_output_ok:
+        is_out_cont_ok, out_cont_er_msg = self._output_contains(output)
+        is_out_not_cont_ok, out_not_cont_er_msg = self._output_does_not_contain(output)
+        if not is_out_cont_ok or not is_out_not_cont_ok:
+            error_msg = ''
+            error_msg += out_cont_er_msg + '\n' if not is_out_cont_ok else ''
+            error_msg += out_not_cont_er_msg if not is_out_not_cont_ok else ''
             return self._build_output(False, output, error_msg)
-        is_output_ok, error_msg = self._output_does_not_contain(output)
-        if not is_output_ok:
-            return self._build_output(False, output, error_msg)
-        return self._build_output(True, output, error_msg)
+        
+        # All checks passed
+        return self._build_output(True, output, '')
