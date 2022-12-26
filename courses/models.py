@@ -151,15 +151,14 @@ class Submission(models.Model):
     user = models.ForeignKey(User, related_name='user_submission', on_delete=models.CASCADE)
     exercise = models.ForeignKey(Exercise, related_name='exercise_submission', on_delete=models.CASCADE)
     submitted_code = models.TextField(_('Submitted code'), blank=True)
-    # rename output to console_output
-    output = models.TextField(_('Result'), blank=True)
+    console_output = models.TextField(_('Result'), blank=True)
     karma = models.PositiveSmallIntegerField(_('Gained points'), default=0)
     failed_attempts = models.PositiveIntegerField(_('Amount of attempts user failed to pass the exercise'),
                                                   blank=True, default=0)
     date_time_created = models.DateTimeField(_('Submission Date and Time'), auto_now_add=True, editable=False)
     date_time_modified = models.DateTimeField(_('Submission Modification Date and Time'), auto_now=True)
-    # add passed boolean field
-    # add error msg field
+    passed = models.BooleanField()
+    error_message = models.TextField(_('Error message'), blank=True)
 
     def __str__(self):
         return '{0} submission'.format(self.user)
