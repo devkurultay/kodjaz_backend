@@ -12,6 +12,9 @@ install: venv
 test:
 	$(ACTIVATE) && python manage.py test $(word 2,$(MAKECMDGOALS))
 
+makemigrations:
+	$(ACTIVATE) && python manage.py makemigrations
+
 migrate:
 	$(ACTIVATE) && python manage.py migrate
 
