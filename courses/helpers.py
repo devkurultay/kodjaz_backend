@@ -66,7 +66,7 @@ def build_input_object(exercise: Exercise, submitted_code: str) -> CheckInputObj
 
 
 class Checker:
-    def __init__(self, inp_obj) -> None:
+    def __init__(self, inp_obj: CheckInputObject) -> None:
         self.programming_language = inp_obj.programming_language
         self.code = inp_obj.code
         self.unit_test = inp_obj.unit_test
