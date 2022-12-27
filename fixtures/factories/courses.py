@@ -43,13 +43,17 @@ class ExerciseFactory(factory.django.DjangoModelFactory):
     lecture = factory.Faker('name')
     instruction = "Print out hello world"
     default_code = "print('hello world')"
-    input_should_contain = "Some test for input inclusion"
-    input_should_not_contain = "Some test for input exclusion"
+    input_should_contain = "print,hello"
+    input_should_contain_error_msg='Your code should contain {}!'
+    input_should_not_contain = "return"
+    input_should_not_contain_error_msg = 'Your code should not contain {}!'
     input_error_text = "Error explanation text"
-    output_should_contain = "Some test for output inclusion"
-    output_should_not_contain = "Some test for output exclusion"
+    output_should_contain = "hello"
+    output_should_contain_error_msg = "The output should contain {}!"
+    output_should_not_contain = "Error"
+    output_should_not_contain_error_msg = 'It seems there\'s an error in your output'
     output_error_text = "Error explanation text"
-    unit_test = "Some code goes here"
+    unit_test = ""
     is_published = False
     lesson = factory.SubFactory('fixtures.factories.courses.LessonFactory')
 
@@ -60,4 +64,5 @@ class SubmissionFactory(factory.django.DjangoModelFactory):
     
     user = factory.SubFactory('fixtures.factories.user.UserFactory')
     exercise = factory.SubFactory('fixtures.factories.courses.ExerciseFactory')
-    submitted_code = "Some code goes here"
+    submitted_code = "print('hi')"
+    passed = True

@@ -93,11 +93,16 @@ class Exercise(models.Model):
         help_text=CHECKER_HELP_TEXT,
         blank=True,
         max_length=255)
+    input_should_contain_error_msg = models.CharField(
+        _("Error text shown when the input does not contain a required item"), blank=True, max_length=255)
     input_should_not_contain = models.CharField(
         _('List of keywords which should NOT be presented in the submitted code'),
         help_text=CHECKER_HELP_TEXT,
         blank=True,
         max_length=255)
+    input_should_not_contain_error_msg = models.CharField(
+        _("Error text shown when the input contains an unwanted item"), blank=True, max_length=255)
+    # TODO(murat): remove this field after migration
     input_error_text = models.CharField(
         _("Error text shown when expected input was not found in the written code"), blank=True, max_length=255)
     output_should_contain = models.CharField(
@@ -105,11 +110,16 @@ class Exercise(models.Model):
         help_text=CHECKER_HELP_TEXT,
         blank=True,
         max_length=255)
+    output_should_contain_error_msg = models.CharField(
+        _("Error text shown when the output does not contain a required item"), blank=True, max_length=255)
     output_should_not_contain = models.CharField(
         _("List of keywords which should NOT be presented in the output"),
         help_text=CHECKER_HELP_TEXT,
         blank=True,
         max_length=255)
+    output_should_not_contain_error_msg = models.CharField(
+        _("Error text shown when the output contains an unwanted item"), blank=True, max_length=255)
+    # TODO(murat): remove this field after migration
     output_error_text = models.CharField(
         _("Error text shown when expected output doesn't show up"), blank=True, max_length=255)
     unit_test = models.TextField(_('Code for testing with unit tests'), blank=True)
@@ -141,12 +151,14 @@ class Submission(models.Model):
     user = models.ForeignKey(User, related_name='user_submission', on_delete=models.CASCADE)
     exercise = models.ForeignKey(Exercise, related_name='exercise_submission', on_delete=models.CASCADE)
     submitted_code = models.TextField(_('Submitted code'), blank=True)
-    output = models.TextField(_('Result'), blank=True)
+    console_output = models.TextField(_('Result'), blank=True)
     karma = models.PositiveSmallIntegerField(_('Gained points'), default=0)
     failed_attempts = models.PositiveIntegerField(_('Amount of attempts user failed to pass the exercise'),
                                                   blank=True, default=0)
     date_time_created = models.DateTimeField(_('Submission Date and Time'), auto_now_add=True, editable=False)
     date_time_modified = models.DateTimeField(_('Submission Modification Date and Time'), auto_now=True)
+    passed = models.BooleanField()
+    error_message = models.TextField(_('Error message'), blank=True)
 
     def __str__(self):
         return '{0} submission'.format(self.user)

@@ -31,7 +31,9 @@ class ExerciseSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'name', 'entity_type', 'lecture', 'instruction', 'hint', 'default_code',
             'input_should_contain', 'input_should_not_contain', 'input_error_text',
+            'input_should_contain_error_msg', 'input_should_not_contain_error_msg',
             'output_should_contain', 'output_should_not_contain', 'output_error_text',
+            'output_should_contain_error_msg', 'output_should_not_contain_error_msg',
             'unit_test', 'previous_exercise', 'next_exercise', 'is_published',
             'lesson', 'unit_id', 'track_id', 'text_file_content'
         ]
@@ -41,9 +43,12 @@ class ExerciseSerializer(serializers.ModelSerializer):
 
 
 class SubmissionSerializer(serializers.ModelSerializer):
+    passed = serializers.BooleanField(read_only=True, required=False)
     class Meta:
         model = Submission
-        fields = ['id', 'submitted_code', 'exercise', 'output']
+        fields = [
+            'id', 'submitted_code', 'exercise', 'passed', 'console_output', 'error_message'
+        ]
 
 
 class LessonSerializer(serializers.ModelSerializer):

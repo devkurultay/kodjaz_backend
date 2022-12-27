@@ -15,7 +15,8 @@ from courses.models import Lesson
 from courses.models import Exercise
 from courses.models import Submission
 
-from courses.helpers import run_code
+from courses.helpers import build_input_object
+from courses.helpers import Checker
 
 
 class TrackViewSet(ReadOnlyOrAdminModelViewSetMixin):
@@ -70,10 +71,18 @@ class SubmissionViewSet(ModelViewSet):
         data = serializer.validated_data
         exercise = data.get('exercise')
         submitted_code = data.get('submitted_code', '')
-        programming_language = exercise.lesson.unit.track.programming_language
-        code = submitted_code + '\n' + (exercise.unit_test if exercise.unit_test else '')
         try:
-            result = run_code(code, programming_language)
-            serializer.save(output=result, user=self.request.user)
+            check_input = build_input_object(exercise, submitted_code)
+            checker = Checker(check_input)
+            check_result = checker.check()
+            is_success = check_result['success']
+            console_output = check_result['console_output']
+            error_message = check_result['error_msg']
+            # TODO(murat): test exceptions
+            serializer.save(
+                passed=is_success,
+                console_output=console_output,
+                error_message=error_message,
+                user=self.request.user)
         except ValueError as e:
             raise ValidationError({"detail": e})

@@ -12,7 +12,7 @@ def handler(event, context):
     try:
         exec(code)
     except Exception as e:
-        print(e)
+        print(f'{type(e).__name__}: {e}')
     # Return stdout
     sys.stdout = sys.stdout
     return buffer.getvalue()
