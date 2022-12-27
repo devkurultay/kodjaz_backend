@@ -322,6 +322,15 @@ const ExerciseForm = ({
             value={exerciseData?.input_should_contain || ''}
           />
         </Form.Group>
+        <Form.Group controlId="keywordsShouldBePresentedErrorMsg">
+          <Form.Label>Error text shown when required keywords are not found in the code</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Example: Oops! Your code should contain 'return'."
+            onChange={(e) => handleFieldChange('input_should_contain_error_msg', e.target.value)}
+            value={exerciseData?.input_should_contain_error_msg || ''}
+          />
+        </Form.Group>
         <Form.Group controlId="keywordsShouldNotBePresented">
           <Form.Label>List of keywords which should NOT be presented in the submitted code</Form.Label>
           <Form.Control
@@ -330,6 +339,15 @@ const ExerciseForm = ({
             onChange={(e) => handleFieldChange('input_should_not_contain', e.target.value)}
             value={exerciseData?.input_should_not_contain || ''}
             />
+        </Form.Group>
+        <Form.Group controlId="keywordsShouldNotBePresentedErrorMsg">
+          <Form.Label>Error text shown when unwanted keywords are found in the code</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Example: Oops! Your code should not contain 'print'."
+            onChange={(e) => handleFieldChange('input_should_not_contain_error_msg', e.target.value)}
+            value={exerciseData?.input_should_not_contain_error_msg || ''}
+          />
         </Form.Group>
         <Form.Group controlId="errorTextExpectedInputNotFound">
           <Form.Label>Error text shown when expected input was not found in the written code</Form.Label>
@@ -349,6 +367,15 @@ const ExerciseForm = ({
             value={exerciseData?.output_should_contain || ''}
           />
         </Form.Group>
+        <Form.Group controlId="outputShouldContainErrorMsg">
+          <Form.Label>Error text shown when required keywords are NOT found in the output</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Example: Oops! The output should contain 'Hello world'."
+            onChange={(e) => handleFieldChange('output_should_contain_error_msg', e.target.value)}
+            value={exerciseData?.output_should_contain_error_msg || ''}
+          />
+        </Form.Group>
         <Form.Group controlId="keywordsShouldNotBeInOutput">
           <Form.Label>List of keywords which should NOT be presented in the output</Form.Label>
           <Form.Control
@@ -356,6 +383,15 @@ const ExerciseForm = ({
             placeholder="Example: Bye, world!"
             onChange={(e) => handleFieldChange('output_should_not_contain', e.target.value)}
             value={exerciseData?.output_should_not_contain || ''}
+          />
+        </Form.Group>
+        <Form.Group controlId="outputShouldNotContainErrorMsg">
+          <Form.Label>Error text shown when unwanted keywords are found in the output</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Example: Oops! The output should NOT contain 'hi'."
+            onChange={(e) => handleFieldChange('output_should_not_contain_error_msg', e.target.value)}
+            value={exerciseData?.output_should_not_contain_error_msg || ''}
           />
         </Form.Group>
         <Form.Group controlId="errorTextExpectedOutputNotShown">
