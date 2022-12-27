@@ -48,6 +48,7 @@
 
   function outf(text) {
     var mypre = document.getElementById(payload.outputElementId)
+    mypre.innerHTML = ''
     text = text.replace(/</g, '&lt;')
     mypre.innerHTML = mypre.innerHTML + text
   }
@@ -123,7 +124,8 @@
       executeJsCode(prog)
     }
     else if (payload.programmingLanguage === 'Python') {
-      executePythonCode(prog)
+      executePythonCodeOnBackend(prog)
+      // executePythonCode(prog)
     }
     else if (payload.programmingLanguage === 'TypeScript') {
       var transpiled = ts.transpile(prog)
@@ -132,6 +134,30 @@
     else {
       alert('Кечирип коюңуз, бул тилди колдой элекпиз')
     }
+  }
+
+  function executePythonCodeOnBackend(prog) {
+    // TODO(murat): implement this check: https://stackoverflow.com/questions/45986487/run-ajax-request-after-jwt-refresh
+    var accTok = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjcyMTQ3NDUzLCJpYXQiOjE2NzIxNDcxNTMsImp0aSI6ImNiM2EyYzljNWY3NzQ1MDVhYWMwNDE2NWRmODQ0Nzg1IiwidXNlcl9pZCI6MX0.6kCoKP4HIanKXLDxasC02bZVcNgXKYf0OCqzYoVdBzs"
+    console.log('========', prog, accTok)
+    $.ajax({
+      url: 'http://localhost:8000/api/v1/submissions/',
+      headers: { Authorization: `Token ${accTok}` },
+      type: 'POST',
+      data: {
+        exercise: payload.objectId,
+        submitted_code: prog
+      }
+    })
+    .done(function (responseData) {
+      console.log('@@@@@@@', responseData)
+      outf(responseData?.console_output || '')
+      if (responseData?.passed) {
+        _toggleSuccessModal(true)
+      } else {
+        _toggleFailModal(responseData?.error_message || '', true)
+      }
+    })
   }
 
   function executePythonCode(prog) {
