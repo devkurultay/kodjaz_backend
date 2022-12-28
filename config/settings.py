@@ -51,6 +51,7 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ),
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
 }
@@ -71,20 +72,15 @@ SIMPLE_JWT = {
 }
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
-
-CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000',
-    'https://kodjaz.com',
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -197,8 +193,7 @@ MEDIA_ROOT = ROOT_DIR / 'media'
 FRONTEND_DIR = ROOT_DIR / 'frontend'
 STATICFILES_DIRS += [
     FRONTEND_DIR / "build",
-    FRONTEND_DIR / "build/static",
-    FRONTEND_DIR / "public/assets",
+    FRONTEND_DIR / "build/static"
 ]
 
 # Other settings
@@ -243,6 +238,28 @@ LOGGING = {
         },
     }
 }
+
+# TODO(murat): review later
+CSRF_COOKIE_SAMESITE = 'Lax'
+SESSION_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_HTTPONLY = True
+SESSION_COOKIE_HTTPONLY = True
+
+# PROD ONLY
+# CSRF_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True
+
+
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:3000',
+    'https://kodjaz.com',
+]
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+]
+CORS_EXPOSE_HEADERS = ['Content-Type', 'X-CSRFToken']
+CORS_ALLOW_CREDENTIALS = True
 
 # For logging in a JWT user. localhost:8000/?token=jwt-tokenpyt
 # We decrypt the passed jwt-token with this secret key
