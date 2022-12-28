@@ -26,9 +26,11 @@ runreact:
 
 buildreact-dev:
 	cd frontend && REACT_APP_BASE_URL=http://localhost:8000/api/ npm run build
+	$(ACTIVATE) && python manage.py collectstatic --noinput
 
 buildreact-prod:
 	cd frontend && REACT_APP_BASE_URL=https://backend.kodjaz.com/api/ npm run build
+	$(ACTIVATE) && python manage.py collectstatic --noinput
 
 buildcoderunner:
 	cd code_runner && docker build -t $(AWS_ECR_PYTHON_REPO_NAME):latest .
