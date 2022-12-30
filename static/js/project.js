@@ -241,8 +241,10 @@
 
   var notLoggedInMessageContainer = '<p id="notLoggedInMessage">' + payload.notLoggedInMessage + '</p>';
   var notLoggedInMessageElement = $("#notLoggedInMessage");
+  var failModalRow = $(".bd-fail-modal-row");
 
   function _toggleSuccessModal(loggedIn) {
+    failModalRow.children('p').remove()
     if(!loggedIn) {
       notLoggedInMessageElement.remove();
       $(".bd-success-modal-row").append(notLoggedInMessageContainer);
@@ -251,9 +253,8 @@
   }
 
   function _toggleFailModal(err, loggedIn) {
-    var failModalRow = $(".bd-fail-modal-row");
+    failModalRow.children('p').remove()
     if(err.length > 0) {
-      $("#parseError").remove();
       failModalRow.append('<p id="parseError">' + err + '</p>');
     }
     if(!loggedIn) {

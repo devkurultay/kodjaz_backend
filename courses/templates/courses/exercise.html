@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load markdown_extras %}
 {% load i18n %}
 {% load static %}
 {% block title %}{% trans 'Exercise' %}{% endblock %}
@@ -36,9 +37,9 @@
                 <div class="container-fluid bd-fail-modal-row">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
-                    <p>{% trans 'It seems something went wrong with your code. Look at the errors below:' %}</p>
-                    <p>{{ input_error_text }}</p>
-                    <p>{{ output_error_text }}</p>
+                    <div>{% trans 'It seems something went wrong with your code. Look at the errors below:' %}</div>
+                    <p>{{ input_error_text | markdown | safe }}</p>
+                    <p>{{ output_error_text | markdown | safe }}</p>
                 </div>
             </div>
         </div>
@@ -72,13 +73,13 @@
             <h2>{{ object.name }}</h2>
 
             <div class="instructions-divider padding-5px">{% trans 'Useful information' %}</div>
-            <div class="padding-top-bottom-5px">{{ lecture|linebreaks }}</div>
+            <div class="padding-top-bottom-5px">{{ lecture | markdown | safe }}</div>
             <div class="instructions-divider padding-5px">{% trans 'Instructions' %}</div>
-            <div class="padding-top-bottom-5px">{{ instruction|linebreaks }}</div>
+            <div class="padding-top-bottom-5px">{{ instruction | markdown | safe }}</div>
             <div class="instructions-divider padding-5px cursor" id="hintToggle">{% trans 'Need help? Click here.' %}</div>
             <div class="padding-top-bottom-5px hidden" id="hint">
                 {% if hint|length > 0 %}
-                    {{ hint|linebreaks }}
+                    {{ hint | markdown | safe }}
                 {% endif %}
             </div>
         </div>
