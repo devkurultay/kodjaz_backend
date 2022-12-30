@@ -16,3 +16,8 @@ DATABASES = {
 DEBUG = os.environ.get('DEBUG')
 
 ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOSTS')]
+CSRF_TRUSTED_ORIGINS = ['https://' + os.environ.get('BACKEND_URL_ROOT', '')]
+
+# PROD ONLY
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True

@@ -138,7 +138,7 @@
 
   function executePythonCodeOnBackend(prog) {
     $.ajax({
-      url: 'http://localhost:8000/api/v1/submissions/',
+      url: payload.api_url_root + 'v1/submissions/',
       type: 'POST',
       data: {
         csrfmiddlewaretoken: payload.csrfToken,

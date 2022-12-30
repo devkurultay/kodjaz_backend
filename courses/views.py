@@ -121,7 +121,8 @@ class ExerciseTemplateView(TemplateView):
             'output_error_text': exercise.output_error_text,
             'outputElementId': settings.OUTPUT_CONTAINER_ID_IN_EXERCISES_TEMPLATE,
             'text_file_content': exercise.text_file_content,
-            'programming_language': exercise.lesson.unit.track.programming_language
+            'programming_language': exercise.lesson.unit.track.programming_language,
+            'api_url_root': settings.API_URL_ROOT
         }
         context.update(new_context)
         return context
