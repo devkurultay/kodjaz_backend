@@ -1,6 +1,9 @@
 #!make
 include .env
 
+.PHONY: clearstatic pushdocker buildreact-dev buildreact-prod
+
+PROD_API_URL_ROOT := https://$(BACKEND_URL_ROOT)/api/
 ACTIVATE := . env/bin/activate
 
 venv:
@@ -22,20 +25,21 @@ run:
 	$(ACTIVATE) && python manage.py runserver
 
 runreact:
-	cd frontend && REACT_APP_BASE_URL=http://localhost:8000/api/ npm run start
+	cd frontend && REACT_APP_BASE_URL=$(API_URL_ROOT) npm run start
+
+clearstatic:
+	rm -rf staticfiles/
 
 buildreact-dev:
-	cd frontend && REACT_APP_BASE_URL=http://localhost:8000/api/ npm run build
+	cd frontend && REACT_APP_BASE_URL=$(API_URL_ROOT) npm run build
 	$(ACTIVATE) && python manage.py collectstatic --noinput
 
 buildreact-prod:
-	cd frontend && REACT_APP_BASE_URL=https://backend.kodjaz.com/api/ npm run build
+	cd frontend && REACT_APP_BASE_URL=$(PROD_API_URL_ROOT) npm run build
 	$(ACTIVATE) && python manage.py collectstatic --noinput
 
 buildcoderunner:
 	cd code_runner && docker build -t $(AWS_ECR_PYTHON_REPO_NAME):latest .
-
-.PHONY: pushdocker
 
 pushdocker:
 	cd code_runner/
@@ -45,3 +49,4 @@ pushdocker:
 
 deploy: buildreact-prod
 	./deploy_to_server.sh
+	$(MAKE) clearstatic

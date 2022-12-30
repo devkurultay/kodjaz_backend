@@ -245,11 +245,6 @@ SESSION_COOKIE_SAMESITE = 'Lax'
 CSRF_COOKIE_HTTPONLY = True
 SESSION_COOKIE_HTTPONLY = True
 
-# PROD ONLY
-# CSRF_COOKIE_SECURE = True
-# SESSION_COOKIE_SECURE = True
-
-
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
     'https://kodjaz.com',
@@ -267,3 +262,5 @@ JWT_SECRET = os.environ.get('JWT_SECRET')
 
 AWS_PYTHON_EXEC_LAMBDA_URL = os.environ.get('AWS_PYTHON_EXEC_LAMBDA_URL', '')
 AWS_API_GATEWAY_API_KEY = os.environ.get('AWS_API_GATEWAY_API_KEY', '')
+
+API_URL_ROOT = os.environ.get('API_URL_ROOT', '')
