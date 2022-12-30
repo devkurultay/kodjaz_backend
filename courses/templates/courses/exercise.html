@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load markdown_extras %}
 {% load i18n %}
 {% load static %}
 {% block title %}{% trans 'Exercise' %}{% endblock %}
@@ -72,13 +73,13 @@
             <h2>{{ object.name }}</h2>
 
             <div class="instructions-divider padding-5px">{% trans 'Useful information' %}</div>
-            <div class="padding-top-bottom-5px">{{ lecture|linebreaks }}</div>
+            <div class="padding-top-bottom-5px">{{ lecture | markdown | safe }}</div>
             <div class="instructions-divider padding-5px">{% trans 'Instructions' %}</div>
-            <div class="padding-top-bottom-5px">{{ instruction|linebreaks }}</div>
+            <div class="padding-top-bottom-5px">{{ instruction | markdown | safe }}</div>
             <div class="instructions-divider padding-5px cursor" id="hintToggle">{% trans 'Need help? Click here.' %}</div>
             <div class="padding-top-bottom-5px hidden" id="hint">
                 {% if hint|length > 0 %}
-                    {{ hint|linebreaks }}
+                    {{ hint | markdown | safe }}
                 {% endif %}
             </div>
         </div>
