@@ -1,3 +1,4 @@
+import markdown as md
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.serializers import ValidationError
@@ -78,11 +79,12 @@ class SubmissionViewSet(ModelViewSet):
             is_success = check_result['success']
             console_output = check_result['console_output']
             error_message = check_result['error_msg']
+            error_html = md.markdown(error_message)
             # TODO(murat): test exceptions
             serializer.save(
                 passed=is_success,
                 console_output=console_output,
-                error_message=error_message,
+                error_message=error_html,
                 user=self.request.user)
         except ValueError as e:
             raise ValidationError({"detail": e})

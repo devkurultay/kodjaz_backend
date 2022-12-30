@@ -37,9 +37,9 @@
                 <div class="container-fluid bd-fail-modal-row">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
-                    <p>{% trans 'It seems something went wrong with your code. Look at the errors below:' %}</p>
-                    <p>{{ input_error_text }}</p>
-                    <p>{{ output_error_text }}</p>
+                    <div>{% trans 'It seems something went wrong with your code. Look at the errors below:' %}</div>
+                    <p>{{ input_error_text | markdown | safe }}</p>
+                    <p>{{ output_error_text | markdown | safe }}</p>
                 </div>
             </div>
         </div>
