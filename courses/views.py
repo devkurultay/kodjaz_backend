@@ -76,9 +76,11 @@ class LessonsListView(ListView):
         return qs.filter(unit__id=self.kwargs['unit_id'], is_published=True).order_by('id')
 
     def get_context_data(self, **kwargs):
+        unit = Unit.objects.get(id=self.kwargs['unit_id'])
         context = super(LessonsListView, self).get_context_data(**kwargs)
         context['lessons_duration'] = self.get_queryset().aggregate(
             Sum('lesson_exercises__duration'))['lesson_exercises__duration__sum']
+        context['unit'] = unit
         return context
 
 
