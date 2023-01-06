@@ -50,3 +50,6 @@ pushdocker:
 deploy: buildreact-prod
 	./deploy_to_server.sh
 	$(MAKE) clearstatic
+
+export-course:
+	$(ACTIVATE) && python manage.py dumpdata courses users --exclude=courses.submission --format=json --indent=4 --output=fixtures/courses.json --natural-primary --natural-foreign
