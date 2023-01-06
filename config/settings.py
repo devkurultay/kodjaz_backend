@@ -53,6 +53,9 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ),
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '1/minute'
+    },
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
 }
 
@@ -247,6 +250,7 @@ CSRF_COOKIE_SAMESITE = 'Lax'
 SESSION_COOKIE_SAMESITE = 'Lax'
 CSRF_COOKIE_HTTPONLY = True
 SESSION_COOKIE_HTTPONLY = True
+CSRF_COOKIE_AGE = 86400 # 24 hours
 
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
