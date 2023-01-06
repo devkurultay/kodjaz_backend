@@ -4,9 +4,12 @@ from django.middleware.csrf import get_token
 
 from rest_framework import permissions
 from rest_framework import status
+from rest_framework.throttling import AnonRateThrottle
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.exceptions import InvalidToken
 from rest_framework_simplejwt.exceptions import TokenError
+from rest_framework.decorators import api_view
+from rest_framework.decorators import throttle_classes
 from rest_framework.generics import GenericAPIView, CreateAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -50,5 +53,14 @@ class LogoutView(GenericAPIView):
 
 
 class CreateUserAPIView(CreateAPIView):
+    throttle_classes = [AnonRateThrottle]
     permission_classes = (AllowAny,)
     serializer_class = UserCreateSerializer
+
+
+@api_view(['GET'])
+@throttle_classes([AnonRateThrottle])
+def csrf(request):
+    response = Response(status=status.HTTP_200_OK)
+    response['X-CSRFToken'] = get_token(request)
+    return response
