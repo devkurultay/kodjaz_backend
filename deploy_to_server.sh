@@ -54,8 +54,9 @@ ssh -tt $SERVER_USERNAME@$SERVER_IP << END
     echo "Applying migrations"
     python manage.py migrate --noinput --settings=config.settings_prod
     echo $SERVER_PASS sudo -S systemctl daemon-reload
-    echo $SERVER_PASS sudo -S systemctl reload gunicorn_kodjaz.service
-    echo $SERVER_PASS sudo -S systemctl reload nginx
+    sudo systemctl reload gunicorn_kodjaz.service
+    sudo systemctl daemon-reload
+    sudo systemctl reload nginx
     echo "Exiting"
     exit
 END
