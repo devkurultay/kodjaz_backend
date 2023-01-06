@@ -9,6 +9,8 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.exceptions import InvalidToken
 from rest_framework_simplejwt.exceptions import TokenError
 from rest_framework.decorators import api_view
+from rest_framework.decorators import authentication_classes
+from rest_framework.decorators import permission_classes
 from rest_framework.decorators import throttle_classes
 from rest_framework.generics import GenericAPIView, CreateAPIView
 from rest_framework.permissions import AllowAny
@@ -60,6 +62,8 @@ class CreateUserAPIView(CreateAPIView):
 
 @api_view(['GET'])
 @throttle_classes([AnonRateThrottle])
+@authentication_classes([])
+@permission_classes([AllowAny])
 def csrf(request):
     response = Response(status=status.HTTP_200_OK)
     response['X-CSRFToken'] = get_token(request)
