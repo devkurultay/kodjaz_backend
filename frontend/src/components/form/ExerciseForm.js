@@ -186,7 +186,9 @@ const ExerciseForm = ({
     }
     setEntityToPick(entityType)
     handleModalShow()
-    e?.target?.blur()
+    if (e?.target) {
+      e.target.blur()
+    }
   }
 
   const entityPickers = {
