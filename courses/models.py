@@ -142,6 +142,10 @@ class Exercise(models.Model):
     def track_id(self):
         return self.lesson.unit.track.id
 
+    @property
+    def is_complete(self):
+        return self.exercise_submission.filter(passed=True).exists()
+
 
 class SubmissionCreationException(Exception):
     pass
@@ -161,7 +165,11 @@ class Submission(models.Model):
     error_message = models.TextField(_('Error message'), blank=True)
 
     def __str__(self):
-        return '{0} submission'.format(self.user)
+        return 'Submission: {}. Exercise: {}. User: {}'.format(
+            self.id,
+            self.exercise,
+            self.user
+        )
 
     @classmethod
     def create_from_exercise(cls, user, exercise, submitted_code, text_file_content, passed):
