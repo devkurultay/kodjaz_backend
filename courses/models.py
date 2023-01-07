@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models import Count
+from django.db.models import Q
 from django.db.models import Sum
 from django.utils.translation import gettext_lazy as _
 from users.models import User
@@ -76,6 +78,20 @@ class Lesson(models.Model):
     @property
     def exercises_number(self):
         return self.lesson_exercises.filter(is_published=True).count()
+    
+    @property
+    def is_complete(self):
+        completed_exercises_count = Count(
+            'lesson_exercises',
+            filter=Q(lesson_exercises__exercise_submission__passed=True)
+        )
+        all_exercises_count = Count('lesson_exercises')
+        lesson = Lesson.objects.annotate(
+            completed_ex_count=completed_exercises_count
+        ).annotate(
+            all_ex_count=all_exercises_count
+        ).get(id=self.id)
+        return lesson.completed_ex_count == lesson.all_ex_count
 
 
 CHECKER_HELP_TEXT = _('separate with comma, without spaces, like this: my_var,hello world')
