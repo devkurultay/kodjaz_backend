@@ -33,7 +33,7 @@ class User(AbstractUser):
     email = models.EmailField(_('email address'), blank=True, unique=True)
 
     def __str__(self):
-        return '{} {}'.format(self.username, self.email)
+        return '{} {}'.format(self.email, self.username)
 
     def get_absolute_url(self):
         return reverse('users:detail', kwargs={'name': self.name})
