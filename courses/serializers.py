@@ -25,6 +25,7 @@ class ExerciseSerializer(serializers.ModelSerializer):
     previous_exercise = PreviousExerciseSerializerField(source='*', required=False)
     default_code = serializers.CharField(trim_whitespace=False, required=False, allow_blank=True)
     unit_test = serializers.CharField(trim_whitespace=False, required=False, allow_blank=True)
+    is_complete = serializers.BooleanField(default=False, read_only=True)
 
     class Meta:
         model = Exercise
@@ -35,7 +36,7 @@ class ExerciseSerializer(serializers.ModelSerializer):
             'output_should_contain', 'output_should_not_contain', 'output_error_text',
             'output_should_contain_error_msg', 'output_should_not_contain_error_msg',
             'unit_test', 'previous_exercise', 'next_exercise', 'is_published',
-            'lesson', 'unit_id', 'track_id', 'text_file_content'
+            'lesson', 'unit_id', 'track_id', 'text_file_content', 'is_complete'
         ]
     
     def get_entity_type(self, obj):
