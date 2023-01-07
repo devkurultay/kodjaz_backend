@@ -55,12 +55,13 @@ class SubmissionSerializer(serializers.ModelSerializer):
 class LessonSerializer(serializers.ModelSerializer):
     lesson_exercises = ExerciseSerializer(many=True, read_only=True)
     entity_type = serializers.SerializerMethodField()
+    is_complete = serializers.BooleanField(default=False, read_only=True)
 
     class Meta:
         model = Lesson
         fields = [
             'id', 'name', 'entity_type', 'is_published',
-            'lesson_exercises', 'unit'
+            'lesson_exercises', 'unit', 'is_complete'
         ]
     
     def get_entity_type(self, obj):
