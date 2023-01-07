@@ -58,6 +58,20 @@ class Unit(models.Model):
     @property
     def lessons_count(self):
         return self.unit_lessons.filter(is_published=True).count()
+    
+    @property
+    def is_complete(self):
+        completed_lessons_count = Count(
+            'unit_lessons',
+            filter=Q(unit_lessons__lesson_exercises__exercise_submission__passed=True)
+        )
+        all_lessons_count = Count('unit_lessons')
+        unit = Unit.objects.annotate(
+            completed_les_count=completed_lessons_count
+        ).annotate(
+            all_les_count=all_lessons_count
+        ).get(id=self.id)
+        return unit.completed_les_count == unit.all_les_count
 
 
 class Lesson(models.Model):
