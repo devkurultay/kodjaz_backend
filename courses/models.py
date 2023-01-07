@@ -212,3 +212,22 @@ class Submission(models.Model):
             obj.save()
         except Exception as e:
             raise SubmissionCreationException(e)
+
+
+class Subscription(models.Model):
+    user = models.ForeignKey(
+        User, related_name='user_subscription', on_delete=models.DO_NOTHING)
+    track = models.OneToOneField(
+        Track, related_name='subscription',
+        on_delete=models.DO_NOTHING)
+    date_time_created = models.DateTimeField(
+        _('Subscription Date and Time'), auto_now_add=True, editable=False)
+    date_time_modified = models.DateTimeField(
+        _('Subscription Modification Date and Time'), auto_now=True)
+
+    def __str__(self):
+        return 'Subscription: {}. Track: {}. User: {}'.format(
+            self.id,
+            self.track,
+            self.user
+        )
