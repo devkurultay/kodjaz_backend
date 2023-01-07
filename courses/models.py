@@ -36,7 +36,7 @@ class Track(models.Model):
     @property
     def lessons_count(self):
         units = self.track_units.filter(is_published=True)
-        return sum([u.lesson_exercises_count for u in units])
+        return sum([u.lessons_count for u in units])
 
 
 class Unit(models.Model):
@@ -56,7 +56,7 @@ class Unit(models.Model):
             Sum('lesson_exercises__duration'))['lesson_exercises__duration__sum']
 
     @property
-    def lesson_exercises_count(self):
+    def lessons_count(self):
         return self.unit_lessons.filter(is_published=True).count()
 
 
