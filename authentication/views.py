@@ -16,11 +16,13 @@ from rest_framework.generics import GenericAPIView, CreateAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
+from .serializers import CustomTokenObtainPairSerializer
 from .serializers import RefreshTokenSerializer
 from .serializers import UserCreateSerializer
 
 
 class LoginView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
