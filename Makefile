@@ -48,6 +48,7 @@ pushdocker:
 	docker push $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/$(AWS_ECR_PYTHON_REPO_NAME):latest
 
 deploy: buildreact-prod
+	chmod +x deploy_to_server.sh
 	./deploy_to_server.sh
 	$(MAKE) clearstatic
 
