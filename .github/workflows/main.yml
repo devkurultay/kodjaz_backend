@@ -9,7 +9,11 @@ jobs:
       postgres:
         # Docker Hub image
         image: postgres
-        # Provide the password for postgres
+        env:
+          POSTGRES_DB: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_PORT: 5432
+          POSTGRES_USER: postgres
         ports:
           - 5432:5432
         # Set health checks to wait until postgres has started
@@ -32,11 +36,10 @@ jobs:
           apt-get install --yes postgresql-client
 
       - name: Query database
-        run: psql -h postgres -d postgres -U postgres -c 'SELECT 1;'
+        run: psql -h localhost -d postgres_db -U postgres_user -c 'SELECT 1;'
         env:
           # The hostname used to communicate with the PostgreSQL service container
           PGPASSWORD: postgres
-          POSTGRES_PORT: 5432
       - name: Install dependencies
         run: pip install -r requirements/requirements_dev.txt # install all our dependencies for the project
       - name: Create a dummy env fille
