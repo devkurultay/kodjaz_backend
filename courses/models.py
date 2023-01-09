@@ -172,10 +172,6 @@ class Exercise(models.Model):
     def track_id(self):
         return self.lesson.unit.track.id
 
-    @property
-    def is_complete(self):
-        return self.exercise_submission.filter(passed=True).exists()
-
 
 class SubmissionCreationException(Exception):
     pass
@@ -191,7 +187,7 @@ class Submission(models.Model):
                                                   blank=True, default=0)
     date_time_created = models.DateTimeField(_('Submission Date and Time'), auto_now_add=True, editable=False)
     date_time_modified = models.DateTimeField(_('Submission Modification Date and Time'), auto_now=True)
-    passed = models.BooleanField()
+    passed = models.BooleanField(default=False)
     error_message = models.TextField(_('Error message'), blank=True)
 
     def __str__(self):
