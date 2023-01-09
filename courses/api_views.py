@@ -1,6 +1,7 @@
 import markdown as md
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.serializers import ValidationError
 
 from courses.mixins import ReadOnlyOrAdminModelViewSetMixin
@@ -46,7 +47,6 @@ class ExerciseViewSet(ReadOnlyOrAdminModelViewSetMixin):
         self.perform_update(serializer)
         prev = serializer.validated_data.get('previous_exercise')
         self.handle_previous_exercise(prev, instance)
-        data = serializer.data
         return Response(serializer.data)
 
     def handle_previous_exercise(self, prev, instance):
@@ -63,10 +63,57 @@ class ExerciseViewSet(ReadOnlyOrAdminModelViewSetMixin):
             prev.save()
 
 
-class SubmissionViewSet(ModelViewSet):
-    queryset = Submission.objects.all()
+class UserTrackViewSet(ReadOnlyModelViewSet):
+    serializer_class = TrackSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        tracks_ids = Submission.objects.filter(
+            user=user
+        ).values_list('exercise__lesson__unit__track__id', flat=True).distinct()
+        return Track.objects.filter(id__in=tracks_ids)
+
+
+class UserUnitViewSet(ReadOnlyModelViewSet):
+    serializer_class = UnitSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        units_ids = Submission.objects.filter(
+            user=user
+        ).values_list('exercise__lesson__unit__id', flat=True).distinct()
+        return Unit.objects.filter(id__in=units_ids)
+
+
+class UserLessonViewSet(ReadOnlyModelViewSet):
+    serializer_class = LessonSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        lesson_ids = Submission.objects.filter(
+            user=user
+        ).values_list('exercise__lesson__id', flat=True).distinct()
+        return Lesson.objects.filter(id__in=lesson_ids)
+
+
+class UserExerciseViewSet(ReadOnlyModelViewSet):
+    serializer_class = ExerciseSerializer
+
+    def get_queryset(self):
+        user = self.request.user
+        exercises_ids = Submission.objects.filter(
+            user=user
+        ).values_list('exercise__id', flat=True).distinct()
+        return Exercise.objects.filter(id__in=exercises_ids)
+
+
+class UserSubmissionViewSet(ModelViewSet):
     serializer_class = SubmissionSerializer
     permission_classes = [IsSubmissionOwner]
+
+    def get_queryset(self):
+        user = self.request.user
+        return Submission.objects.filter(user=user)
 
     def perform_create(self, serializer):
         data = serializer.validated_data

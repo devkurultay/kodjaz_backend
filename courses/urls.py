@@ -6,7 +6,12 @@ from courses.api_views import TrackViewSet
 from courses.api_views import UnitViewSet
 from courses.api_views import LessonViewSet
 from courses.api_views import ExerciseViewSet
-from courses.api_views import SubmissionViewSet
+
+from courses.api_views import UserTrackViewSet
+from courses.api_views import UserUnitViewSet
+from courses.api_views import UserLessonViewSet
+from courses.api_views import UserExerciseViewSet
+from courses.api_views import UserSubmissionViewSet
 
 
 app_name = 'courses'
@@ -16,7 +21,13 @@ router.register(r'api/v1/tracks', TrackViewSet)
 router.register(r'api/v1/units', UnitViewSet)
 router.register(r'api/v1/lessons', LessonViewSet)
 router.register(r'api/v1/exercises', ExerciseViewSet)
-router.register(r'api/v1/submissions', SubmissionViewSet)
+router.register(r'api/v1/submissions', UserSubmissionViewSet, basename='Submission')
+
+router.register(r'api/v1/user/tracks', UserTrackViewSet, basename='Track')
+router.register(r'api/v1/user/units', UserUnitViewSet, basename='Unit')
+router.register(r'api/v1/user/lessons', UserLessonViewSet, basename='Lesson')
+router.register(r'api/v1/user/exercises', UserExerciseViewSet, basename='Exercise')
+router.register(r'api/v1/user/submissions', UserSubmissionViewSet, basename='Submission')
 
 urlpatterns = [
     path('', views.TracksListView.as_view(), name='tracks_list'),
