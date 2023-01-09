@@ -32,8 +32,8 @@ jobs:
           cache-dependency-path: '**/requirements_dev.txt'
       - name: Install PostgreSQL client
         run: |
-          apt-get update
-          apt-get install --yes postgresql-client
+          sudo apt-get update
+          sudo apt-get install --yes postgresql-client
 
       - name: Query database
         run: psql -h localhost -d postgres_db -U postgres_user -c 'SELECT 1;'
