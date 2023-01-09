@@ -3,6 +3,22 @@ on: [push]
 jobs:
   kodjaz:
     runs-on: ubuntu-latest
+    # Service containers to run with `kodjaz`
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
@@ -15,3 +31,8 @@ jobs:
       - name: Create a dummy env fille
         run: cp env_template .env
       - run: python manage.py test
+        env:
+          # The hostname used to communicate with the PostgreSQL service container
+          POSTGRES_HOST: postgres
+          # The default PostgreSQL port
+          POSTGRES_PORT: 5432
