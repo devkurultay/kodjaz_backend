@@ -21,3 +21,4 @@ AWS_ECR_PYTHON_REPO_NAME=code_runner_python
 AWS_PYTHON_EXEC_LAMBDA_URL='https://some_url.com'
 AWS_API_GATEWAY_API_KEY='some-key'
 API_URL_ROOT=http://localhost:8000/api/
+LOCAL_DB_HOST=postgres
