@@ -25,8 +25,8 @@ router.register(r'api/v1/submissions', UserSubmissionViewSet, basename='Submissi
 
 router.register(r'api/v1/user/tracks', UserTrackViewSet, basename='Track')
 router.register(r'api/v1/user/units', UserUnitViewSet, basename='Unit')
-router.register(r'api/v1/user/lessons', UserLessonViewSet, basename='Lesson')
-router.register(r'api/v1/user/exercises', UserExerciseViewSet, basename='Exercise')
+router.register(r'api/v1/user/lessons', UserLessonViewSet)
+router.register(r'api/v1/user/exercises', UserExerciseViewSet)
 router.register(r'api/v1/user/submissions', UserSubmissionViewSet, basename='Submission')
 
 urlpatterns = [

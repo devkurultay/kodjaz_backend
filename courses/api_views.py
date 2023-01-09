@@ -11,6 +11,8 @@ from courses.serializers import UnitSerializer
 from courses.serializers import LessonSerializer
 from courses.serializers import ExerciseSerializer
 from courses.serializers import SubmissionSerializer
+from courses.serializers import UserLessonSerializer
+from courses.serializers import UserExerciseSerializer
 from courses.models import Track
 from courses.models import Unit
 from courses.models import Lesson
@@ -86,25 +88,23 @@ class UserUnitViewSet(ReadOnlyModelViewSet):
 
 
 class UserLessonViewSet(ReadOnlyModelViewSet):
-    serializer_class = LessonSerializer
+    queryset = Lesson.objects.all()
+    serializer_class = UserLessonSerializer
 
-    def get_queryset(self):
-        user = self.request.user
-        lesson_ids = Submission.objects.filter(
-            user=user
-        ).values_list('exercise__lesson__id', flat=True).distinct()
-        return Lesson.objects.filter(id__in=lesson_ids)
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context.update({"user": self.request.user})
+        return context
 
 
 class UserExerciseViewSet(ReadOnlyModelViewSet):
-    serializer_class = ExerciseSerializer
-
-    def get_queryset(self):
-        user = self.request.user
-        exercises_ids = Submission.objects.filter(
-            user=user
-        ).values_list('exercise__id', flat=True).distinct()
-        return Exercise.objects.filter(id__in=exercises_ids)
+    queryset = Exercise.objects.all()
+    serializer_class = UserExerciseSerializer
+    
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context.update({"user": self.request.user})
+        return context
 
 
 class UserSubmissionViewSet(ModelViewSet):

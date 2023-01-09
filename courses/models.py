@@ -92,20 +92,6 @@ class Lesson(models.Model):
     @property
     def exercises_number(self):
         return self.lesson_exercises.filter(is_published=True).count()
-    
-    @property
-    def is_complete(self):
-        completed_exercises_count = Count(
-            'lesson_exercises',
-            filter=Q(lesson_exercises__exercise_submission__passed=True)
-        )
-        all_exercises_count = Count('lesson_exercises')
-        lesson = Lesson.objects.annotate(
-            completed_ex_count=completed_exercises_count
-        ).annotate(
-            all_ex_count=all_exercises_count
-        ).get(id=self.id)
-        return lesson.completed_ex_count == lesson.all_ex_count
 
 
 CHECKER_HELP_TEXT = _('separate with comma, without spaces, like this: my_var,hello world')
