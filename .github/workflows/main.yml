@@ -35,13 +35,8 @@ jobs:
           sudo apt-get update
           sudo apt-get install --yes postgresql-client
 
-      - name: Query database
-        run: psql -h localhost -d postgres -U postgres -c 'SELECT 1;'
-        env:
-          # The hostname used to communicate with the PostgreSQL service container
-          PGPASSWORD: postgres
       - name: Install dependencies
-        run: pip install -r requirements/requirements_dev.txt # install all our dependencies for the project
+        run: pip install -r requirements/requirements_dev.txt
       - name: Create a dummy env fille
         run: cp env_template .env
       - run: python manage.py test
