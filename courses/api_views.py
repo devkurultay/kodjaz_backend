@@ -1,15 +1,23 @@
 import markdown as md
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.serializers import ValidationError
 
 from courses.mixins import ReadOnlyOrAdminModelViewSetMixin
+from courses.mixins import UserContextMixin
 from courses.permissions import IsSubmissionOwner
 from courses.serializers import TrackSerializer
 from courses.serializers import UnitSerializer
 from courses.serializers import LessonSerializer
 from courses.serializers import ExerciseSerializer
 from courses.serializers import SubmissionSerializer
+
+from courses.serializers import UserExerciseSerializer
+from courses.serializers import UserLessonSerializer
+from courses.serializers import UserUnitSerializer
+from courses.serializers import UserTrackSerializer
+
 from courses.models import Track
 from courses.models import Unit
 from courses.models import Lesson
@@ -46,7 +54,6 @@ class ExerciseViewSet(ReadOnlyOrAdminModelViewSetMixin):
         self.perform_update(serializer)
         prev = serializer.validated_data.get('previous_exercise')
         self.handle_previous_exercise(prev, instance)
-        data = serializer.data
         return Response(serializer.data)
 
     def handle_previous_exercise(self, prev, instance):
@@ -63,10 +70,33 @@ class ExerciseViewSet(ReadOnlyOrAdminModelViewSetMixin):
             prev.save()
 
 
-class SubmissionViewSet(ModelViewSet):
-    queryset = Submission.objects.all()
+class UserTrackViewSet(UserContextMixin, ReadOnlyModelViewSet):
+    queryset = Track.objects.all()
+    serializer_class = UserTrackSerializer
+
+
+class UserUnitViewSet(UserContextMixin, ReadOnlyModelViewSet):
+    queryset = Unit.objects.all()
+    serializer_class = UserUnitSerializer
+
+
+class UserLessonViewSet(UserContextMixin, ReadOnlyModelViewSet):
+    queryset = Lesson.objects.all()
+    serializer_class = UserLessonSerializer
+
+
+class UserExerciseViewSet(UserContextMixin, ReadOnlyModelViewSet):
+    queryset = Exercise.objects.all()
+    serializer_class = UserExerciseSerializer
+
+
+class UserSubmissionViewSet(ModelViewSet):
     serializer_class = SubmissionSerializer
     permission_classes = [IsSubmissionOwner]
+
+    def get_queryset(self):
+        user = self.request.user
+        return Submission.objects.filter(user=user)
 
     def perform_create(self, serializer):
         data = serializer.validated_data

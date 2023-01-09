@@ -165,10 +165,7 @@ class SumissionTests(APITestCase):
         url = f'/api/v1/submissions/{self.orig_submission.id}/'
         data = {'submitted_code': 'print("Hi!")'}
         response = self.client.patch(url, data)
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-        self.assertEqual(
-            response.json()['detail'],
-            'You do not have permission to perform this action.')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         
         orig_user = self.orig_submission.user
         refresh = RefreshToken.for_user(orig_user)

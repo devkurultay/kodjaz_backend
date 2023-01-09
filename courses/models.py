@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models import Count
+from django.db.models import Q
 from django.db.models import Sum
 from django.utils.translation import gettext_lazy as _
 from users.models import User
@@ -34,7 +36,7 @@ class Track(models.Model):
     @property
     def lessons_count(self):
         units = self.track_units.filter(is_published=True)
-        return sum([u.lesson_exercises_count for u in units])
+        return sum([u.lessons_count for u in units])
 
 
 class Unit(models.Model):
@@ -54,7 +56,7 @@ class Unit(models.Model):
             Sum('lesson_exercises__duration'))['lesson_exercises__duration__sum']
 
     @property
-    def lesson_exercises_count(self):
+    def lessons_count(self):
         return self.unit_lessons.filter(is_published=True).count()
 
 
@@ -157,11 +159,15 @@ class Submission(models.Model):
                                                   blank=True, default=0)
     date_time_created = models.DateTimeField(_('Submission Date and Time'), auto_now_add=True, editable=False)
     date_time_modified = models.DateTimeField(_('Submission Modification Date and Time'), auto_now=True)
-    passed = models.BooleanField()
+    passed = models.BooleanField(default=False)
     error_message = models.TextField(_('Error message'), blank=True)
 
     def __str__(self):
-        return '{0} submission'.format(self.user)
+        return 'Submission: {}. Exercise: {}. User: {}'.format(
+            self.id,
+            self.exercise,
+            self.user
+        )
 
     @classmethod
     def create_from_exercise(cls, user, exercise, submitted_code, text_file_content, passed):
@@ -174,3 +180,22 @@ class Submission(models.Model):
             obj.save()
         except Exception as e:
             raise SubmissionCreationException(e)
+
+
+class Subscription(models.Model):
+    user = models.ForeignKey(
+        User, related_name='user_subscription', on_delete=models.DO_NOTHING)
+    track = models.OneToOneField(
+        Track, related_name='subscription',
+        on_delete=models.DO_NOTHING)
+    date_time_created = models.DateTimeField(
+        _('Subscription Date and Time'), auto_now_add=True, editable=False)
+    date_time_modified = models.DateTimeField(
+        _('Subscription Modification Date and Time'), auto_now=True)
+
+    def __str__(self):
+        return 'Subscription: {}. Track: {}. User: {}'.format(
+            self.id,
+            self.track,
+            self.user
+        )

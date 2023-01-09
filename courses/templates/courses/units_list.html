@@ -22,7 +22,7 @@
           <span><strong>{{ unit.name }}</strong></span>
           <a class="w-100" href="{% url 'courses:lessons_list' unit.id %}">
             <div class="list-group-item-heading">{{ unit.description }}</div>
-            <div class="list-group-item-heading">{% trans 'Number of lessons in unit:' %} {{ unit.lesson_exercises_count }}</div>
+            <div class="list-group-item-heading">{% trans 'Number of lessons in unit:' %} {{ unit.lessons_count }}</div>
             <div class="list-group-item-heading">{% trans 'Overall duration of lessons in unit:' %} {{ unit.lessons_exercises_duration }} {% trans 'min.' %}</div>
           </a>
         </li>
