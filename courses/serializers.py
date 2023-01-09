@@ -152,10 +152,28 @@ class TrackSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Track
-        fields = [
+        fields = (
             'id', 'name', 'entity_type', 'description',
             'track_units', 'is_published', 'programming_language'
-        ]
+        )
 
     def get_entity_type(self, obj):
         return Track.__name__
+
+
+class UserTrackSerializer(TrackSerializer):
+    track_units = UserUnitSerializer(many=True, read_only=True)
+    is_complete = serializers.SerializerMethodField()
+
+    class Meta(TrackSerializer.Meta):
+        fields = TrackSerializer.Meta.fields + ('is_complete',)
+
+    def get_is_complete(self, track):
+        user = self.context['user']
+        subs = Submission.objects.filter(
+            exercise__lesson__unit__track__id=track.id,
+            user=user, passed=True
+        ).distinct('exercise').count()
+        exs = Exercise.objects.filter(
+            lesson__unit__track__id=track.id).count()
+        return subs == exs
