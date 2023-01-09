@@ -36,7 +36,7 @@ class UserExerciseSerializerTests(TestCase):
         data = serializer.data
         self.assertTrue(data['is_complete'])
     
-    def test_is_in_progress(self):
+    def test_is_in_progress_field(self):
         # When only one submission: passed = False
         kwargs = {'context': {'user': self.not_passed_submission.user}}
         serializer = UserExerciseSerializer(instance=self.exercise, **kwargs)
@@ -63,11 +63,9 @@ class UserExerciseSerializerTests(TestCase):
 class UserLessonSerializerTests(TestCase):
 
     def setUp(self) -> None:
-        exercise = ExerciseFactory()
-        self.submission = SubmissionFactory(exercise=exercise, passed=True)
         self.complete_lesson = LessonFactory()
-        exercise.lesson = self.complete_lesson
-        exercise.save()
+        exercise = ExerciseFactory(lesson=self.complete_lesson)
+        self.submission = SubmissionFactory(exercise=exercise, passed=True)
 
         self.incomplete_lesson = LessonFactory()
         incomplete_exercise = ExerciseFactory(lesson=self.incomplete_lesson)
@@ -75,7 +73,7 @@ class UserLessonSerializerTests(TestCase):
             exercise=incomplete_exercise, passed=False)
         return super().setUp()
 
-    def test_is_complete_property_field(self):
+    def test_is_complete_field(self):
         kwargs = {'context': {'user': self.submission.user}}
         serializer = UserLessonSerializer(instance=self.complete_lesson, **kwargs)
         data = serializer.data
@@ -86,6 +84,28 @@ class UserLessonSerializerTests(TestCase):
             instance=self.incomplete_lesson, **kwargs)
         data = serializer.data
         self.assertFalse(data['is_complete'])
+    
+    def test_is_in_progress_field(self):
+        # When only one submission: passed = False
+        kwargs = {'context': {'user': self.failed_submission.user}}
+        serializer = UserLessonSerializer(instance=self.incomplete_lesson, **kwargs)
+        data = serializer.data
+        self.assertTrue(data['is_in_progress'])
+
+        # When only one submission: passed = True
+        kwargs = {'context': {'user': self.submission.user}}
+        serializer = UserLessonSerializer(instance=self.complete_lesson, **kwargs)
+        data = serializer.data
+        self.assertFalse(data['is_in_progress'])
+
+        # When an exercise does not have any submissions
+        lesson = LessonFactory()
+        ExerciseFactory(lesson=lesson)
+        user = UserFactory()
+        kwargs = {'context': {'user': user}}
+        serializer = UserLessonSerializer(instance=lesson, **kwargs)
+        data = serializer.data
+        self.assertFalse(data['is_in_progress'])
 
 
 class UserUnitSerializerTests(TestCase):

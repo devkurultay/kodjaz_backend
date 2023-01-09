@@ -59,7 +59,7 @@ class UserExerciseSerializer(ExerciseSerializer):
         sub = Submission.objects.filter(
             user=user, exercise=obj.id, passed=True)
         return sub.exists()
-    
+
     def get_is_in_progress(self, exercise):
         user = self.context['user']
         not_passed_submissions_count = Count(
@@ -115,14 +115,16 @@ class LessonSerializer(serializers.ModelSerializer):
 class UserLessonSerializer(LessonSerializer):
     lesson_exercises = UserExerciseSerializer(many=True, read_only=True)
     is_complete = serializers.SerializerMethodField()
+    is_in_progress = serializers.SerializerMethodField()
 
     class Meta(LessonSerializer.Meta):
-        fields = LessonSerializer.Meta.fields + ('is_complete',)
+        fields = LessonSerializer.Meta.fields + (
+            'is_complete', 'is_in_progress',)
 
     # TODO(mutat): pass precalculated data to avoid repeated calculations
     # e.g. pass precalculated data to UserTrackSerializer, and make
     #  child serializers accept their portions as arguments
-    def get_is_complete(self, obj):
+    def _progress_helper(self):
         user = self.context['user']
         completed_exercises_count = Count(
             'lesson_exercises',
@@ -133,12 +135,36 @@ class UserLessonSerializer(LessonSerializer):
             distinct=True
         )
         all_exercises_count = Count('lesson_exercises', distinct=True)
-        lesson = Lesson.objects.annotate(
+        return Lesson.objects.annotate(
             completed_ex_count=completed_exercises_count
         ).annotate(
             all_ex_count=all_exercises_count
-        ).get(id=obj.id)
-        return lesson.completed_ex_count == lesson.all_ex_count
+        )
+
+    def get_is_complete(self, lesson):
+        annotated_lesson = self._progress_helper().get(id=lesson.id)
+        return (
+            annotated_lesson.completed_ex_count == annotated_lesson.all_ex_count
+        )
+
+    def get_is_in_progress(self, lesson):
+        user = self.context['user']
+        not_passed_exercises_count = Count(
+            'lesson_exercises',
+            filter=Q(
+                lesson_exercises__exercise_submission__passed=False,
+                lesson_exercises__exercise_submission__user=user,
+            ),
+            distinct=True
+        )
+        annotated_lesson = self._progress_helper().annotate(
+            not_passed_exercises_count=not_passed_exercises_count
+        ).get(id=lesson.id)
+        has_incomplete_ex = annotated_lesson.not_passed_exercises_count > 0
+        return (
+            has_incomplete_ex and
+            annotated_lesson.completed_ex_count < annotated_lesson.all_ex_count
+        )
 
 
 class UnitSerializer(serializers.ModelSerializer):
