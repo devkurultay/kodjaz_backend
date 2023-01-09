@@ -5,6 +5,7 @@ from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.serializers import ValidationError
 
 from courses.mixins import ReadOnlyOrAdminModelViewSetMixin
+from courses.mixins import UserContextMixin
 from courses.permissions import IsSubmissionOwner
 from courses.serializers import TrackSerializer
 from courses.serializers import UnitSerializer
@@ -69,44 +70,24 @@ class ExerciseViewSet(ReadOnlyOrAdminModelViewSetMixin):
             prev.save()
 
 
-class UserTrackViewSet(ReadOnlyModelViewSet):
+class UserTrackViewSet(UserContextMixin, ReadOnlyModelViewSet):
     queryset = Track.objects.all()
     serializer_class = UserTrackSerializer
 
-    def get_serializer_context(self):
-        context = super().get_serializer_context()
-        context.update({"user": self.request.user})
-        return context
 
-
-class UserUnitViewSet(ReadOnlyModelViewSet):
+class UserUnitViewSet(UserContextMixin, ReadOnlyModelViewSet):
     queryset = Unit.objects.all()
     serializer_class = UserUnitSerializer
 
-    def get_serializer_context(self):
-        context = super().get_serializer_context()
-        context.update({"user": self.request.user})
-        return context
 
-
-class UserLessonViewSet(ReadOnlyModelViewSet):
+class UserLessonViewSet(UserContextMixin, ReadOnlyModelViewSet):
     queryset = Lesson.objects.all()
     serializer_class = UserLessonSerializer
 
-    def get_serializer_context(self):
-        context = super().get_serializer_context()
-        context.update({"user": self.request.user})
-        return context
 
-
-class UserExerciseViewSet(ReadOnlyModelViewSet):
+class UserExerciseViewSet(UserContextMixin, ReadOnlyModelViewSet):
     queryset = Exercise.objects.all()
     serializer_class = UserExerciseSerializer
-    
-    def get_serializer_context(self):
-        context = super().get_serializer_context()
-        context.update({"user": self.request.user})
-        return context
 
 
 class UserSubmissionViewSet(ModelViewSet):
