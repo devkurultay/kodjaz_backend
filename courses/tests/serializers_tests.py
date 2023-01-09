@@ -2,56 +2,56 @@ from django.test.testcases import TestCase
 from fixtures.factories.courses import ExerciseFactory
 from fixtures.factories.courses import LessonFactory
 from fixtures.factories.courses import SubmissionFactory
+from fixtures.factories.user import UserFactory
 
-from courses.serializers import ExerciseSerializer
-from courses.serializers import LessonSerializer
+from courses.serializers import UserExerciseSerializer
+from courses.serializers import UserLessonSerializer
 
 
-class ExerciseSerializerTests(TestCase):
+class UserExerciseSerializerTests(TestCase):
 
     def test_is_complete_property_field(self):
         exercise = ExerciseFactory()
-        # factory instance has `is_complete = False`
-        self.assertFalse(exercise.is_complete)
-        serializer = ExerciseSerializer(instance=exercise)
+        not_passed_submission = SubmissionFactory(
+            passed=False, exercise=exercise)
+        kwargs = {'context': {'user': not_passed_submission.user}}
+        serializer = UserExerciseSerializer(instance=exercise, **kwargs)
         data = serializer.data
         self.assertFalse(data['is_complete'])
 
-        submission = SubmissionFactory()
-        # factory instance has `passed = True`
-        self.assertTrue(submission.passed)
-        submission.exercise = exercise
-        submission.save()
-        # since new submission is added, `is_complete = True`
-        self.assertTrue(exercise.is_complete)
-
-        serializer = ExerciseSerializer(instance=exercise)
+        completed_exercise = ExerciseFactory()
+        submission = SubmissionFactory(
+            passed=True, exercise=completed_exercise)
+        kwargs = {'context': {'user': submission.user}}
+        serializer = UserExerciseSerializer(
+            instance=completed_exercise, **kwargs)
         data = serializer.data
         self.assertTrue(data['is_complete'])
 
 
-class LessonSerializerTests(TestCase):
+class UserLessonSerializerTests(TestCase):
 
     def setUp(self) -> None:
         exercise = ExerciseFactory()
-        submission = SubmissionFactory()
-        submission.exercise = exercise
-        submission.save()
+        self.submission = SubmissionFactory(exercise=exercise, passed=True)
         self.complete_lesson = LessonFactory()
         exercise.lesson = self.complete_lesson
         exercise.save()
 
         self.incomplete_lesson = LessonFactory()
-        incomplete_exercise = ExerciseFactory()
-        incomplete_exercise.lesson = self.incomplete_lesson
-        incomplete_exercise.save()
+        incomplete_exercise = ExerciseFactory(lesson=self.incomplete_lesson)
+        self.failed_submission = SubmissionFactory(
+            exercise=incomplete_exercise, passed=False)
         return super().setUp()
 
     def test_is_complete_property_field(self):
-        serializer = LessonSerializer(instance=self.complete_lesson)
+        kwargs = {'context': {'user': self.submission.user}}
+        serializer = UserLessonSerializer(instance=self.complete_lesson, **kwargs)
         data = serializer.data
         self.assertTrue(data['is_complete'])
 
-        serializer = LessonSerializer(instance=self.incomplete_lesson)
+        kwargs = {'context': {'user': self.failed_submission.user}}
+        serializer = UserLessonSerializer(
+            instance=self.incomplete_lesson, **kwargs)
         data = serializer.data
         self.assertFalse(data['is_complete'])
