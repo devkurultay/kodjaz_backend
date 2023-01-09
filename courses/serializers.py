@@ -48,15 +48,43 @@ class ExerciseSerializer(serializers.ModelSerializer):
 
 class UserExerciseSerializer(ExerciseSerializer):
     is_complete = serializers.SerializerMethodField()
+    is_in_progress = serializers.SerializerMethodField()
 
     class Meta(ExerciseSerializer.Meta):
-        fields = ExerciseSerializer.Meta.fields + ('is_complete',)
-    
+        fields = ExerciseSerializer.Meta.fields + (
+            'is_complete', 'is_in_progress',)
+
     def get_is_complete(self, obj):
         user = self.context['user']
         sub = Submission.objects.filter(
             user=user, exercise=obj.id, passed=True)
         return sub.exists()
+    
+    def get_is_in_progress(self, exercise):
+        user = self.context['user']
+        not_passed_submissions_count = Count(
+            'exercise_submission',
+            filter=Q(
+                exercise_submission__passed=False,
+                exercise_submission__user=user,
+            )
+        )
+        passed_submissions_count = Count(
+            'exercise_submission',
+            filter=Q(
+                exercise_submission__passed=True,
+                exercise_submission__user=user,
+            )
+        )
+        ex = Exercise.objects.annotate(
+            not_passed_submissions_count=not_passed_submissions_count
+        ).annotate(
+            passed_submissions_count=passed_submissions_count
+        ).get(id=exercise.id)
+        return (
+            ex.not_passed_submissions_count > 0 and
+            ex.passed_submissions_count == 0
+        )
 
 
 class SubmissionSerializer(serializers.ModelSerializer):
