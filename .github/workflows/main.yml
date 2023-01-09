@@ -36,7 +36,7 @@ jobs:
           sudo apt-get install --yes postgresql-client
 
       - name: Query database
-        run: psql -h localhost -d postgres_db -U postgres_user -c 'SELECT 1;'
+        run: psql -h localhost -d postgres -U postgres -c 'SELECT 1;'
         env:
           # The hostname used to communicate with the PostgreSQL service container
           PGPASSWORD: postgres
