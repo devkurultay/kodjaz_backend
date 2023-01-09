@@ -15,6 +15,7 @@ jobs:
           POSTGRES_PASSWORD: postgres
         ports:
           - 5432:5432
+        options: --name postgres
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
@@ -30,7 +31,7 @@ jobs:
           cache: 'pip'
           cache-dependency-path: '**/requirements_dev.txt'
       - name: Prepare DB
-        run: docker exec v bash -c "PGPASSWORD=postgres psql -U postgres -c \"create role postgres with password 'postgres'\""
+        run: docker exec postgres bash -c "PGPASSWORD=postgres psql -U postgres -c \"create role postgres with password 'postgres'\""
       - name: Install dependencies
         run: pip install -r requirements/requirements_dev.txt # install all our dependencies for the project
       - name: Create a dummy env fille
