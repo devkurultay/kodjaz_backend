@@ -10,12 +10,8 @@ jobs:
         # Docker Hub image
         image: postgres
         # Provide the password for postgres
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
         ports:
           - 5432:5432
-        options: --name postgres
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
@@ -30,17 +26,19 @@ jobs:
           python-version: '3.10.7'
           cache: 'pip'
           cache-dependency-path: '**/requirements_dev.txt'
-      - name: Prepare DB
-        run: docker exec postgres bash -c "PGPASSWORD=postgres psql -U postgres -c \"create role postgres with password 'postgres'\""
+      - name: Install PostgreSQL client
+        run: |
+          apt-get update
+          apt-get install --yes postgresql-client
+
+      - name: Query database
+        run: psql -h postgres -d postgres -U postgres -c 'SELECT 1;'
+        env:
+          # The hostname used to communicate with the PostgreSQL service container
+          PGPASSWORD: postgres
+          POSTGRES_PORT: 5432
       - name: Install dependencies
         run: pip install -r requirements/requirements_dev.txt # install all our dependencies for the project
       - name: Create a dummy env fille
         run: cp env_template .env
       - run: python manage.py test
-        env:
-          # The hostname used to communicate with the PostgreSQL service container
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_HOST: postgres
-          # The default PostgreSQL port
-          POSTGRES_PORT: 5432
