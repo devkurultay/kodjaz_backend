@@ -11,8 +11,11 @@ from courses.serializers import UnitSerializer
 from courses.serializers import LessonSerializer
 from courses.serializers import ExerciseSerializer
 from courses.serializers import SubmissionSerializer
-from courses.serializers import UserLessonSerializer
+
 from courses.serializers import UserExerciseSerializer
+from courses.serializers import UserLessonSerializer
+from courses.serializers import UserUnitSerializer
+
 from courses.models import Track
 from courses.models import Unit
 from courses.models import Lesson
@@ -77,14 +80,13 @@ class UserTrackViewSet(ReadOnlyModelViewSet):
 
 
 class UserUnitViewSet(ReadOnlyModelViewSet):
-    serializer_class = UnitSerializer
+    queryset = Unit.objects.all()
+    serializer_class = UserUnitSerializer
 
-    def get_queryset(self):
-        user = self.request.user
-        units_ids = Submission.objects.filter(
-            user=user
-        ).values_list('exercise__lesson__unit__id', flat=True).distinct()
-        return Unit.objects.filter(id__in=units_ids)
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context.update({"user": self.request.user})
+        return context
 
 
 class UserLessonViewSet(ReadOnlyModelViewSet):

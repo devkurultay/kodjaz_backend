@@ -119,13 +119,31 @@ class UnitSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Unit
-        fields = [
+        fields = (
             'id', 'name', 'entity_type', 'description',
             'unit_lessons', 'is_published', 'track'
-        ]
+        )
 
     def get_entity_type(self, obj):
         return Unit.__name__
+
+
+class UserUnitSerializer(UnitSerializer):
+    unit_lessons = UserLessonSerializer(many=True, read_only=True)
+    is_complete = serializers.SerializerMethodField()
+
+    class Meta(UnitSerializer.Meta):
+        fields = UnitSerializer.Meta.fields + ('is_complete',)
+
+    def get_is_complete(self, obj):
+        user = self.context['user']
+        subs = Submission.objects.filter(
+            exercise__lesson__unit__id=obj.id, user=user,
+            passed=True
+        ).distinct('exercise').count()
+        exs = Exercise.objects.filter(
+            lesson__unit__id=obj.id).count()
+        return subs == exs
 
 
 class TrackSerializer(serializers.ModelSerializer):

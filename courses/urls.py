@@ -24,7 +24,7 @@ router.register(r'api/v1/exercises', ExerciseViewSet)
 router.register(r'api/v1/submissions', UserSubmissionViewSet, basename='Submission')
 
 router.register(r'api/v1/user/tracks', UserTrackViewSet, basename='Track')
-router.register(r'api/v1/user/units', UserUnitViewSet, basename='Unit')
+router.register(r'api/v1/user/units', UserUnitViewSet)
 router.register(r'api/v1/user/lessons', UserLessonViewSet)
 router.register(r'api/v1/user/exercises', UserExerciseViewSet)
 router.register(r'api/v1/user/submissions', UserSubmissionViewSet, basename='Submission')
