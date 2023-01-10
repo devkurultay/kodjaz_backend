@@ -138,17 +138,11 @@ class TrackSerializer(serializers.ModelSerializer):
 
 class UserTrackSerializer(TrackSerializer):
     track_units = UserUnitSerializer(many=True, read_only=True)
-    is_complete = serializers.SerializerMethodField()
+    progress_data = serializers.SerializerMethodField()
 
     class Meta(TrackSerializer.Meta):
-        fields = TrackSerializer.Meta.fields + ('is_complete',)
+        fields = TrackSerializer.Meta.fields + ('progress_data',)
 
-    def get_is_complete(self, track):
+    def get_progress_data(self, track):
         user = self.context['user']
-        subs = Submission.objects.filter(
-            exercise__lesson__unit__track__id=track.id,
-            user=user, passed=True
-        ).distinct('exercise').count()
-        exs = Exercise.objects.filter(
-            lesson__unit__track__id=track.id).count()
-        return subs == exs
+        return track.get_progress_data(user)
