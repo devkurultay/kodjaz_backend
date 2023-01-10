@@ -111,51 +111,14 @@ class UnitSerializer(serializers.ModelSerializer):
 
 class UserUnitSerializer(UnitSerializer):
     unit_lessons = UserLessonSerializer(many=True, read_only=True)
-    is_complete = serializers.SerializerMethodField()
-    is_in_progress = serializers.SerializerMethodField()
+    progress_data = serializers.SerializerMethodField()
 
     class Meta(UnitSerializer.Meta):
-        fields = UnitSerializer.Meta.fields + (
-            'is_complete', 'is_in_progress',)
+        fields = UnitSerializer.Meta.fields + ('progress_data',)
 
-    def _progress_helper(self, unit):
+    def get_progress_data(self, unit):
         user = self.context['user']
-        subs = Submission.objects.filter(
-            exercise__lesson__unit__id=unit.id, user=user,
-            passed=True
-        ).distinct('exercise').count()
-        exs = Exercise.objects.filter(
-            lesson__unit__id=unit.id).count()
-        return subs, exs
-
-    def get_is_complete(self, unit):
-        subs, exs = self._progress_helper(unit)
-        return subs == exs
-    
-    def get_is_in_progress(self, unit):
-        """
-        When a Unit is NOT in progress?
-          - When there are NO exercises with submissions OR
-          - When all exercises have at least one passing submission.
-        When a Unit is in progress?
-          - When there are more exercises than submissions AND
-          - When submissions count > 0 OR
-          - When exercises == failed submissions
-        """
-
-        user = self.context['user']
-        failed_subs = Submission.objects.filter(
-            exercise__lesson__unit__id=unit.id, user=user,
-            passed=False
-        ).distinct('exercise').count()
-        passed_subs, exs = self._progress_helper(unit)
-        has_incomplete_ex = (passed_subs + failed_subs) > 0
-        at_least_one_ex_has_submissions = exs > (passed_subs + failed_subs)
-        exercises_have_eq_num_of_failed_submissions = exs == failed_subs
-        return (
-            (has_incomplete_ex and at_least_one_ex_has_submissions) or 
-            exercises_have_eq_num_of_failed_submissions
-        )
+        return unit.get_progress_data(user)
 
 
 class TrackSerializer(serializers.ModelSerializer):

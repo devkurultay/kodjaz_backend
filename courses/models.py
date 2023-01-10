@@ -65,6 +65,55 @@ class Unit(models.Model):
     def lessons_count(self):
         return self.unit_lessons.filter(is_published=True).count()
 
+    def get_progress_data(self, user):
+        not_passed_submissions_count = Count(
+            'exercise_submission',
+            filter=Q(
+                exercise_submission__passed=False,
+                exercise_submission__user=user,
+            )
+        )
+        passed_submissions_count = Count(
+            'exercise_submission',
+            filter=Q(
+                exercise_submission__passed=True,
+                exercise_submission__user=user,
+            )
+        )
+        in_progress_exp = GreaterThan(
+            F('not_passed_submissions_count'), 0) & Exact(F('passed_submissions_count'), 0)
+        in_progress = ExpressionWrapper(in_progress_exp, output_field=models.BooleanField())
+
+        exercise_template_subq = Exercise.objects.annotate(
+            not_passed_submissions_count=not_passed_submissions_count
+        ).annotate(
+            passed_submissions_count=passed_submissions_count
+        ).annotate(
+            is_complete=GreaterThan(F('passed_submissions_count'),  0)
+        ).annotate(
+            is_in_progress=in_progress
+        ).filter(lesson__unit=OuterRef('pk'))
+
+        # `is_complete` if the following does not exist:
+        # (is_in_progress=True and is_complete=False)
+        # (is_in_progress=False and is_complete=False)
+        complete_expr = (
+            Q(is_in_progress=True) & Q(is_complete=False)
+        ) | (
+            Q(is_in_progress=False) & Q(is_complete=False)
+        )
+        # `is_in_progress` if (is_in_progress=True or (is_in_progress=False and is_complete=False))
+        in_progress_expr = Q(is_in_progress=True) | (
+            Q(is_in_progress=False) & Q(is_complete=False)
+        )
+
+        unit = Unit.objects.annotate(
+            is_complete=~Exists(exercise_template_subq.filter(complete_expr)) # NOT EXISTS
+        ).annotate(
+            is_in_progress=Exists(exercise_template_subq.filter(in_progress_expr))
+        ).get(id=self.id)
+        return {'is_complete': unit.is_complete, 'is_in_progress': unit.is_in_progress}
+
 
 class Lesson(models.Model):
     name = models.CharField(_('Name of a Lesson'), max_length=255)
