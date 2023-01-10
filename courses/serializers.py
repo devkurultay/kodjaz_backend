@@ -59,6 +59,7 @@ class UserExerciseSerializer(ExerciseSerializer):
 
 class SubmissionSerializer(serializers.ModelSerializer):
     passed = serializers.BooleanField(read_only=True, required=False)
+
     class Meta:
         model = Submission
         fields = [
@@ -82,7 +83,6 @@ class LessonSerializer(serializers.ModelSerializer):
 
 
 class UserLessonSerializer(LessonSerializer):
-    lesson_exercises = UserExerciseSerializer(many=True, read_only=True)
     progress_data = serializers.SerializerMethodField()
 
     class Meta(LessonSerializer.Meta):
@@ -109,7 +109,6 @@ class UnitSerializer(serializers.ModelSerializer):
 
 
 class UserUnitSerializer(UnitSerializer):
-    unit_lessons = UserLessonSerializer(many=True, read_only=True)
     progress_data = serializers.SerializerMethodField()
 
     class Meta(UnitSerializer.Meta):
@@ -136,7 +135,6 @@ class TrackSerializer(serializers.ModelSerializer):
 
 
 class UserTrackSerializer(TrackSerializer):
-    track_units = UserUnitSerializer(many=True, read_only=True)
     progress_data = serializers.SerializerMethodField()
 
     class Meta(TrackSerializer.Meta):
