@@ -1,7 +1,11 @@
 from django.db import models
 from django.db.models import Count
 from django.db.models import Q
+from django.db.models import F
+from django.db.models import ExpressionWrapper
 from django.db.models import Sum
+from django.db.models.lookups import GreaterThan
+from django.db.models.lookups import Exact
 from django.utils.translation import gettext_lazy as _
 from users.models import User
 
@@ -143,6 +147,35 @@ class Exercise(models.Model):
     @property
     def track_id(self):
         return self.lesson.unit.track.id
+
+    def get_progress_data(self, user):
+        not_passed_submissions_count = Count(
+            'exercise_submission',
+            filter=Q(
+                exercise_submission__passed=False,
+                exercise_submission__user=user,
+            )
+        )
+        passed_submissions_count = Count(
+            'exercise_submission',
+            filter=Q(
+                exercise_submission__passed=True,
+                exercise_submission__user=user,
+            )
+        )
+        in_progress_exp = GreaterThan(
+            F('not_passed_submissions_count'), 0) & Exact(F('passed_submissions_count'), 0)
+        in_progress = ExpressionWrapper(in_progress_exp, output_field=models.BooleanField())
+        ex = Exercise.objects.annotate(
+            not_passed_submissions_count=not_passed_submissions_count
+        ).annotate(
+            passed_submissions_count=passed_submissions_count
+        ).annotate(
+            is_complete=GreaterThan(F('passed_submissions_count'),  0)
+        ).annotate(
+            is_in_progress=in_progress
+        ).get(id=self.id)
+        return {'is_complete': ex.is_complete, 'is_in_progress': ex.is_in_progress}
 
 
 class SubmissionCreationException(Exception):
