@@ -15,49 +15,78 @@ from courses.serializers import UserTrackSerializer
 class UserExerciseSerializerTests(TestCase):
 
     def setUp(self) -> None:
-        self.exercise = ExerciseFactory()
-        self.not_passed_submission = SubmissionFactory(
-            passed=False, exercise=self.exercise)
-        
+        self.failing_exercise = ExerciseFactory()
+        self.failing_submission = SubmissionFactory(
+            passed=False, exercise=self.failing_exercise)
+
         self.completed_exercise = ExerciseFactory()
-        self.submission = SubmissionFactory(
+        self.completed_submission = SubmissionFactory(
             passed=True, exercise=self.completed_exercise)
         return super().setUp()
 
-    def test_is_complete_field(self):
-        kwargs = {'context': {'user': self.not_passed_submission.user}}
-        serializer = UserExerciseSerializer(instance=self.exercise, **kwargs)
-        data = serializer.data
-        self.assertFalse(data['is_complete'])
-
-        kwargs = {'context': {'user': self.submission.user}}
-        serializer = UserExerciseSerializer(
-            instance=self.completed_exercise, **kwargs)
-        data = serializer.data
-        self.assertTrue(data['is_complete'])
-    
-    def test_is_in_progress_field(self):
-        # When only one submission: passed = False
-        kwargs = {'context': {'user': self.not_passed_submission.user}}
-        serializer = UserExerciseSerializer(instance=self.exercise, **kwargs)
-        data = serializer.data
-        self.assertTrue(data['is_in_progress'])
-
-        # When added another submission: passed = True
-        SubmissionFactory(
-            passed=True, exercise=self.exercise,
-            user=self.not_passed_submission.user)
-        serializer = UserExerciseSerializer(instance=self.exercise, **kwargs)
-        data = serializer.data
-        self.assertFalse(data['is_in_progress'])
-
-        # When an exercise does not have any submissions
+    def test_progress_data_field(self):
+        # No submissions. {is_complete: False, is_in_progress: False}
         exercise = ExerciseFactory()
         user = UserFactory()
         kwargs = {'context': {'user': user}}
         serializer = UserExerciseSerializer(instance=exercise, **kwargs)
-        data = serializer.data
-        self.assertFalse(data['is_in_progress'])
+        progress_data = serializer.data['progress_data']
+        self.assertFalse(progress_data['is_complete'])
+        self.assertFalse(progress_data['is_in_progress'])
+
+        # One failing submission. {is_complete: False, is_in_progress: True}
+        kwargs = {'context': {'user': self.failing_submission.user}}
+        serializer = UserExerciseSerializer(instance=self.failing_exercise, **kwargs)
+        progress_data = serializer.data['progress_data']
+        self.assertFalse(progress_data['is_complete'])
+        self.assertTrue(progress_data['is_in_progress'])
+
+        # One passing submission. {is_complete: True, is_in_progress: False}
+        kwargs = {'context': {'user': self.completed_submission.user}}
+        serializer = UserExerciseSerializer(
+            instance=self.completed_exercise, **kwargs)
+        progress_data = serializer.data['progress_data']
+        self.assertTrue(progress_data['is_complete'])
+        self.assertFalse(progress_data['is_in_progress'])
+
+        # Two submissions: one failing, one passing. {is_complete: True, is_in_progress: False}
+        SubmissionFactory(
+            exercise=self.failing_exercise,
+            user=self.failing_submission.user,
+            passed=True)
+        kwargs = {'context': {'user': self.failing_submission.user}}
+        serializer = UserExerciseSerializer(instance=self.failing_exercise, **kwargs)
+        progress_data = serializer.data['progress_data']
+        self.assertTrue(progress_data['is_complete'])
+        self.assertFalse(progress_data['is_in_progress'])
+
+        # Two passing submissions. {is_complete: True, is_in_progress: False}
+        SubmissionFactory(
+            exercise=self.completed_exercise,
+            user=self.completed_submission.user,
+            passed=True)
+        kwargs = {'context': {'user': self.completed_submission.user}}
+        serializer = UserExerciseSerializer(instance=self.completed_exercise, **kwargs)
+        progress_data = serializer.data['progress_data']
+        self.assertTrue(progress_data['is_complete'])
+        self.assertFalse(progress_data['is_in_progress'])
+
+        # Two failing submissions. {is_complete: False, is_in_progress: True}
+        two_failed_subm_exs = ExerciseFactory()
+        user = UserFactory()
+        SubmissionFactory(
+            user=user,
+            exercise=two_failed_subm_exs,
+            passed=False)
+        SubmissionFactory(
+            user=user,
+            exercise=two_failed_subm_exs,
+            passed=False)
+        kwargs = {'context': {'user': user}}
+        serializer = UserExerciseSerializer(instance=two_failed_subm_exs, **kwargs)
+        progress_data = serializer.data['progress_data']
+        self.assertFalse(progress_data['is_complete'])
+        self.assertTrue(progress_data['is_in_progress'])
 
 
 class UserLessonSerializerTests(TestCase):
