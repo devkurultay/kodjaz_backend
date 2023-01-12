@@ -1,6 +1,16 @@
 import requests
 
 from django.conf import settings
+from django.db.models import BooleanField
+from django.db.models import Count
+from django.db.models import Q
+from django.db.models import F
+from django.db.models import Exists
+from django.db.models import ExpressionWrapper
+from django.db.models import OuterRef
+from django.db.models.functions import Coalesce
+from django.db.models.lookups import GreaterThan
+from django.db.models.lookups import Exact
 
 from courses.models import Exercise
 
@@ -147,3 +157,74 @@ class Checker:
         
         # All checks passed
         return self._build_output(True, output, '')
+
+
+# Don't repeat yourself
+def get_progress_data(user, entity, instance, filter_key):
+    not_passed_submissions_count = Count(
+        'exercise_submission',
+        filter=Q(
+            exercise_submission__passed=False,
+            exercise_submission__user=user,
+        ),
+        distinct=True
+    )
+    passed_submissions_count = Count(
+        'exercise_submission',
+        filter=Q(
+            exercise_submission__passed=True,
+            exercise_submission__user=user,
+        ),
+        distinct=True
+    )
+    in_progress_exp = GreaterThan(
+        F('not_passed_submissions_count'), 0) & Exact(F('passed_submissions_count'), 0)
+    in_progress = ExpressionWrapper(in_progress_exp, output_field=BooleanField())
+
+    submissions_sum = F('passed_submissions_count') + F('not_passed_submissions_count')
+
+    filter_kwargs = {filter_key: OuterRef('pk')}
+    exercise_template_subq = Exercise.objects.annotate(
+        not_passed_submissions_count=Coalesce(not_passed_submissions_count, 0)
+    ).annotate(
+        passed_submissions_count=Coalesce(passed_submissions_count, 0)
+    ).annotate(
+        has_submissions=GreaterThan(submissions_sum,  0)
+    ).annotate(
+        is_complete=GreaterThan(F('passed_submissions_count'),  0)
+    ).annotate(
+        is_in_progress=in_progress
+    ).filter(**filter_kwargs)
+
+    no_submissions = Q(has_submissions=False)
+    has_passed_submissions = Q(passed_submissions_count__gt=0)
+    has_failed_submissions = Q(not_passed_submissions_count__gt=0)
+
+    # `is_complete` if the following does not exist:
+    # (is_in_progress=True and is_complete=False) OR
+    # no_submissions
+    complete_expr = (
+        Q(is_in_progress=True) & Q(is_complete=False)) | no_submissions
+
+    # ((has_failed_submissions OR has_passed_submissions) AND no_submissions_q) OR
+    # (has_failed_submissions AND has_passed_submissions) OR
+    # (has_failed_submissions AND (~has_passed_submissions AND ~no_submissions_q))
+    has_passed_or_failed_q = Exists(
+        exercise_template_subq.filter(has_failed_submissions | has_passed_submissions))
+    has_no_submissions_q = Exists(exercise_template_subq.filter(no_submissions))
+    has_subm_and_exs_wo_submissions = has_passed_or_failed_q & has_no_submissions_q
+
+    has_failed_submissions_q = Exists(exercise_template_subq.filter(has_failed_submissions))
+    has_passed_submissions_q = Exists(exercise_template_subq.filter(has_passed_submissions))
+    has_failed_and_passed_subm = has_failed_submissions_q & has_passed_submissions_q
+
+    has_only_failed = has_failed_submissions_q & ~has_passed_submissions_q & ~has_no_submissions_q
+
+    in_progress_expr = has_subm_and_exs_wo_submissions | has_failed_and_passed_subm | has_only_failed
+
+    item = entity.objects.annotate(
+        is_complete=~Exists(exercise_template_subq.filter(complete_expr)) # NOT EXISTS
+    ).annotate(
+        is_in_progress=in_progress_expr
+    ).get(id=instance.id)
+    return {'is_complete': item.is_complete, 'is_in_progress': item.is_in_progress}
