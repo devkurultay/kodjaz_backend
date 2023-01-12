@@ -22,6 +22,94 @@
 13. In the 2nd terminal issue the following command (which will run a watcher.js whose job is to rebuild the project each time it detects some changes under the frontend/src folder): `npm start`
 14. Now you can open your favorite editor and start writing your awesome code!
 
+
+**Entities**
+
+The product consists of __Tracks__. Tracks are basically courses.
+Each track consists of __Units__. You can think of Units as chapters of a book.
+Each unit consists of __Lessons__. Lesson tries to teach a topic.
+Each lesson consists of __Exercises__. Every exercise helps a learner to gain knowledge on a topic and practise.
+Whenever a user submits their code, a new __Submission__ is created. A submission has a link to an exercise. One Exercise can have multiple Submissions.
+
+
+**Endpoints**
+
+Swagger page is available [here](https://backend.kodjaz.com/swagger/)
+However, I'd recommend using the latest versions of [Postman](https://www.postman.com/downloads/)
+TODO: add screenshots of Postman settings.
+
+TODO: Implement subscription. A track a user is subscribed to will show up in their dashboard.
+
+When we want to display a data of a selected Track, we get data from `/api/v1/user/tracks/`.
+It will give a nested data like this:
+```json
+[
+  {
+      "id": 1,
+      "name": "Python",
+      "entity_type": "Track",
+      "description": "",
+      "track_units": [
+          {
+              "id": 1,
+              "name": "Python синтаксиси",
+              "entity_type": "Unit",
+              "description": "Python синтаксис негиздери",
+              "unit_lessons": [
+                  {
+                      "id": 1,
+                      "name": "Синтаксис негиздери",
+                      "entity_type": "Lesson",
+                      "is_published": true,
+                      "lesson_exercises": [
+                          {
+                              "id": 1,
+                              "name": "Салам, дүйнө!",
+                              "entity_type": "Exercise",
+                              "previous_exercise": "",
+                              ...
+                              "next_exercise": 2,
+                              "is_published": true,
+                              "lesson": 1,
+                              "unit_id": 1,
+                              "track_id": 1,
+                              "text_file_content": ""
+                          },
+                          {
+                              "id": 2,
+                              "name": "print() функциясы",
+                              "entity_type": "Exercise",
+                              "previous_exercise": 1,
+                              ...
+                              "next_exercise": 3,
+                              "is_published": true,
+                              "lesson": 1,
+                              "unit_id": 1,
+                              "track_id": 1,
+                              "text_file_content": ""
+                          }
+                      ],
+                      "unit": 1
+                  }
+              ],
+              "is_published": true,
+              "track": 1
+          }
+      ],
+      "is_published": true,
+      "programming_language": "Python",
+      "progress_data": {
+          "is_complete": false,
+          "is_in_progress": true
+      }
+  }
+]
+```
+For now, we also have similar endpoints for `units`, `lessons`, and `exercises`.
+
+Submission of a code should be sent to `/api/v1/user/submissions`.
+
+
 Happy coding!
 
 **Quirks**
