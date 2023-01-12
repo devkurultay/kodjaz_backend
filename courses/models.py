@@ -164,32 +164,8 @@ class Exercise(models.Model):
         return self.lesson.unit.track.id
 
     def get_progress_data(self, user):
-        not_passed_submissions_count = Count(
-            'exercise_submission',
-            filter=Q(
-                exercise_submission__passed=False,
-                exercise_submission__user=user,
-            )
-        )
-        passed_submissions_count = Count(
-            'exercise_submission',
-            filter=Q(
-                exercise_submission__passed=True,
-                exercise_submission__user=user,
-            )
-        )
-        in_progress_exp = GreaterThan(
-            F('not_passed_submissions_count'), 0) & Exact(F('passed_submissions_count'), 0)
-        in_progress = ExpressionWrapper(in_progress_exp, output_field=models.BooleanField())
-        ex = Exercise.objects.annotate(
-            not_passed_submissions_count=not_passed_submissions_count
-        ).annotate(
-            passed_submissions_count=passed_submissions_count
-        ).annotate(
-            is_complete=GreaterThan(F('passed_submissions_count'),  0)
-        ).annotate(
-            is_in_progress=in_progress
-        ).get(id=self.id)
+        from courses.helpers import get_annotated_exercise
+        ex = get_annotated_exercise(user).get(id=self.id)
         return {'is_complete': ex.is_complete, 'is_in_progress': ex.is_in_progress}
 
 

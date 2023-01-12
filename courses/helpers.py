@@ -159,8 +159,7 @@ class Checker:
         return self._build_output(True, output, '')
 
 
-# Don't repeat yourself
-def get_progress_data(user, entity, instance, filter_key):
+def get_annotated_exercise(user):
     not_passed_submissions_count = Count(
         'exercise_submission',
         filter=Q(
@@ -183,8 +182,7 @@ def get_progress_data(user, entity, instance, filter_key):
 
     submissions_sum = F('passed_submissions_count') + F('not_passed_submissions_count')
 
-    filter_kwargs = {filter_key: OuterRef('pk')}
-    exercise_template_subq = Exercise.objects.annotate(
+    return Exercise.objects.annotate(
         not_passed_submissions_count=Coalesce(not_passed_submissions_count, 0)
     ).annotate(
         passed_submissions_count=Coalesce(passed_submissions_count, 0)
@@ -193,8 +191,13 @@ def get_progress_data(user, entity, instance, filter_key):
     ).annotate(
         is_complete=GreaterThan(F('passed_submissions_count'),  0)
     ).annotate(
-        is_in_progress=in_progress
-    ).filter(**filter_kwargs)
+        is_in_progress=in_progress)
+
+
+def get_progress_data(user, entity, instance, filter_key):
+    filter_kwargs = {filter_key: OuterRef('pk')}
+    exercise_template_subq = get_annotated_exercise(
+        user).filter(**filter_kwargs)
 
     no_submissions = Q(has_submissions=False)
     has_passed_submissions = Q(passed_submissions_count__gt=0)
