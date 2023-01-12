@@ -47,20 +47,19 @@ class ExerciseSerializer(serializers.ModelSerializer):
     
 
 class UserExerciseSerializer(ExerciseSerializer):
-    is_complete = serializers.SerializerMethodField()
+    progress_data = serializers.SerializerMethodField()
 
     class Meta(ExerciseSerializer.Meta):
-        fields = ExerciseSerializer.Meta.fields + ('is_complete',)
-    
-    def get_is_complete(self, obj):
+        fields = ExerciseSerializer.Meta.fields + ('progress_data',)
+
+    def get_progress_data(self, exercise):
         user = self.context['user']
-        sub = Submission.objects.filter(
-            user=user, exercise=obj.id, passed=True)
-        return sub.exists()
+        return exercise.get_progress_data(user)
 
 
 class SubmissionSerializer(serializers.ModelSerializer):
     passed = serializers.BooleanField(read_only=True, required=False)
+
     class Meta:
         model = Submission
         fields = [
@@ -71,13 +70,12 @@ class SubmissionSerializer(serializers.ModelSerializer):
 class LessonSerializer(serializers.ModelSerializer):
     lesson_exercises = ExerciseSerializer(many=True, read_only=True)
     entity_type = serializers.SerializerMethodField()
-    is_complete = serializers.BooleanField(default=False, read_only=True)
 
     class Meta:
         model = Lesson
         fields = (
             'id', 'name', 'entity_type', 'is_published',
-            'lesson_exercises', 'unit', 'is_complete'
+            'lesson_exercises', 'unit'
         )
     
     def get_entity_type(self, obj):
@@ -85,32 +83,14 @@ class LessonSerializer(serializers.ModelSerializer):
 
 
 class UserLessonSerializer(LessonSerializer):
-    lesson_exercises = UserExerciseSerializer(many=True, read_only=True)
-    is_complete = serializers.SerializerMethodField()
+    progress_data = serializers.SerializerMethodField()
 
     class Meta(LessonSerializer.Meta):
-        fields = LessonSerializer.Meta.fields + ('is_complete',)
+        fields = LessonSerializer.Meta.fields + ('progress_data',)
 
-    # TODO(mutat): pass precalculated data to avoid repeated calculations
-    # e.g. pass precalculated data to UserTrackSerializer, and make
-    #  child serializers accept their portions as arguments
-    def get_is_complete(self, obj):
+    def get_progress_data(self, lesson):
         user = self.context['user']
-        completed_exercises_count = Count(
-            'lesson_exercises',
-            filter=Q(
-                lesson_exercises__exercise_submission__passed=True,
-                lesson_exercises__exercise_submission__user=user,
-            ),
-            distinct=True
-        )
-        all_exercises_count = Count('lesson_exercises', distinct=True)
-        lesson = Lesson.objects.annotate(
-            completed_ex_count=completed_exercises_count
-        ).annotate(
-            all_ex_count=all_exercises_count
-        ).get(id=obj.id)
-        return lesson.completed_ex_count == lesson.all_ex_count
+        return lesson.get_progress_data(user)
 
 
 class UnitSerializer(serializers.ModelSerializer):
@@ -129,21 +109,14 @@ class UnitSerializer(serializers.ModelSerializer):
 
 
 class UserUnitSerializer(UnitSerializer):
-    unit_lessons = UserLessonSerializer(many=True, read_only=True)
-    is_complete = serializers.SerializerMethodField()
+    progress_data = serializers.SerializerMethodField()
 
     class Meta(UnitSerializer.Meta):
-        fields = UnitSerializer.Meta.fields + ('is_complete',)
+        fields = UnitSerializer.Meta.fields + ('progress_data',)
 
-    def get_is_complete(self, obj):
+    def get_progress_data(self, unit):
         user = self.context['user']
-        subs = Submission.objects.filter(
-            exercise__lesson__unit__id=obj.id, user=user,
-            passed=True
-        ).distinct('exercise').count()
-        exs = Exercise.objects.filter(
-            lesson__unit__id=obj.id).count()
-        return subs == exs
+        return unit.get_progress_data(user)
 
 
 class TrackSerializer(serializers.ModelSerializer):
@@ -162,18 +135,11 @@ class TrackSerializer(serializers.ModelSerializer):
 
 
 class UserTrackSerializer(TrackSerializer):
-    track_units = UserUnitSerializer(many=True, read_only=True)
-    is_complete = serializers.SerializerMethodField()
+    progress_data = serializers.SerializerMethodField()
 
     class Meta(TrackSerializer.Meta):
-        fields = TrackSerializer.Meta.fields + ('is_complete',)
+        fields = TrackSerializer.Meta.fields + ('progress_data',)
 
-    def get_is_complete(self, track):
+    def get_progress_data(self, track):
         user = self.context['user']
-        subs = Submission.objects.filter(
-            exercise__lesson__unit__track__id=track.id,
-            user=user, passed=True
-        ).distinct('exercise').count()
-        exs = Exercise.objects.filter(
-            lesson__unit__track__id=track.id).count()
-        return subs == exs
+        return track.get_progress_data(user)

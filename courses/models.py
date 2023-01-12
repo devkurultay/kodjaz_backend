@@ -1,7 +1,14 @@
 from django.db import models
 from django.db.models import Count
 from django.db.models import Q
+from django.db.models import F
+from django.db.models import Exists
+from django.db.models import ExpressionWrapper
+from django.db.models import OuterRef
 from django.db.models import Sum
+from django.db.models.functions import Coalesce
+from django.db.models.lookups import GreaterThan
+from django.db.models.lookups import Exact
 from django.utils.translation import gettext_lazy as _
 from users.models import User
 
@@ -38,6 +45,10 @@ class Track(models.Model):
         units = self.track_units.filter(is_published=True)
         return sum([u.lessons_count for u in units])
 
+    def get_progress_data(self, user):
+        from courses.helpers import get_progress_data
+        return get_progress_data(user, Track, self, 'lesson__unit__track')
+
 
 class Unit(models.Model):
     name = models.CharField(_('Name of a Unit'), max_length=255)
@@ -59,6 +70,10 @@ class Unit(models.Model):
     def lessons_count(self):
         return self.unit_lessons.filter(is_published=True).count()
 
+    def get_progress_data(self, user):
+        from courses.helpers import get_progress_data
+        return get_progress_data(user, Unit, self, 'lesson__unit')
+
 
 class Lesson(models.Model):
     name = models.CharField(_('Name of a Lesson'), max_length=255)
@@ -78,6 +93,10 @@ class Lesson(models.Model):
     @property
     def exercises_number(self):
         return self.lesson_exercises.filter(is_published=True).count()
+
+    def get_progress_data(self, user):
+        from courses.helpers import get_progress_data
+        return get_progress_data(user, Lesson, self, 'lesson')
 
 
 CHECKER_HELP_TEXT = _('separate with comma, without spaces, like this: my_var,hello world')
@@ -143,6 +162,11 @@ class Exercise(models.Model):
     @property
     def track_id(self):
         return self.lesson.unit.track.id
+
+    def get_progress_data(self, user):
+        from courses.helpers import get_annotated_exercise
+        ex = get_annotated_exercise(user).get(id=self.id)
+        return {'is_complete': ex.is_complete, 'is_in_progress': ex.is_in_progress}
 
 
 class SubmissionCreationException(Exception):
