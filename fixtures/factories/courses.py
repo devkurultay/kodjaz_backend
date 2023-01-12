@@ -13,7 +13,7 @@ class TrackFactory(factory.django.DjangoModelFactory):
     
     name = factory.Faker('name')
     description = factory.Faker('name')
-    is_published = False
+    is_published = True
     programming_language = 'Python'
 
 
@@ -23,7 +23,7 @@ class UnitFactory(factory.django.DjangoModelFactory):
     
     name = factory.Faker('name')
     description = factory.Faker('name')
-    is_published = False
+    is_published = True
     track = factory.SubFactory('fixtures.factories.courses.TrackFactory')
 
 
@@ -31,7 +31,7 @@ class LessonFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Lesson
     name = factory.Faker('name')
-    is_published = False
+    is_published = True
     unit = factory.SubFactory('fixtures.factories.courses.UnitFactory')
 
 
@@ -54,7 +54,7 @@ class ExerciseFactory(factory.django.DjangoModelFactory):
     output_should_not_contain_error_msg = 'It seems there\'s an error in your output'
     output_error_text = "Error explanation text"
     unit_test = ""
-    is_published = False
+    is_published = True
     lesson = factory.SubFactory('fixtures.factories.courses.LessonFactory')
 
 
