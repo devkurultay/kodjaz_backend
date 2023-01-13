@@ -9,6 +9,7 @@ from courses.models import Unit
 from courses.models import Lesson
 from courses.models import Exercise
 from courses.models import Submission
+from courses.models import Subscription
 
 
 class PreviousExerciseSerializerField(serializers.Field):
@@ -143,3 +144,15 @@ class UserTrackSerializer(TrackSerializer):
     def get_progress_data(self, track):
         user = self.context['user']
         return track.get_progress_data(user)
+
+
+class UserSubscriptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subscription
+        fields = ('id', 'user', 'track')
+        extra_kwargs = {'user': {'required': False}}
+
+    def create(self, validated_data):
+        user = self.context['user']
+        sub = Subscription.objects.create(user=user, track=validated_data['track'])
+        return sub

@@ -12,6 +12,7 @@ from courses.api_views import UserUnitViewSet
 from courses.api_views import UserLessonViewSet
 from courses.api_views import UserExerciseViewSet
 from courses.api_views import UserSubmissionViewSet
+from courses.api_views import UserSubscriptionViewSet
 
 
 app_name = 'courses'
@@ -28,6 +29,7 @@ router.register(r'api/v1/user/units', UserUnitViewSet)
 router.register(r'api/v1/user/lessons', UserLessonViewSet)
 router.register(r'api/v1/user/exercises', UserExerciseViewSet)
 router.register(r'api/v1/user/submissions', UserSubmissionViewSet, basename='Submission')
+router.register(r'api/v1/user/subscriptions', UserSubscriptionViewSet, basename='Subscription')
 
 urlpatterns = [
     path('', views.TracksListView.as_view(), name='tracks_list'),

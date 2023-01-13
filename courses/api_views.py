@@ -17,12 +17,14 @@ from courses.serializers import UserExerciseSerializer
 from courses.serializers import UserLessonSerializer
 from courses.serializers import UserUnitSerializer
 from courses.serializers import UserTrackSerializer
+from courses.serializers import UserSubscriptionSerializer
 
 from courses.models import Track
 from courses.models import Unit
 from courses.models import Lesson
 from courses.models import Exercise
 from courses.models import Submission
+from courses.models import Subscription
 
 from courses.helpers import build_input_object
 from courses.helpers import Checker
@@ -118,3 +120,12 @@ class UserSubmissionViewSet(ModelViewSet):
                 user=self.request.user)
         except ValueError as e:
             raise ValidationError({"detail": e})
+
+
+class UserSubscriptionViewSet(UserContextMixin, ModelViewSet):
+    serializer_class = UserSubscriptionSerializer
+    permission_classes = [IsSubmissionOwner]
+
+    def get_queryset(self):
+        user = self.request.user
+        return Subscription.objects.filter(user=user)
