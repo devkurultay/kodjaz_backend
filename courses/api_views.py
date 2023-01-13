@@ -1,4 +1,5 @@
 import markdown as md
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.viewsets import ReadOnlyModelViewSet
@@ -30,6 +31,19 @@ from courses.models import Subscription
 
 from courses.helpers import build_input_object
 from courses.helpers import Checker
+
+
+class CustomAPIException(ValidationError):
+    """
+    raises API exceptions with custom messages and custom status codes
+    """
+    status_code = status.HTTP_400_BAD_REQUEST
+    default_code = 'error'
+
+    def __init__(self, detail, status_code=None):
+        self.detail = detail
+        if status_code is not None:
+            self.status_code = status_code
 
 
 class TrackViewSet(ReadOnlyOrAdminModelViewSetMixin):
@@ -77,6 +91,30 @@ class ExerciseViewSet(ReadOnlyOrAdminModelViewSetMixin):
 class UserTrackViewSet(UserContextMixin, ReadOnlyModelViewSet):
     queryset = Track.objects.all()
     serializer_class = UserTrackSerializer
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        user = self.request.user
+        track_ids = Subscription.objects.filter(user=user).values_list(
+            'track', flat=True)
+        filtered_qs = qs.filter(id__in=track_ids)
+        if filtered_qs.exists():
+            return filtered_qs
+
+        st = status.HTTP_400_BAD_REQUEST
+        raise CustomAPIException(
+            "User is not subscribed to any tracks", status_code=st)
+
+    def get_object(self):
+        track = super().get_object()
+        has_subscription = Subscription.objects.filter(
+            user=self.request.user, track=track).exists()
+        if has_subscription:
+            return track
+
+        st = status.HTTP_400_BAD_REQUEST
+        raise CustomAPIException(
+            "User is not subscribed to this track", status_code=st)
 
 
 class UserUnitViewSet(UserContextMixin, ReadOnlyModelViewSet):
