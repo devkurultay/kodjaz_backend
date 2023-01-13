@@ -1,6 +1,11 @@
 from django.contrib import admin
 
-from . models import Track, Unit, Lesson, Exercise, Submission
+from .models import Exercise
+from .models import Lesson
+from .models import Submission
+from .models import Subscription
+from .models import Track
+from .models import Unit
 
 
 class TrackAdmin(admin.ModelAdmin):
@@ -78,8 +83,14 @@ class SubmissionAdmin(admin.ModelAdmin):
     get_track.admin_order_field = 'exercise__lesson__unit__track__name'
 
 
+class SubscriptionAdmin(admin.ModelAdmin):
+    list_display = ('track', 'user', 'date_time_created')
+    list_filter = (TrackListFilter,)
+
+
 admin.site.register(Track, TrackAdmin)
 admin.site.register(Unit, UnitAdmin)
 admin.site.register(Lesson, LessonAdmin)
 admin.site.register(Exercise, ExerciseAdmin)
 admin.site.register(Submission, SubmissionAdmin)
+admin.site.register(Subscription, SubscriptionAdmin)
