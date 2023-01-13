@@ -4,6 +4,8 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_framework.serializers import ValidationError
 
+from rest_framework_simplejwt.authentication import JWTAuthentication
+
 from courses.mixins import ReadOnlyOrAdminModelViewSetMixin
 from courses.mixins import UserContextMixin
 from courses.permissions import IsSubmissionOwner
@@ -123,6 +125,7 @@ class UserSubmissionViewSet(ModelViewSet):
 
 
 class UserSubscriptionViewSet(UserContextMixin, ModelViewSet):
+    authentication_classes = (JWTAuthentication,)
     serializer_class = UserSubscriptionSerializer
     permission_classes = [IsSubmissionOwner]
 
