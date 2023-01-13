@@ -209,9 +209,8 @@ class Submission(models.Model):
 class Subscription(models.Model):
     user = models.ForeignKey(
         User, related_name='user_subscription', on_delete=models.DO_NOTHING)
-    track = models.OneToOneField(
-        Track, related_name='subscription',
-        on_delete=models.DO_NOTHING)
+    track = models.ForeignKey(
+        Track, related_name='track_subscriptions', on_delete=models.DO_NOTHING)
     date_time_created = models.DateTimeField(
         _('Subscription Date and Time'), auto_now_add=True, editable=False)
     date_time_modified = models.DateTimeField(
