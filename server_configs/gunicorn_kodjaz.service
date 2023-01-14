@@ -16,7 +16,7 @@ ExecStart=/home/username/backend_folder/env/bin/gunicorn \
           --error-logfile /home/username/backend_folder/logs/error.log \
           --pid /run/gunicorn/example_pid   \
           --env DJANGO_SETTINGS_MODULE=config.settings_prod \
-          --workers 3 \
+          --workers 2 \
           --bind unix:/run/gunicorn/example_sock config.wsgi:application
 ExecReload=/bin/kill -s HUP $MAINPID
 ExecStop=/bin/kill -s TERM $MAINPID
