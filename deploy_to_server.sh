@@ -1,8 +1,11 @@
 #!/bin/bash
+
+# This script depends on the buildreact-prod step
+# Make sure to use `make deploy` command
 source env/bin/activate
 PROD_BACKEND_URL_ROOT=https://$BACKEND_URL_ROOT
 
-python manage.py collectstatic --noinput
+python manage.py collectstatic --noinput --settings=config.settings_prod
 # Bundle up an archive file
 tar -cf kodjaz.tar --exclude='frontend/node_modules/*' authentication/ config/ courses/ fixtures/ frontend/ staticfiles/ server_configs/ requirements/ users/ manage.py robots.txt .env
 # Load variables form .env file
