@@ -35,8 +35,8 @@ def index(request):
     asset_manifest = {}
     with static_fallback_open("asset-manifest.json") as json_file:
         asset_manifest = json.load(json_file)
-    react_css_bundle = asset_manifest["files"]["main.css"]
-    react_js_bundle = asset_manifest["files"]["main.js"]
+    react_css_bundle = '{}{}'.format(settings.STATIC_URL_BASE, asset_manifest["files"]["main.css"])
+    react_js_bundle = '{}{}'.format(settings.STATIC_URL_BASE, asset_manifest["files"]["main.js"])
 
     context = {
         'is_dev': settings.DEBUG,

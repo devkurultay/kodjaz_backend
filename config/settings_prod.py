@@ -28,7 +28,9 @@ AWS_LOCATION = 'static'
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
-STATIC_URL = 'https://{}/{}/'.format(AWS_S3_CUSTOM_DOMAIN, AWS_LOCATION)
+# DEPRECATED(murat): remove STATIC_URL_BASE after migrating /cabinet code to the frontend repo
+STATIC_URL_BASE = 'https://{}'.format(AWS_S3_CUSTOM_DOMAIN)
+STATIC_URL = '{}/{}/'.format(STATIC_URL_BASE, AWS_LOCATION)
 
 DEBUG = os.environ.get('DEBUG')
 

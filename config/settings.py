@@ -195,6 +195,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
+# DEPRECATED(murat): remove STATIC_URL_BASE after migrating /cabinet code to the frontend repo
+STATIC_URL_BASE = ''
 STATIC_URL = '/static/'
 STATIC_ROOT = str(ROOT_DIR / "staticfiles")
 STATICFILES_DIRS = [str(ROOT_DIR / "static")]
