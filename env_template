@@ -26,3 +26,6 @@ AWS_ECR_PYTHON_REPO_NAME=code_runner_python
 AWS_PYTHON_EXEC_LAMBDA_URL='https://some_url.com'
 AWS_API_GATEWAY_API_KEY='some-key'
 API_URL_ROOT=http://localhost:8000/api/
+AWS_ACCESS_KEY_ID=some_key
+AWS_SECRET_ACCESS_KEY=some_secret_key
+AWS_STORAGE_BUCKET_NAME=some_bucket
