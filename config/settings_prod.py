@@ -32,7 +32,7 @@ STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
 STATIC_URL_BASE = 'https://{}'.format(AWS_S3_CUSTOM_DOMAIN)
 STATIC_URL = '{}/{}/'.format(STATIC_URL_BASE, AWS_LOCATION)
 
-DEBUG = os.environ.get('DEBUG')
+DEBUG = False
 
 ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOSTS')]
 CSRF_TRUSTED_ORIGINS = ['https://' + os.environ.get('BACKEND_URL_ROOT', '')]

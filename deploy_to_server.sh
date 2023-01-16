@@ -37,6 +37,7 @@ ssh -tt $SERVER_USERNAME@$SERVER_IP << END
     sed -i "s/DEBUG=True/DEBUG=False/" .env
     # '#' is a delimiter here 
     sed -i "s#$API_URL_ROOT#https://$BACKEND_URL_ROOT/api/#g" .env
+    sed -i "s#$DJANGO_SETTINGS_MODULE#config.settings_prod#g" .env
 
     # replace values in config files
     sed -i 's/example.com/$BACKEND_URL_ROOT/' $NGINX_CONFIG_FILE_NAME

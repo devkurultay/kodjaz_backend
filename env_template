@@ -1,3 +1,4 @@
+DJANGO_SETTINGS_MODULE=config.settings
 SECRET_KEY='very_secret'
 ALLOWED_HOSTS='*'
 DEBUG=True
