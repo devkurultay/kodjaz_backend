@@ -88,3 +88,6 @@ static/frontend/
 build/
 
 db.sqlite3
+
+# Zappa config file can have some sensitive info 
+zappa_settings.json

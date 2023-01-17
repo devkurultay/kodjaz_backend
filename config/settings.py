@@ -2,13 +2,13 @@ import os
 from datetime import timedelta
 from pathlib import Path
 
+import dotenv
+
 
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
+dotenv.read_dotenv(ROOT_DIR / '.env')
 
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -260,10 +260,6 @@ CSRF_COOKIE_HTTPONLY = True
 SESSION_COOKIE_HTTPONLY = True
 CSRF_COOKIE_AGE = 86400 # 24 hours
 
-CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000',
-    'https://kodjaz.com',
-]
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',

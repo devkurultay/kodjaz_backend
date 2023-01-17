@@ -1,0 +1,18 @@
+{
+    "dev": {
+        "slim_handler": true,
+        "aws_region": "some-region",
+        "django_settings": "config.settings_prod",
+        "exclude": [
+          ".git", ".github", "node_modules", ".vscode", "tests", "code_runner",
+          "server_configs", "requirements"
+        ],
+        "profile_name": "default",
+        "project_name": "some-name",
+        "runtime": "python3.9",
+        "s3_bucket": "some-bucket-name",
+        "manage_roles": false,
+        "role_name": "SomeRole",
+        "role_arn": "arn:aws:iam::some-id:role/SomeRole"
+    }
+}

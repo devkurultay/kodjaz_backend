@@ -2,13 +2,16 @@
 
 # This script depends on the buildreact-prod step
 # Make sure to use `make deploy` command
+echo "Activating virtual env"
 source env/bin/activate
-PROD_BACKEND_URL_ROOT=https://$BACKEND_URL_ROOT
 
-python manage.py collectstatic --noinput --settings=config.settings_prod
-# Bundle up an archive file
-tar -cf kodjaz.tar --exclude='frontend/node_modules/*' authentication/ config/ courses/ fixtures/ frontend/ staticfiles/ server_configs/ requirements/ users/ manage.py robots.txt .env
+echo "Collecting static files"
+# python manage.py collectstatic --noinput --settings=config.settings_prod
+# Bundle up an archive file. Include staticfiles/ if you are not using AWS S3
+echo "Creating an archive"
+tar -cf kodjaz.tar --exclude='frontend/node_modules/*' scripts/ authentication/ config/ courses/ fixtures/ frontend/ server_configs/ requirements/ users/ manage.py robots.txt .env
 # Load variables form .env file
+echo "Loading env variables"
 source .env
 # Upload bundled archive
 ssh -tt $SERVER_USERNAME@$SERVER_IP << END
@@ -34,10 +37,8 @@ ssh -tt $SERVER_USERNAME@$SERVER_IP << END
     tar -xf kodjaz.tar
 
     # replace values in .env file
-    sed -i "s/DEBUG=True/DEBUG=False/" .env
-    # '#' is a delimiter here 
-    sed -i "s#$API_URL_ROOT#https://$BACKEND_URL_ROOT/api/#g" .env
-    sed -i "s#$DJANGO_SETTINGS_MODULE#config.settings_prod#g" .env
+    chmod +x scripts/replace_env_values_for_prod.sh
+    ./scripts/replace_env_values_for_prod.sh
 
     # replace values in config files
     sed -i 's/example.com/$BACKEND_URL_ROOT/' $NGINX_CONFIG_FILE_NAME

@@ -37,7 +37,7 @@ DEBUG = False
 ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOSTS')]
 CSRF_TRUSTED_ORIGINS = ['https://' + os.environ.get('BACKEND_URL_ROOT', '')]
 
-# PROD ONLY
+CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS').split(',')
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
