@@ -67,6 +67,10 @@ It will give a nested data like this:
                               "name": "Салам, дүйнө!",
                               "entity_type": "Exercise",
                               "previous_exercise": "",
+                              "lecture": "Программалоо бул компьютерди колдонуучу...",
+                              "instruction": "Басып чыгаруу функциясын колдонуп, терминалга...",
+                              "hint": "Текстти басып чыгарганда аны жалгыз (') же кош (\") тырмакчага алышыңыз керек.",
+                              "default_code": "print(\"Hello world!\")",
                               ...
                               "next_exercise": 2,
                               "is_published": true,
@@ -80,6 +84,10 @@ It will give a nested data like this:
                               "name": "print() функциясы",
                               "entity_type": "Exercise",
                               "previous_exercise": 1,
+                              "lecture": "Программалоо бул компьютерди колдонуучу...",
+                              "instruction": "Басып чыгаруу функциясын колдонуп, терминалга...",
+                              "hint": "Текстти басып чыгарганда аны жалгыз (') же кош (\") тырмакчага алышыңыз керек.",
+                              "default_code": "print(\"Hello world!\")",
                               ...
                               "next_exercise": 3,
                               "is_published": true,
