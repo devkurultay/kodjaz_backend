@@ -1,7 +1,7 @@
 #!make
 include .env
 
-.PHONY: clearstatic pushdocker buildreact-dev buildreact-prod
+.PHONY: clearstatic pushdocker buildreact-dev buildreact-prod run-build-collect-static-prod deploy
 
 PROD_API_URL_ROOT := https://$(BACKEND_URL_ROOT)/api/
 ACTIVATE := . env/bin/activate
@@ -36,7 +36,9 @@ buildreact-dev:
 
 buildreact-prod:
 	cd frontend && REACT_APP_BASE_URL=$(PROD_API_URL_ROOT) npm run build
-	$(ACTIVATE) && python manage.py collectstatic --noinput
+
+run-build-collect-static-prod: buildreact-prod
+	$(ACTIVATE) && python manage.py collectstatic --noinput --settings=config.settings_prod
 
 buildcoderunner:
 	cd code_runner && docker build -t $(AWS_ECR_PYTHON_REPO_NAME):latest .
