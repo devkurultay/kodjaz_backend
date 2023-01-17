@@ -1,7 +1,7 @@
 #!make
 include .env
 
-.PHONY: clearstatic pushdocker buildreact-dev buildreact-prod run-build-collect-static-prod deploy
+.PHONY: clearstatic pushdocker buildreact-dev buildreact-prod run-build-collect-static-prod replace-env-dev replace-env-prod
 
 PROD_API_URL_ROOT := https://$(BACKEND_URL_ROOT)/api/
 ACTIVATE := . env/bin/activate
@@ -50,9 +50,25 @@ pushdocker:
 	docker push $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/$(AWS_ECR_PYTHON_REPO_NAME):latest
 
 deploy: buildreact-prod
-	chmod +x deploy_to_server.sh
-	./deploy_to_server.sh
+	chmod +x scripts/deploy_to_server.sh
+	./scripts/deploy_to_server.sh
 	$(MAKE) clearstatic
 
 export-course:
 	$(ACTIVATE) && python manage.py dumpdata courses users --exclude=courses.submission --format=json --indent=4 --output=fixtures/courses.json --natural-primary --natural-foreign
+
+replace-env-prod:
+	chmod +x scripts/replace_env_values_for_prod.sh
+	./scripts/replace_env_values_for_prod.sh
+
+replace-env-dev:
+	chmod +x scripts/replace_env_values_for_dev.sh
+	./scripts/replace_env_values_for_dev.sh
+
+zappa-deploy-dev: replace-env-prod
+	zappa deploy dev
+	$(MAKE) replace-env-dev
+
+zappa-update-dev: replace-env-prod
+	zappa update dev
+	$(MAKE) replace-env-dev
