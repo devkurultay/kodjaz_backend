@@ -260,10 +260,6 @@ CSRF_COOKIE_HTTPONLY = True
 SESSION_COOKIE_HTTPONLY = True
 CSRF_COOKIE_AGE = 86400 # 24 hours
 
-CORS_ORIGIN_WHITELIST = [
-    'http://localhost:3000',
-    'https://kodjaz.com',
-]
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
     'http://127.0.0.1:3000',
