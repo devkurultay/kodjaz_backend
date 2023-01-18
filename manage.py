@@ -18,5 +18,6 @@ def main():
 
 
 if __name__ == '__main__':
+    #TODO(murat): set proper env file according to 'ENV' value (see settings.py)
     dotenv.read_dotenv()
     main()
