@@ -1,20 +1,32 @@
 import os
+import dotenv
 from datetime import timedelta
 from pathlib import Path
-
-import dotenv
 
 
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent
 
-dotenv.read_dotenv(ROOT_DIR / '.env')
+DEV_LOCAL = 'dev_local'
+DEV_ZAPPA = 'dev_zappa'
+PROD_VPS = 'prod_vps'
+PROD_ZAPPA = 'prod_zappa'
+
+ENV = os.environ.get('ENV', DEV_LOCAL)
+env_file = '.env'
+if ENV == DEV_ZAPPA:
+    env_file = '.env.zappa_dev'
+elif ENV == PROD_ZAPPA:
+    env_file = '.env.zappa_prod'
+elif ENV == PROD_VPS:
+    env_file = '.env.vps_prod'
+dotenv.read_dotenv(ROOT_DIR / env_file)
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG')
 
-ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOSTS')]
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(',')
 
 
 INSTALLED_APPS_BASE = [
@@ -210,48 +222,8 @@ STATICFILES_DIRS += [
     FRONTEND_DIR / "build/static"
 ]
 
-# Other settings
+# DEPRECATED(murat): Remove after enabling prod frontend
 OUTPUT_CONTAINER_ID_IN_EXERCISES_TEMPLATE = 'output'
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
-        }
-    },
-    'handlers': {
-        'mail_admins': {
-            'class': 'django.utils.log.AdminEmailHandler',
-            'filters': ['require_debug_false'],
-        },
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-        'file': {
-            'class': 'logging.FileHandler',
-            'filename': ROOT_DIR / 'django.log',
-        },
-    },
-    'loggers': {
-        '': {
-            'handlers': ['console', 'mail_admins'],
-            'level': 'ERROR',
-            'propagate': False,
-        },
-        'django': {
-            'handlers': ['console', 'mail_admins'],
-            'level': 'ERROR',
-            'propagate': False,
-        },
-        'celery': {
-            'handlers': ['console', 'mail_admins'],
-            'level': 'ERROR',
-            'propagate': False
-        },
-    }
-}
 
 # TODO(murat): review later
 CSRF_COOKIE_SAMESITE = 'Lax'

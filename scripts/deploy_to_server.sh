@@ -5,15 +5,20 @@
 echo "Activating virtual env"
 source env/bin/activate
 
-echo "Collecting static files"
+# Enable this if you are not using S3
+# echo "Collecting static files"
 # python manage.py collectstatic --noinput --settings=config.settings_prod
 # Bundle up an archive file. Include staticfiles/ if you are not using AWS S3
 echo "Creating an archive"
 tar -cf kodjaz.tar --exclude='frontend/node_modules/*' scripts/ authentication/ config/ courses/ fixtures/ frontend/ server_configs/ requirements/ users/ manage.py robots.txt .env
+
 # Load variables form .env file
 echo "Loading env variables"
+
+# TODO(murat): move corresponding vars from .env to .env.vps_prod and source it
 source .env
-# Upload bundled archive
+
+# If folders and files do not exist, create them
 ssh -tt $SERVER_USERNAME@$SERVER_IP << END
     if [ ! -d /home/$SERVER_USERNAME/$PROJECT_FOLDER_ON_SERVER ]; then
         mkdir /home/$SERVER_USERNAME/$PROJECT_FOLDER_ON_SERVER;
@@ -26,19 +31,20 @@ ssh -tt $SERVER_USERNAME@$SERVER_IP << END
     exit
 END
 
+# Upload the bundle
 scp kodjaz.tar $SERVER_USERNAME@$SERVER_IP:$PROJECT_FOLDER_ON_SERVER/
 rm kodjaz.tar
 ssh -tt $SERVER_USERNAME@$SERVER_IP << END
     cd $PROJECT_FOLDER_ON_SERVER/
+    
+    # This is for picking up a right .env file in settings
+    export ENV=prod_vps
+
     echo "Clearing static files folder"
     rm -rf staticfiles/
     
     echo "Unpacking"
     tar -xf kodjaz.tar
-
-    # replace values in .env file
-    chmod +x scripts/replace_env_values_for_prod.sh
-    ./scripts/replace_env_values_for_prod.sh
 
     # replace values in config files
     sed -i 's/example.com/$BACKEND_URL_ROOT/' $NGINX_CONFIG_FILE_NAME
