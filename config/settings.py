@@ -222,48 +222,8 @@ STATICFILES_DIRS += [
     FRONTEND_DIR / "build/static"
 ]
 
-# Other settings
+# DEPRECATED(murat): Remove after enabling prod frontend
 OUTPUT_CONTAINER_ID_IN_EXERCISES_TEMPLATE = 'output'
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
-        }
-    },
-    'handlers': {
-        'mail_admins': {
-            'class': 'django.utils.log.AdminEmailHandler',
-            'filters': ['require_debug_false'],
-        },
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-        'file': {
-            'class': 'logging.FileHandler',
-            'filename': ROOT_DIR / 'django.log',
-        },
-    },
-    'loggers': {
-        '': {
-            'handlers': ['console', 'mail_admins'],
-            'level': 'ERROR',
-            'propagate': False,
-        },
-        'django': {
-            'handlers': ['console', 'mail_admins'],
-            'level': 'ERROR',
-            'propagate': False,
-        },
-        'celery': {
-            'handlers': ['console', 'mail_admins'],
-            'level': 'ERROR',
-            'propagate': False
-        },
-    }
-}
 
 # TODO(murat): review later
 CSRF_COOKIE_SAMESITE = 'Lax'
