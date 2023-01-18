@@ -1,20 +1,32 @@
 import os
+import dotenv
 from datetime import timedelta
 from pathlib import Path
-
-import dotenv
 
 
 ROOT_DIR = Path(__file__).resolve(strict=True).parent.parent
 
-dotenv.read_dotenv(ROOT_DIR / '.env')
+DEV_LOCAL = 'dev_local'
+DEV_ZAPPA = 'dev_zappa'
+PROD_VPS = 'prod_vps'
+PROD_ZAPPA = 'prod_zappa'
+
+ENV = os.environ.get('ENV', DEV_LOCAL)
+env_file = '.env'
+if ENV == DEV_ZAPPA:
+    env_file = '.env.zappa_dev'
+elif ENV == PROD_ZAPPA:
+    env_file = '.env.zappa_prod'
+elif ENV == PROD_VPS:
+    env_file = '.env.vps_prod'
+dotenv.read_dotenv(ROOT_DIR / env_file)
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG')
 
-ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOSTS')]
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(',')
 
 
 INSTALLED_APPS_BASE = [
