@@ -1,7 +1,7 @@
 #!make
 include .env
 
-.PHONY: clearstatic collectstatic pushdocker buildreact-dev buildreact-zappa-prod buildreact-zappa-dev \
+.PHONY: clearstatic collectstatic pushdocker buildreact-dev buildreact-vps-prod buildreact-zappa-prod buildreact-zappa-dev \
 	collectstatic-zappa-dev collectstatic-zappa-prod replace-env-dev replace-env-prod
 
 ACTIVATE := . env/bin/activate
@@ -37,6 +37,9 @@ buildreact-dev:
 	cd frontend && REACT_APP_BASE_URL=$(API_URL_ROOT) npm run build
 	$(ACTIVATE) && python manage.py collectstatic --noinput
 
+buildreact-vps-prod:
+	cd frontend && REACT_APP_BASE_URL=https://$(VPS_PROD_BACKEND_URL_ROOT)/api/ npm run build
+
 buildreact-zappa-prod:
 	cd frontend && REACT_APP_BASE_URL=https://$(ZAPPA_PROD_BACKEND_URL_ROOT)/api/ npm run build
 
@@ -62,7 +65,7 @@ pushdocker:
 	docker tag $(AWS_ECR_PYTHON_REPO_NAME):latest $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/$(AWS_ECR_PYTHON_REPO_NAME):latest
 	docker push $(AWS_ACCOUNT_ID).dkr.ecr.$(AWS_REGION).amazonaws.com/$(AWS_ECR_PYTHON_REPO_NAME):latest
 
-deploy: buildreact-prod
+deploy: buildreact-vps-prod
 	chmod +x scripts/deploy_to_server.sh
 	./scripts/deploy_to_server.sh
 	$(MAKE) clearstatic
