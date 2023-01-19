@@ -7,7 +7,7 @@ from django.core.mail.backends.base import BaseEmailBackend
 
 class AWSLambdaSESEmailBackend(BaseEmailBackend):
 
-    def __init__(self, fail_silently, **kwargs):
+    def __init__(self, fail_silently=False, **kwargs):
         self.fail_silently = fail_silently
         self.client = boto3.client('lambda')
         self.aws_region = settings.AWS_S3_REGION_NAME
