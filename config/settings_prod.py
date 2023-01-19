@@ -41,6 +41,8 @@ CORS_ALLOWED_ORIGINS = os.environ.get('CORS_ALLOWED_ORIGINS').split(',')
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
 
+EMAIL_BACKEND = 'authentication.helpers.AWSLambdaSESEmailBackend'
+
 sentry_sdk.init(
     dsn="https://5f64324425ce455fb3889116c1f61416@o4504467899940864.ingest.sentry.io/4504467902234624",
     integrations=[DjangoIntegration()],
@@ -48,7 +50,6 @@ sentry_sdk.init(
     send_default_pii=True
 )
 
-# Logging
 LOGGING = {
     'version': 1,
     'formatters': {
