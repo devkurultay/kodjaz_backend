@@ -24,7 +24,7 @@ class AWSLambdaSESEmailBackend(BaseEmailBackend):
         return cnt
 
     def _send_ses_email_via_lambda(self, email_message):
-        # TODO(murat): set a valid HTML template here
+        # TODO(murat): set a valid HTML template here or use Django's templates framework
         body_html = '<html></html>'
         email_params = {
             'sender': email_message.from_email,

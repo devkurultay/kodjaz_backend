@@ -1,7 +1,10 @@
+import json
+
 from unittest.mock import MagicMock
 from unittest.mock import patch
 
 from django.core import mail
+from django.conf import settings
 from django.test import override_settings
 from django.test import SimpleTestCase
 
@@ -14,14 +17,36 @@ from django.test import SimpleTestCase
 
 class AWSLambdaSESEmailBackendTest(SimpleTestCase):
 
-    @patch('authentication.helpers.AWSLambdaSESEmailBackend.send_messages')
-    def test_send_messages_is_called_when_using_send_mail(self, mock_send_msgs):
-        recipients = ["joe@example.com", "jane@example.com"]
-        subj = "Subject"
+    # @patch('authentication.helpers.AWSLambdaSESEmailBackend.send_messages')
+    @patch('authentication.helpers.boto3.client')
+    def test_boto3_client_invoke_called(self, mock_client):
+        mock_invoke = MagicMock()
+        mock_client.return_value = MagicMock(invoke=mock_invoke)
+
+        subject = "Subject"
         message = "Content"
         from_email = 'murat@example.com'
+        recipients = ["joe@example.com", "jane@example.com"]
+        mail.send_mail(subject, message, from_email, recipients)
 
-        mail.send_mail(subj, message, from_email, recipients)
+        mock_client.assert_called_with('lambda')
 
-        # EMAIL_BACKEND is set to our custom backend, that's why it's method is called
-        mock_send_msgs.assert_called_once()
+        # TODO(murat): set a valid HTML template here or use Django's templates framework
+        body_html = '<html></html>'
+
+        expected_email_params = {
+            'sender': from_email,
+            'recipients': recipients,
+            'aws_region': settings.AWS_S3_REGION_NAME,
+            'subject': subject,
+            'body_text': message,
+            'body_html': body_html
+        }
+        payload_str = json.dumps({'email_params': expected_email_params})
+        payload_bytes_arr = bytes(payload_str, encoding='utf8')
+
+        mock_invoke.assert_called_with(
+            FunctionName='email_sender',
+            InvocationType='Event',
+            Payload=payload_bytes_arr
+        )
