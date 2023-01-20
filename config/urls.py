@@ -16,9 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.conf import settings
 from django.urls import path
+from django.urls import re_path
 from django.urls import include
+from django.views.generic import TemplateView
 
-from dj_rest_auth.registration.views import VerifyEmailView
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
@@ -34,8 +35,8 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    path('dj-rest-auth/account-confirm-email/', VerifyEmailView.as_view(), name='account_email_verification_sent'),
-    path('dj-rest-auth/registration/', include('dj_rest_auth.registration.urls')),
+    # This is just to make reverse("confirm_email", args=[emailconfirmation.key]) work
+    re_path(r'^account-confirm-email/(?P<key>[-:\w]+)/$', TemplateView.as_view(), name='confirm_email'),
     path('', include('courses.urls', namespace='courses')),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0),
          name='schema-swagger-ui'),
