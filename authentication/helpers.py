@@ -1,8 +1,11 @@
 import json
 import boto3
 
+from allauth.account.adapter import DefaultAccountAdapter
+from allauth.utils import build_absolute_uri
 from django.conf import settings
 from django.core.mail.backends.base import BaseEmailBackend
+from django.urls import reverse
 
 
 class AWSLambdaSESEmailBackend(BaseEmailBackend):
@@ -42,3 +45,11 @@ class AWSLambdaSESEmailBackend(BaseEmailBackend):
             InvocationType='Event',
             Payload=payload_bytes_arr
         )
+
+
+class KodjazAccountAdapter(DefaultAccountAdapter):
+
+    def get_email_confirmation_url(self, request, emailconfirmation):
+        url = reverse("confirm_email", args=[emailconfirmation.key])
+        ret = build_absolute_uri(request, url)
+        return ret
