@@ -87,3 +87,9 @@ zupdate-dev:
 
 zupdate-prod:
 	zappa update prod
+
+zmanage-dev:
+	zappa manage dev $(word 2,$(MAKECMDGOALS))
+
+zmanage-dev:
+	zappa manage prod $(word 2,$(MAKECMDGOALS))
