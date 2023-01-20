@@ -91,5 +91,5 @@ zupdate-prod:
 zmanage-dev:
 	zappa manage dev $(word 2,$(MAKECMDGOALS))
 
-zmanage-dev:
+zmanage-prod:
 	zappa manage prod $(word 2,$(MAKECMDGOALS))
