@@ -41,21 +41,27 @@ INSTALLED_APPS_BASE = [
 
 INSTALLED_APPS_OTHERS = [
     'rest_framework',
+    'rest_framework.authtoken',
     'rest_framework_simplejwt.token_blacklist',
-    'authentication.apps.AuthenticationConfig',
     'corsheaders',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'dj_rest_auth',
+    'dj_rest_auth.registration'
+]
+
+INSTALLED_APPS_LOCAL = [
+    'authentication.apps.AuthenticationConfig',
     'users.apps.UsersConfig',
     'courses.apps.CoursesConfig',
     'frontend.apps.FrontendConfig',
-    'allauth.socialaccount.providers.google',
     'crispy_forms',
     'drf_yasg',
 ]
 
-INSTALLED_APPS = INSTALLED_APPS_BASE + INSTALLED_APPS_OTHERS
+INSTALLED_APPS = INSTALLED_APPS_BASE + INSTALLED_APPS_OTHERS + INSTALLED_APPS_LOCAL
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
@@ -151,12 +157,13 @@ AUTHENTICATION_BACKENDS = (
 )
 
 LOGIN_REDIRECT_URL = "/"
-
+ACCOUNT_ADAPTER = 'authentication.helpers.KodjazAccountAdapter'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True
 ACCOUNT_SESSION_REMEMBER = True
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_UNIQUE_EMAIL = True
 
 # Password validation

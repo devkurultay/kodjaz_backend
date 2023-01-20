@@ -12,13 +12,12 @@ from rest_framework.decorators import api_view
 from rest_framework.decorators import authentication_classes
 from rest_framework.decorators import permission_classes
 from rest_framework.decorators import throttle_classes
-from rest_framework.generics import GenericAPIView, CreateAPIView
+from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
 from .serializers import CustomTokenObtainPairSerializer
 from .serializers import RefreshTokenSerializer
-from .serializers import UserCreateSerializer
 
 
 class LoginView(TokenObtainPairView):
@@ -54,12 +53,6 @@ class LogoutView(GenericAPIView):
         response.set_cookie('access_token', '')
         response.set_cookie('X-CSRFToken', '')
         return response
-
-
-class CreateUserAPIView(CreateAPIView):
-    throttle_classes = [AnonRateThrottle]
-    permission_classes = (AllowAny,)
-    serializer_class = UserCreateSerializer
 
 
 @api_view(['GET'])
