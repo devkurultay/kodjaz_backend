@@ -36,3 +36,5 @@ jobs:
       - name: Create a dummy env fille
         run: cp env_template .env
       - run: python manage.py test
+        env:
+          AWS_S3_REGION_NAME: eu-central-1
