@@ -10,7 +10,7 @@ source env/bin/activate
 # python manage.py collectstatic --noinput --settings=config.settings_prod
 # Bundle up an archive file. Include staticfiles/ if you are not using AWS S3
 echo "Creating an archive"
-tar -cf kodjaz.tar --exclude='frontend/node_modules/*' scripts/ authentication/ config/ courses/ fixtures/ frontend/ server_configs/ requirements/ users/ manage.py robots.txt .env
+tar -cf kodjaz.tar --exclude='frontend/node_modules/*' scripts/ authentication/ config/ courses/ fixtures/ frontend/ server_configs/ requirements/ users/ manage.py robots.txt .env.vps_prod
 
 # Load variables form .env file
 echo "Loading env variables"

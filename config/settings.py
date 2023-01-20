@@ -247,3 +247,5 @@ AWS_PYTHON_EXEC_LAMBDA_URL = os.environ.get('AWS_PYTHON_EXEC_LAMBDA_URL', '')
 AWS_API_GATEWAY_API_KEY = os.environ.get('AWS_API_GATEWAY_API_KEY', '')
 
 API_URL_ROOT = os.environ.get('API_URL_ROOT', '')
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
