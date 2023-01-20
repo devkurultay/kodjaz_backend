@@ -12,10 +12,10 @@ from django.test import SimpleTestCase
 )
 
 
-class SendTestEmailManagementCommand(SimpleTestCase):
+class AWSLambdaSESEmailBackendTest(SimpleTestCase):
 
     @patch('authentication.helpers.AWSLambdaSESEmailBackend.send_messages')
-    def test_boto_client_is_called_and_invoked(self, mock_send_msgs):
+    def test_send_messages_is_called_when_using_send_mail(self, mock_send_msgs):
         recipients = ["joe@example.com", "jane@example.com"]
         subj = "Subject"
         message = "Content"
