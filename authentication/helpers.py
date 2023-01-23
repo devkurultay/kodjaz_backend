@@ -28,7 +28,8 @@ class AWSLambdaSESEmailBackend(BaseEmailBackend):
 
     def _send_ses_email_via_lambda(self, email_message):
         # TODO(murat): set a valid HTML template here or use Django's templates framework
-        body_html = '<html></html>'
+        # and adjust email_sender service
+        body_html = ''
         email_params = {
             'sender': email_message.from_email,
             'recipients': email_message.to,
@@ -39,7 +40,6 @@ class AWSLambdaSESEmailBackend(BaseEmailBackend):
         }
         payload_str = json.dumps({'email_params': email_params})
         payload_bytes_arr = bytes(payload_str, encoding='utf8')
-
         self.client.invoke(
             FunctionName='email_sender',
             InvocationType='Event',
@@ -51,5 +51,4 @@ class KodjazAccountAdapter(DefaultAccountAdapter):
 
     def get_email_confirmation_url(self, request, emailconfirmation):
         url = reverse("confirm_email", args=[emailconfirmation.key])
-        ret = build_absolute_uri(request, url)
-        return ret
+        return f'https://{settings.DOMAIN_URL}/{url}'
