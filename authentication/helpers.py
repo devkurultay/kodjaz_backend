@@ -51,4 +51,4 @@ class KodjazAccountAdapter(DefaultAccountAdapter):
 
     def get_email_confirmation_url(self, request, emailconfirmation):
         url = reverse("confirm_email", args=[emailconfirmation.key])
-        return f'https://{settings.DOMAIN_URL}/{url}'
+        return f'{settings.DOMAIN_URL}{url}'
