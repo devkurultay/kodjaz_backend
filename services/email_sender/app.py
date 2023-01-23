@@ -11,12 +11,14 @@ def send_email(sender, recipients, aws_region, subject, body_text, body_html):
             },
             Message={
                 'Body': {
-                    'Html': {
-                        'Charset': "UTF-8",
-                        'Data': body_html
-                    },
+                    # TODO(murat): activate this when we come up with 
+                    # 'Html': {
+                    #     'Charset': "UTF-8",
+                    #     'Data': body_html
+                    # },
                     'Text': {
-                        'Data': body_text
+                        'Data': body_text,
+                        'Charset': "UTF-8",
                     },
                 },
                 'Subject': {
