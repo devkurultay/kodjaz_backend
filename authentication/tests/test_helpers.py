@@ -17,7 +17,6 @@ from django.test import SimpleTestCase
 
 class AWSLambdaSESEmailBackendTest(SimpleTestCase):
 
-    # @patch('authentication.helpers.AWSLambdaSESEmailBackend.send_messages')
     @patch('authentication.helpers.boto3.client')
     def test_boto3_client_invoke_called(self, mock_client):
         mock_invoke = MagicMock()
@@ -32,7 +31,7 @@ class AWSLambdaSESEmailBackendTest(SimpleTestCase):
         mock_client.assert_called_with('lambda')
 
         # TODO(murat): set a valid HTML template here or use Django's templates framework
-        body_html = '<html></html>'
+        body_html = ''
 
         expected_email_params = {
             'sender': from_email,
