@@ -2,6 +2,6 @@
 {% load account %}
 {% load i18n %}
 
-{% block content %}{% autoescape off %}{% user_display user as user_display %}{% blocktrans with site_name=current_site.name site_domain=current_site.domain %}{{ email }} колдонуучусу сиздин эмейл дарегиңизди {{ site_domain }} сайтында каттаган үчүн ушул эмейлди алып жатасыз.
+{% block content %}{% autoescape off %}{% user_display user as user_display %}{% blocktrans with site_name=current_site.name site_domain=current_site.domain %}{{ user_display }} колдонуучусу сиздин эмейл дарегиңизди {{ site_domain }} сайтында каттаган үчүн ушул эмейл катты алып жатасыз.
 
 Туура эле деп эсептесеңиз анда ушул шилтеме аркылуу өтсөңүз, дарегиңиз ырасталат: {{ activate_url }}{% endblocktrans %}{% endautoescape %}{% endblock %}
