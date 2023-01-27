@@ -1,8 +1,5 @@
 from rest_framework import serializers
-
-from django.db.models import Count
-from django.db.models import Q
-from django.db.models import Sum
+from rest_framework.exceptions import ValidationError
 
 from courses.models import Track
 from courses.models import Unit
@@ -147,10 +144,19 @@ class UserTrackSerializer(TrackSerializer):
 
 
 class UserSubscriptionSerializer(serializers.ModelSerializer):
+
+    def validate(self, attrs):
+        track = attrs.get('track')
+        user = self.context['user']
+        if Subscription.objects.filter(user=user, track=track).exists():
+            message = 'The fields user, track must make a unique set.'
+            raise ValidationError(message, code='unique')
+
     class Meta:
         model = Subscription
         fields = ('id', 'user', 'track')
         extra_kwargs = {'user': {'required': False}}
+        read_only_fields = ('user', )
 
     def create(self, validated_data):
         user = self.context['user']
