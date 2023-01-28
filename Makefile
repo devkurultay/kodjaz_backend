@@ -83,13 +83,13 @@ export-course:
 	$(ACTIVATE) && python manage.py dumpdata courses users --exclude=courses.submission --format=json --indent=4 --output=fixtures/courses.json --natural-primary --natural-foreign
 
 zupdate-dev:
-	zappa update dev
+	$(ACTIVATE) && zappa update dev
 
 zupdate-prod:
-	zappa update prod
+	$(ACTIVATE) && zappa update prod
 
 zmanage-dev:
-	zappa manage dev $(word 2,$(MAKECMDGOALS))
+	$(ACTIVATE) && zappa manage dev $(word 2,$(MAKECMDGOALS))
 
 zmanage-prod:
-	zappa manage prod $(word 2,$(MAKECMDGOALS))
+	$(ACTIVATE) && zappa manage prod $(word 2,$(MAKECMDGOALS))
