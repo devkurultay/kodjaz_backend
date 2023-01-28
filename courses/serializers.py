@@ -151,6 +151,7 @@ class UserSubscriptionSerializer(serializers.ModelSerializer):
         if Subscription.objects.filter(user=user, track=track).exists():
             message = 'The fields user, track must make a unique set.'
             raise ValidationError(message, code='unique')
+        return attrs
 
     class Meta:
         model = Subscription
