@@ -222,3 +222,6 @@ class Subscription(models.Model):
             self.track,
             self.user
         )
+    
+    class Meta:
+        unique_together = ('user', 'track',)
