@@ -72,7 +72,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ),
     'DEFAULT_THROTTLE_RATES': {
-        'anon': '1/minute'
+        'anon': '1/second'
     },
     'TEST_REQUEST_DEFAULT_FORMAT': 'json',
 }
